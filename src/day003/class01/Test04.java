@@ -6,10 +6,12 @@ public class Test04 {
         // 카운트 초기화
         int count = 0;
 
+        //상수화
+        final int NUM=10;
         System.out.print("10의 약수 : ");
         // 10을 i로 나눴을 때 나머지가 0이 되는 것 출력
-        for(int i = 1; i <= 10; i++) {
-            if(10 % i == 0) {
+        for(int i = 1; i <= NUM; i++) {
+            if(NUM % i == 0) {
                 System.out.print(i + " ");
                 count++;
             }

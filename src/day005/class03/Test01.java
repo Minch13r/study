@@ -45,14 +45,18 @@ public class Test01 {
 
         System.out.println(); //줄바꿈
 
-        while(true) {
+        while(true) { // 원하는 위치 확인하기 위해서 얼마나 반복할지 몰라서 while로 무한루프
+            //오타가 나면 다시 해야하니까 불분명 때문에 while 쓰는거임
             System.out.print("몇번째 위치에 해당한 숫자를 알고 싶으신가요? : ");
-            int num = scanner.nextInt();
+            int num = scanner.nextInt(); //원하는 위치 입력받기
 
-            if(num > 0 && num <= datas.length) {
-                System.out.println(datas[num-1]);
+            if(num > 0 && num <= datas.length) { //원하는 위치가 1보다 크고 배열의 길이보다 작거나 같아야 함
+                System.out.println("["+datas[num-1]+"]"); //인덱스가 0부터 시작하기 때문에
+                //1번째부터 출력을 위해 num-1을 입력
+                //num이 1일 때 [num] ex) [1] = 두번째 위치 출력
+                //num이 1일 때 [num-1] ex) [0] = 첫번째 위치 출력
                 break; // 올바른 입력을 받았으므로 반복문 종료
-            } else {
+            } else { // 잘못된 숫자를 입력하면 다시 입력할 수 있게 유효성 검사
                 System.out.println("잘못된 위치를 입력하셨습니다.");
                 continue; // 다음 반복으로 넘어가서 다시 입력받기
             }

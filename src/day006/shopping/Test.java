@@ -113,11 +113,16 @@ public class Test {
 
             // 2. 상품 구매
             else if (action == 2) {
-                while(true) {  // 구매 메뉴를 위한 반복문 추가
+                while(true) { // 구매 메뉴를 위한 반복문 추가
                     System.out.println("=== 재고 목록 ===");
                     for(int i=0; i<datas.length; i++){ //재고 출력
-                        System.out.println((i+1) + "번 상품 [" + datas[i] + "]개");
+                        if(datas[i] == 0) { //품절 처리
+                            System.out.println((i+1) + "번 상품 [품절]");
+                        } else {
+                            System.out.println((i+1) + "번 상품 [" + datas[i] + "개]");
+                        }
                     }
+
                     System.out.println();
                     System.out.println("몇 번을 구매하시겠습니까? (0: 이전 메뉴)");
                     System.out.print(">>");
@@ -133,7 +138,14 @@ public class Test {
                     //유효한 번호 외에 다른거 입력했을 때 예외처리
                     if(res < 1 || res > 3){
                         System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
-                        continue;  // 상품 번호 입력으로 다시 돌아감
+                        continue;
+                    }
+
+                    // 선택한 상품의 재고가 0개일 때
+                    if(datas[res-1] == 0) {
+                        System.out.println("죄송합니다. 해당 상품은 품절되었습니다.");
+                        System.out.println("다른 상품을 선택해주세요.");
+                        continue;
                     }
 
                     while(true) { //선택한 재고 불러옴
@@ -152,17 +164,22 @@ public class Test {
 
                             if (quantity > datas[index] || quantity < 0) {
                                 System.out.println("재고가 부족합니다. 다시 입력해주세요");
-                                continue; //가독성 향상
+                                continue;
                             } else if (quantity == 0) {
                                 System.out.println("0개는 구매가 안 된 상태입니다. 다시 입력해주세요.");
-                                continue; //가독성 향상
+                                continue;
                             } else if (quantity <= datas[index]) {
                                 datas[index] = datas[index] - quantity; // 실제 재고 차감
                                 System.out.println(quantity + "개 구매완료.");
-                                System.out.println("현재 " + res + "번 상품의 재고는 [" + datas[index] + "] 개 있습니다.");
-                                break;  // 반복문 탈출
-                            }
 
+                                // 구매 후 재고가 0이 되었을 때 품절처리
+                                if(datas[index] == 0) {
+                                    System.out.println("현재 " + res + "번 상품은 품절되었습니다.");
+                                } else {
+                                    System.out.println("현재 " + res + "번 상품의 재고는 [" + datas[index] + "] 개 있습니다.");
+                                }
+                                break; // 반복문 탈출
+                            }
                         } else {
                             System.out.println("숫자를 잘못 입력하셨습니다. 다시 입력해주세요");
                             continue; //가독성 향상
@@ -171,7 +188,6 @@ public class Test {
                     break; //반복문 탈출해서 메인 메뉴로 돌아가기
                 }
             }
-
 
             // 3. 상품 재고 추가
             else if (action == 3) {

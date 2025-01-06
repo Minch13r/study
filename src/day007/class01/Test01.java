@@ -249,10 +249,12 @@ public class Test01 {
                             System.out.println(poList[num - 1] + "이(가) 패배했습니다...");
                         }
                         break;
-                    } else if (num == 0) {
+                    }
+                    else if (num == 0) { // 0번 누르면 처음으로 돌아가게 처리
                         System.out.println("포켓몬 시합을 취소합니다.");
                         break;
-                    } else { // 예외처리
+                    }
+                    else { // 예외처리
                         System.out.println("잘못된 번호를 입력하셨습니다.");
                         continue;
                     }

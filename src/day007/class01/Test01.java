@@ -58,125 +58,85 @@ public class Test01 {
 
 
             else if(action == 2){ // 2. 포켓몬 잡기
+                int randNum = rand.nextInt(5); // 0~4 출력
+                // 랜덤으로 1마리 튀어나오게
+                System.out.println("야생의 " + pokemon[randNum] + "이(가) 나타났다!");
+                System.out.println("몬스터 볼을 던질까? (YES, NO)");
+                System.out.print(">> ");
+                String ans = sc.next();
 
-                if(cnt >= 3){ // 도감이 3마리 다 찼을 때
-                    System.out.println("포켓몬 도감이 가득 찼습니다!");
-                    System.out.println("새로운 포켓몬을 잡으려면 기존 포켓몬을 방출해야 합니다.");
-                    System.out.println("===== 현재 보유 포켓몬 =====");
-                    for(int i = 0; i < cnt; i++){ //보유 포켓몬 목록 출력
-                        System.out.println((i+1) + ". " + poList[i] + "(별명: " + nicknames[i] + ")" + "(Lv." + poLvList[i] + ")");
-                    }
-
-                    //방출할 포켓몬 번호 입력, 방출 안 할 수 있게끔 처리
-                    System.out.print("방출할 포켓몬 번호를 입력하세요 (취소: 0) >> ");
-                    int num = sc.nextInt();
-
-                    if(num == 0){ // 취소
-                        System.out.println("포켓몬 잡기를 취소합니다.");
-                        continue;
-                    }
-
-                    else if(num >= 1 && num <= cnt){ // 1보다 크고 같을때, 현재 cnt보다 작거나 같을 때 진행
-                        System.out.println(poList[num-1] + "를 방출합니다...");
-                        // 방출된 포켓몬의 자리를 뒤의 포켓몬들로 채움
-                        for(int i = num-1; i < cnt-1; i++){
-                            poList[i] = poList[i+1];
-                            poLvList[i] = poLvList[i+1];
-                        }
-                        cnt--; //방출 시키면 cnt 숫자 줄어들게
-                        // 위에 코드까지 방출 진행
-
-                        // 방출 후 데려가기 진행
-                        int randNum = rand.nextInt(5); // 0~4 출력
-                        // 랜덤으로 1마리 튀어나오게
-                        System.out.println("야생의 " + pokemon[randNum] + "이(가) 나타났다!");
-                        System.out.println("몬스터 볼을 던질까? (YES, NO)");
-                        System.out.print(">> ");
-                        String ans = sc.next();
-
-                        if (!ans.equalsIgnoreCase("yes")) {
-                            System.out.println("도망쳤습니다....");
-                            continue;
-                        }
-
-                        System.out.println("!!!!! 몬스터볼 던지기 !!!!!");
-                        int rNum = rand.nextInt(100) + 1; // 1~100
-
-                        if (rNum <= 30) { // 30% 확률로 실패
-                            System.out.println("ㅠㅠ... 실패했습니다.");
-                        }
-
-                        else { // 70% 확률로 성공
-                            System.out.println("신난다!!! " + pokemon[randNum] + "을(를) 잡았습니다!!");
-                            System.out.print("별명을 지정하시겠습니까? (YES/NO) >> "); // 별명 지정
-                            String nicknameChoice = sc.next(); // YES, NO 입력받기
-
-                            if(nicknameChoice.equalsIgnoreCase("yes")) { // 별명 바꾸겠다고 한 경우
-                                System.out.print("별명을 입력해주세요 >> ");
-                                sc.nextLine(); // YES하고 입력하기 전에 버퍼를 비워야
-                                // 내가 원하는 별명 입력 가능, 아니면 Enter만 입력됨
-                                String nickname = sc.nextLine();
-                                nicknames[cnt] = nickname; // 별명 배열의 cnt 인덱스에 해당하는 내용 별명으로 지정
-                                System.out.println(pokemon[randNum] + "의 별명이 " + nickname + "으로 지정되었습니다!");
-                            }
-
-                            else { // 안 바꾸겠다고 하면 별명 지정X
-                                nicknames[cnt] = null;
-                            }
-
-                            poList[cnt] = pokemon[randNum];
-                            poLvList[cnt++] = rand.nextInt(4) + 1; // 레벨은 랜덤 지정 1~4 Lv
-                        }
-                    }
-
-                    else {
-                        System.out.println("잘못된 번호입니다.");
-                        continue;
-                    }
+                if (!ans.equalsIgnoreCase("yes")) {
+                    System.out.println("도망쳤습니다....");
+                    continue;
                 }
 
-                else if(cnt < 3){ // 도감이 다 안 찼을 때
-                    int randNum = rand.nextInt(5); // 0~4 출력
-                    // 랜덤으로 1마리 튀어나오게
-                    System.out.println("야생의 " + pokemon[randNum] + "이(가) 나타났다!");
-                    System.out.println("몬스터 볼을 던질까? (YES, NO)");
-                    System.out.print(">> ");
-                    String ans = sc.next();
+                System.out.println("!!!!! 몬스터볼 던지기 !!!!!");
+                int rNum = rand.nextInt(100) + 1; // 1~100
 
-                    if (!ans.equalsIgnoreCase("yes")) {
-                        System.out.println("도망쳤습니다....");
-                        continue;
-                    }
+                if (rNum <= 30) { // 30% 확률로 실패
+                    System.out.println("ㅠㅠ... 실패했습니다.");
+                } else { // 70% 확률로 성공
+                    System.out.println("신난다!!! " + pokemon[randNum] + "을(를) 잡았습니다!!");
 
-                    System.out.println("!!!!! 몬스터볼 던지기 !!!!!");
-                    int rNum = rand.nextInt(100) + 1; // 1~100
-                    // 30% 확률로 실패
-                    if (rNum <= 30) { //실패
-                        System.out.println("ㅠㅠ... 실패했습니다.");
-                    }
-                    else { // 70% 확률로 성공
-                        System.out.println("신난다!!! " + pokemon[randNum] + "을(를) 잡았습니다!!");
-                        System.out.print("별명을 지정하시겠습니까? (YES/NO) >> "); // 별명 지정
-                        String nicknameChoice = sc.next(); // YES, NO 입력받기
+                    // 포켓몬을 일단 잡고, 3마리를 초과하는 경우 선택적 삭제
+                    if(cnt >= 3) {
+                        System.out.println("\n포켓몬 도감이 가득 찼습니다!");
+                        System.out.println("현재 보유한 포켓몬 중 하나를 선택하여 방출해야 합니다.");
+                        System.out.println("===== 현재 보유 포켓몬 =====");
+                        for(int i = 0; i < cnt; i++){
+                            if(nicknames[i] != null && !nicknames[i].equals("X")) {
+                                System.out.println((i+1) + ". " + poList[i] + " (별명: " + nicknames[i] + ") (Lv." + poLvList[i] + ")");
+                            } else {
+                                System.out.println((i+1) + ". " + poList[i] + " (Lv." + poLvList[i] + ")");
+                            }
+                        }
+                        System.out.println((cnt+1) + ". 새로 잡은 " + pokemon[randNum]);
 
-                        //YES, yes, Yes 까지는 가능하게 처리
-                        if(nicknameChoice.equalsIgnoreCase("yes")) { // 별명 바꾸겠다고 한 경우
+                        System.out.print("어떤 포켓몬을 방출하시겠습니까? (1~" + (cnt+1) + ") >> ");
+                        int choice = sc.nextInt();
+
+                        if(choice >= 1 && choice <= cnt) { // 기존 포켓몬 중에서 선택
+                            System.out.println(poList[choice-1] + "를 방출합니다...");
+                            // 선택한 포켓몬을 방출하고 새 포켓몬으로 교체
+                            poList[choice-1] = pokemon[randNum];
+                            poLvList[choice-1] = rand.nextInt(4) + 1;
+
+                            // 새 포켓몬의 별명 지정
+                            System.out.print("새로운 포켓몬의 별명을 지정하시겠습니까? (YES/NO) >> ");
+                            String nicknameChoice = sc.next();
+                            if(nicknameChoice.equalsIgnoreCase("yes")) {
+                                System.out.print("별명을 입력해주세요 >> ");
+                                sc.nextLine();
+                                String nickname = sc.nextLine();
+                                nicknames[choice-1] = nickname;
+                                System.out.println(pokemon[randNum] + "의 별명이 " + nickname + "으로 지정되었습니다!");
+                            } else {
+                                nicknames[choice-1] = "X";
+                            }
+                        } else if(choice == cnt+1) { // 새로 잡은 포켓몬을 방출
+                            System.out.println("새로 잡은 " + pokemon[randNum] + "를 방출합니다...");
+                            continue;
+                        }
+                    } else { // 3마리 미만인 경우 기존 로직대로 진행
+                        System.out.print("별명을 지정하시겠습니까? (YES/NO) >> ");
+                        String nicknameChoice = sc.next();
+
+                        if(nicknameChoice.equalsIgnoreCase("yes")) {
                             System.out.print("별명을 입력해주세요 >> ");
-                            sc.nextLine(); // YES하고 입력하기 전에 버퍼를 비워야
-                            // 내가 원하는 별명 입력 가능, 아니면 Enter만 입력됨
+                            sc.nextLine();
                             String nickname = sc.nextLine();
-                            nicknames[cnt] = nickname; // 별명 배열의 cnt 인덱스에 해당하는 내용 별명으로 지정
+                            nicknames[cnt] = nickname;
                             System.out.println(pokemon[randNum] + "의 별명이 " + nickname + "으로 지정되었습니다!");
-                        } else { // 안 바꾸겠다고 하면 별명 지정X
-                            // YES 외에는 모두 다 NO 처리
+                        } else {
                             nicknames[cnt] = "X";
                         }
 
                         poList[cnt] = pokemon[randNum];
-                        poLvList[cnt++] = rand.nextInt(4) + 1; // 레벨은 랜덤 지정 1~4 Lv
+                        poLvList[cnt++] = rand.nextInt(4) + 1;
                     }
                 }
             }
+
 
             else if (action == 3) { // 3. 포켓몬 정보 출력
                 System.out.println("=== 내 포켓몬 목록 ===");

@@ -30,5 +30,6 @@ public class Test02 {
         int b = 2;
         test(b, a);
         System.out.println("a, b = " + a + "," + b);
+        // 각각 다른 함수에 위치하는 a와 b를 잘 확인하고 문제를 풀어야 함
     }
 }

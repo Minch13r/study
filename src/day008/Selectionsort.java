@@ -29,17 +29,17 @@ public class Selectionsort {
         }
 
         // 배열 생성
-        int[] arr = new int[size];
+        int[] datas = new int[size];
 
         // 중복 없이 1~100 사이의 랜덤 숫자로 배열 채우기
         for (int i = 0; i < size; i++) {
             while (true) {
                 boolean isDuplicate = false;
-                arr[i] = random.nextInt(100) + 1; // 1~100 사이의 랜덤 숫자
+                datas[i] = random.nextInt(100) + 1; // 1~100 사이의 랜덤 숫자
 
                 // 중복 검사
                 for (int j = 0; j < i; j++) {
-                    if (arr[j] == arr[i]) {
+                    if (datas[j] == datas[i]) {
                         isDuplicate = true;
                         break;
                     }
@@ -53,35 +53,35 @@ public class Selectionsort {
 
         // 정렬 전 배열 출력
         System.out.println("\n정렬 전 배열:");
-        printArray(arr);
+        printArray(datas);
 
         // 정렬 방식 선택
-        int choice = 0;
+        int ans = 0; // scope 이슈
         while (true) {
             System.out.println("\n정렬 방식을 선택하세요:");
             System.out.println("1. 오름차순");
             System.out.println("2. 내림차순");
             System.out.print("선택 >> ");
-            choice = scanner.nextInt();
+            ans = scanner.nextInt();
 
-            if (choice == 1 || choice == 2) {
+            if (ans == 1 || ans == 2) { // 1 또는 2가 아닐 경우
                 break;
             }
             System.out.println("잘못된 선택입니다. 1 또는 2를 선택해주세요.");
         }
 
         // 선택 정렬 수행
-        for (int i = 0; i < arr.length - 1; i++) {
+        for (int i = 0; i < datas.length - 1; i++) {
             int targetIndex = i;
 
             // 최소값/최대값 찾기
-            for (int j = i + 1; j < arr.length; j++) {
-                if (choice == 1) { // 오름차순
-                    if (arr[j] < arr[targetIndex]) {
+            for (int j = i + 1; j < datas.length; j++) {
+                if (ans == 1) { // 오름차순
+                    if (datas[j] < datas[targetIndex]) {
                         targetIndex = j;
                     }
                 } else { // 내림차순
-                    if (arr[j] > arr[targetIndex]) {
+                    if (datas[j] > datas[targetIndex]) {
                         targetIndex = j;
                     }
                 }
@@ -89,20 +89,18 @@ public class Selectionsort {
 
             // 값 교환
             if (targetIndex != i) {
-                int temp = arr[i];
-                arr[i] = arr[targetIndex];
-                arr[targetIndex] = temp;
+                int tmp = datas[i];
+                datas[i] = datas[targetIndex];
+                datas[targetIndex] = tmp;
             }
 
             // 각 회차별 정렬 과정 출력
             System.out.printf("\n%d회전 후 배열:\n", i + 1);
-            printArray(arr);
+            printArray(datas);
         }
 
         // 최종 정렬된 배열 출력
         System.out.println("\n최종 정렬된 배열:");
-        printArray(arr);
-
-        scanner.close();
+        printArray(datas);
     }
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Selectionsort {
+    //배열의 크기를 사용자가 입력하는 함수
     public static int inputSize(Scanner scanner, int size) {
         while (true) {
             System.out.print("배열의 크기를 입력하세요 (1~10): ");
@@ -16,6 +17,7 @@ public class Selectionsort {
         return size;
     }
 
+    // 배열 안의 숫자를 랜덤으로 생성해주고, 중복 방지하는 함수
     public static void flagTest(int[] datas, Random random) {
         for (int i = 0; i < datas.length; i++) {
             while (true) {
@@ -38,6 +40,7 @@ public class Selectionsort {
         }
     }
 
+    // 배열 출력하는 함수
     public static void printArr(int[] datas) {
         for (int num : datas) {
             System.out.print(num + " ");
@@ -45,6 +48,7 @@ public class Selectionsort {
         System.out.println();
     }
 
+    // 오름차순, 내림차순 선택하는 함수
     public static int ascOrdesc(int ans, Scanner scanner) {
         while (true) {
             System.out.println("\n정렬 방식을 선택하세요:");
@@ -61,6 +65,7 @@ public class Selectionsort {
         return ans;
     }
 
+    // 선택 정렬하고 n회차 별로 배열 출력하는 함수
     public static void selectionSort(int[] datas, int ans) {
         for (int i = 0; i < datas.length - 1; i++) {
             int targetIndex = i;
@@ -86,7 +91,7 @@ public class Selectionsort {
             }
 
             // 각 회차별 정렬 과정 출력
-            System.out.println((i + 1) + "회전 후 배열:");
+            System.out.println((i + 1) + "회전 후 배열");
             printArr(datas);
         }
     }

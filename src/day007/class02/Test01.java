@@ -1,4 +1,4 @@
-package day008.class02;
+package day007.class02;
 
 public class Test01 {
     public static void test01(){

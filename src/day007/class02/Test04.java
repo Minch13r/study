@@ -1,4 +1,4 @@
-package day008.class02;
+package day007.class02;
 // 4유형(input o, output 0)
 public class Test04 {
     public static boolean test(int a,int b) {

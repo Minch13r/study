@@ -1,4 +1,4 @@
-package day008.class01;
+package day007.class01;
 
 public class Test02 {
     // 함수 선언, 정의

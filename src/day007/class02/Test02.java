@@ -1,4 +1,4 @@
-package day008.class02;
+package day007.class02;
 
 import java.util.Random;
 

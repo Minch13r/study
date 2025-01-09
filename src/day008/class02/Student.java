@@ -104,7 +104,9 @@ public class Student {
             System.out.println("해당 이름의 학생을 찾을 수 없습니다.");
         }
     }
-
+    public static void printErr(String[] stuList){
+        System.out.println("정원이 초과되었습니다. (최대 " + stuList.length + "명)");
+    }
 
 
     public static void main(String[] args) {
@@ -141,7 +143,7 @@ public class Student {
 
             else if(menu==3) { // 3. 학생추가
                 if (cnt >= stuList.length) {
-                    System.out.println("정원이 초과되었습니다. (최대 " + stuList.length + "명)");
+                    printErr(stuList);
                 }
                 else {
                     String name = inputStuName();

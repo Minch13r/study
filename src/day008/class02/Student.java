@@ -160,6 +160,7 @@ public class Student {
 
             }
 
+
             else if (menu==5) { // 5. 학생 이름 입력받고 해당학생 정보 출력하기
                 inputNameNSearch(stuList, cnt); // 학생 이름 입력받고 출력
             }

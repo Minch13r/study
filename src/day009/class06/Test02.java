@@ -15,6 +15,11 @@ class Book { // 클래스
         this.title = title;
         this.writer = writer;
     }
+
+    void printBookInfo(){
+        System.out.println(this.title + " " + this.writer); // this 쓰는게 내꺼 보여달라고 하는거
+        // 여기에  book01이나 book02 들어갔을 때 자기꺼 보여줌
+    }
 }
 
 public class Test02 {
@@ -22,7 +27,9 @@ public class Test02 {
         Book book01 = new Book("해리포터", "JK톨링");
         Book book02 = new Book("춘향전");
 
-        System.out.println(book01.title+" "+book01.writer);
-        System.out.println(book02.title+" "+book02.writer);
+        book01.printBookInfo();
+        book02.printBookInfo();
+//        System.out.println(book01.title+" "+book01.writer);
+//        System.out.println(book02.title+" "+book02.writer);
     }
 }

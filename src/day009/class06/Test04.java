@@ -10,18 +10,15 @@ class Car {
     Car(int speed){
         this.speed = speed;
         this.maxspeed = 120;
+
+        if(this.speed > this.maxspeed){
+            this.speed = this.maxspeed;
+            System.out.println("모든 자동차들은 최대 속도가 " + this.maxspeed + "을 넘을 수 없습니다.");
+        }
     }
 }
 // getter, setter
 // setter로 받고 getter로 return?
 public class Test04 {
-    public static void main(String[] args) {
-        Car car01 = new Car(110);
-        if(car01.speed> car01.maxspeed){
-            System.out.println("자동차의 현재 속도는 " + car01.maxspeed + "입니다.");
-        } else if (car01.speed < car01.maxspeed) {
-            System.out.println("자동차의 현재 속도는 " + car01.speed + "입니다.");
-        }
-    }
 
 }

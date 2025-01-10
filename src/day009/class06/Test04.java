@@ -17,8 +17,5 @@ class Car {
         }
     }
 }
-// getter, setter
-// setter로 받고 getter로 return?
 public class Test04 {
-
 }

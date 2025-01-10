@@ -3,7 +3,7 @@ package day008;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Test02 {
+public class ViewNModelAssignment {
     public static int[] stuList = {10, 20, 0};
 
     public static int[] selectAll() {

@@ -27,7 +27,7 @@ public class Test01 {
         // 통칭은 Object가 맞는데 피카츄, 럭스 이런 실제 애들은 instance라고 함
 
         // 1명에게 이름, 성적을 부여
-//        stu.name = "홍길동";
+//        stu.name = "궯뚧뤫쉛";
 //        stu.score = 98;
 
         // 화면에 출력

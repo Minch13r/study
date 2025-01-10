@@ -17,13 +17,23 @@ class Circle{
         // radius * radius보다 this.를 붙이는게 의미에 더 알맞음
         // this.는 '내' 반지름을 의미하는거기 때문.
     }
+    void printCircleInfo() { // 클래스에서는 이렇게 함수 만든다. public static 이런거 아님.
+        //공개 범위 맞춰줘서 public X, 객체이기에 static X
+        System.out.println("원 이름 : " + this.name);
+        System.out.println("반지름 : " + this.radius);
+        System.out.println("넓이 : " + this.extent);
+    }
 }
 public class Test01 {
     public static void main(String[] args) {
         Circle circle01 = new Circle("도넛", 1);
         Circle circle02 = new Circle("피자", 10);
 
-        System.out.println(circle01.name + "은(는) 반지름이 " + circle01.radius + "입니다." + circle01.name + "의 넓이는 " + circle01.extent + "입니다.");
-        System.out.println(circle02.name + "은(는) 반지름이 " + circle02.radius + "입니다." + circle02.name + "의 넓이는 " + circle02.extent + "입니다.");
+        // 완벽하고 전형적인 OOP
+        // 자기것만 출력하도록 하는 것.
+        circle01.printCircleInfo();
+        circle02.printCircleInfo();
+//        System.out.println(circle01.name + "은(는) 반지름이 " + circle01.radius + "입니다." + circle01.name + "의 넓이는 " + circle01.extent + "입니다.");
+//        System.out.println(circle02.name + "은(는) 반지름이 " + circle02.radius + "입니다." + circle02.name + "의 넓이는 " + circle02.extent + "입니다.");
     }
 }

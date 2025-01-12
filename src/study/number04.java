@@ -21,7 +21,7 @@ class Work {
         System.out.println("당일 노동 시간 : " + workTime + "시간");
     }
 }
-public class Test04 {
+public class number04 {
     public static void main(String[] args) {
         Work work = new Work();
         work.setWorkTime(5);

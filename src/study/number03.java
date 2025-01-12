@@ -23,7 +23,7 @@ class Student{
         System.out.println(this.name + "의 나이는 " + this.age + "살이며 성별은 " + gender + "입니다.");
     }
 }
-public class Test03 {
+public class number03 {
 
     public static void main(String[] args) {
         Student student = new Student("JAVA", 30, 2);

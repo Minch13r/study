@@ -18,7 +18,7 @@ class Sales{
         System.out.println(foodName + "의 판매량은 총 " + totalOrder + "개로 " + totalMonut + "원 입니다.");
     }
 }
-public class Test01 {
+public class number01 {
     public static void main(String[] args) {
         Sales sales = new Sales("스파게티", 12000, 2);
     }

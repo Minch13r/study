@@ -29,7 +29,7 @@ class MovieReivew{
         System.out.println("리뷰 내용 : " + content);
     }
 }
-public class Test02 {
+public class number02 {
     public static void main(String[] args) {
         MovieReivew movieReivew = new MovieReivew("피카츄", 5, "낫밷");
         MovieReivew movieReivew1 = new MovieReivew("꼬북이", 3);

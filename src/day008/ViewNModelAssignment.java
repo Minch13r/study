@@ -109,7 +109,6 @@ public class ViewNModelAssignment {
     // 정보변경할 학생 번호 입력 함수
     public static int inputStudentNumber(int cnt) {
         Scanner sc = new Scanner(System.in);
-
         int num;
         while(true) {
             System.out.print("정보변경할 학생의 번호 입력 : ");

@@ -164,10 +164,10 @@ public class Test01 {
                     if((datas[i].grade + "").equalsIgnoreCase(ans)) {
                         datas[i].printInfo();
                         flag = true;
-                    }
+                    } // 유효성 검사(다른 등급 입력했을 때)
                 }
                 if(!flag) {
-                    System.out.println(ans + " 등급의 학생이 없습니다...");
+                    System.out.println(ans + " 등급의 학생이 없습니다");
                 }
 
 
@@ -186,7 +186,7 @@ public class Test01 {
                     }
                 }
                 if(!flag) {
-                    System.out.println(ans + " 학생은 존재하지 않습니다...");
+                    System.out.println(ans + " 학생은 존재하지 않습니다");
                 }
             }
         }

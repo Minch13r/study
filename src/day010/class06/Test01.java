@@ -24,6 +24,7 @@ class Student {
         System.out.println("이름 : "+this.name);
         System.out.println("점수 : "+this.score);
         System.out.println("등급 : "+this.grade);
+        System.out.println("=============");
     }
     void changeScore(int score) { // 점수 변경
         this.score=score; // score로 입력된 정수가 this.score을 통해 다시 배정
@@ -126,6 +127,10 @@ public class Test01 {
             }
 
             else if(menu==4) { // 성적변경
+                System.out.println("==== 목록 ====");
+                for(int i=0;i<cnt;i++) {
+                    datas[i].printInfo();
+                }
                 System.out.print("번호입력 >> ");
                 int num=sc.nextInt();
 
@@ -152,25 +157,31 @@ public class Test01 {
                 datas[i].changeScore(score);
             }
 
-            // 등급으로 학생 검색
-            else if(menu == 5){
-                System.out.print("등급을 입력해주세요(A/B/C) >>");
-                String ans = sc.next();
-                boolean flag = false;
+            else if(menu == 5) {
+                while(true) {
+                    System.out.print("등급을 입력해주세요(A/B/C) >> ");
+                    String ans = sc.next(); // 대문자로 변환
 
-                //https://stackoverflow.com/questions/9159358/implicit-cast-to-string-tostring-and-int
-                for(int i=0; i<cnt; i++) {
-                    //배열은 char형식 ""를 추가해줌응로써 String으로 묵시적 형변환
-                    if((datas[i].grade + "").equalsIgnoreCase(ans)) {
-                        datas[i].printInfo();
-                        flag = true;
-                    } // 유효성 검사(다른 등급 입력했을 때)
+                    // 입력값이 A, B, C가 아닐 경우
+                    if(!ans.equalsIgnoreCase("A") && !ans.equalsIgnoreCase("B") && !ans.equalsIgnoreCase("C")) {
+                        System.out.println("A, B, C 중에서 입력해주세요!");
+                        continue;
+                    }
+
+                    //https://stackoverflow.com/questions/9159358/implicit-cast-to-string-tostring-and-int
+                    boolean flag = false;
+                    for(int i=0; i<cnt; i++) {
+                        if((datas[i].grade + "").equalsIgnoreCase(ans)) {
+                            datas[i].printInfo();
+                            flag = true;
+                        }
+                    }
+
+                    if(!flag) {
+                        System.out.println(ans + " 등급의 학생이 없습니다");
+                    }
+                    break; // 정상적인 입력이 들어왔을 때 반복문 종료
                 }
-                if(!flag) {
-                    System.out.println(ans + " 등급의 학생이 없습니다");
-                }
-
-
             }
 
             // 이름으로 학생 검색

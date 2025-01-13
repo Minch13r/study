@@ -149,12 +149,41 @@ public class Test01 {
                 datas[i].changeScore(score);
             }
 
+            // 등급으로 학생 검색
             else if(menu == 5){
+                System.out.print("등급을 입력해주세요(A/B/C) >>");
+                String ans = sc.next();
+                boolean flag = false;
+
+                for(int i=0; i<cnt; i++) {
+                    //배열은 char형식 ""를 추가해줌응로써 String으로 묵시적 형변환
+                    if((datas[i].grade + "").equalsIgnoreCase(ans)) {
+                        datas[i].printInfo();
+                        flag = true;
+                    }
+                }
+                if(!flag) {
+                    System.out.println(ans + " 등급의 학생이 없습니다...");
+                }
+
 
             }
 
-            else if(menu == 6){
+            // 이름으로 학생 검색
+            else if(menu == 6) {
+                System.out.print("검색할 학생 이름을 입력해주세요 >> ");
+                String ans = sc.next();
+                boolean flag = false;
 
+                for(int i=0; i<cnt; i++) {
+                    if(datas[i].name.equals(ans)) {
+                        datas[i].printInfo();
+                        flag = true;
+                    }
+                }
+                if(!flag) {
+                    System.out.println(ans + " 학생은 존재하지 않습니다...");
+                }
             }
         }
 

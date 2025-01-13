@@ -155,6 +155,7 @@ public class Test01 {
                 String ans = sc.next();
                 boolean flag = false;
 
+                //https://stackoverflow.com/questions/9159358/implicit-cast-to-string-tostring-and-int
                 for(int i=0; i<cnt; i++) {
                     //배열은 char형식 ""를 추가해줌응로써 String으로 묵시적 형변환
                     if((datas[i].grade + "").equalsIgnoreCase(ans)) {

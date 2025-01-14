@@ -1,4 +1,4 @@
-package day11;
+package day11.class02;
 
 // 캡슐화
 class Student {

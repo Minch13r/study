@@ -107,7 +107,7 @@ abstract class Mammal extends Animal {
 
     @Override
     public String toString() {
-        return "포유류[" + "새끼수 = " + cubNumber + ", 털 길이 =" + fur + ']';
+        return this.getCategory() + "[새끼수 = " + this.cubNumber + ", 털 길이 =" + this.fur + ']';
     }
 }
 
@@ -161,7 +161,7 @@ abstract class Reptiles extends Animal {
     // 파충류 정보출력
     @Override
     public String toString() {
-        return "파충류 [" + "비늘무늬 = " + scalePattern + ", 알 개수 = " + eggNumber + ']';
+        return this.getCategory() + "[비늘무늬 = " + this.scalePattern + ", 알 개수 = " + this.eggNumber + ']';
     }
 }
 

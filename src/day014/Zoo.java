@@ -14,7 +14,7 @@ import java.util.Scanner;
 abstract class Animal implements AnimalCryImpl {
     // 접근제어자 멤버변수
     // private를 쓴 이유는 내부에서만 참조 가능하고 외부에서 참조가 불가능하게 하기 위해서 사용
-    // 이 접근제어자를 사용했기 때문에 getter와 setter로 값을 정의 및 가져오게끔 해봤습니다.
+    // 이 접근제어자를 사용했기 때문에 getter와 setter로 값을 재정의 및 가져오게끔 해봤습니다.
     private String name; // 멤버변수 이름
     private int age; // 멤버변수 나이
     private String category; // 멤버변수 카테고리
@@ -22,6 +22,7 @@ abstract class Animal implements AnimalCryImpl {
     // random을 왜 클래스변수를 썼냐면, 랜덤객체를 계속 선언하면 memory leak가 발생하기 때문에
     // 이를 막기 위해 가장 상위 클래스에 클래스변수로 선언했습니다.
 
+    // 생성자는 초기화 하는 역할
     Animal(String name, int age, String category) { // 생성자
         this.name = name;
         this.age = age;
@@ -33,7 +34,7 @@ abstract class Animal implements AnimalCryImpl {
     // 사실상 public abstract가 생략된 것이기에 사라진 것이 아니므로
     // 오버라이딩의 조건인 메서드 시그니처가 똑같아야 하기 때문에
     // public abstract를 붙이고 오버라이딩을 진행했습니다.
-    public abstract void cry(); // 우는 메서드
+    public abstract void cry(); // 울음소리 메서드
 
     // 최대 랜덤 수 반환
     int returnRandomNum(int max) {
@@ -82,7 +83,7 @@ abstract class Animal implements AnimalCryImpl {
 // 포유류 클래스 선언, 동물 상속
 abstract class Mammal extends Animal {
     private int cubNumber; // 새끼수
-    private String fur; // 털
+    private String fur; // 털 길이 정도
 
     // 포유류 생성자, 부모 상속, 카테고리 포유류로 설정
     Mammal(String name, int age, int max) {
@@ -119,7 +120,7 @@ abstract class Mammal extends Animal {
     }
 
     @Override
-    public abstract void cry(); // 우는 메서드
+    public abstract void cry(); // 울음소리 메서드
 
     // Getter, Setter
     public String getFur() {
@@ -178,7 +179,7 @@ abstract class Reptiles extends Animal {
 
     // 울음소리 오버라이딩
     @Override
-    public abstract void cry(); // 우는 메서드
+    public abstract void cry(); // 울음소리 메서드
 
     // Getter, Setter
     public String getScalePattern() {
@@ -217,7 +218,7 @@ class Camel extends Mammal {
 
     // 울음소리 오버라이딩
     @Override
-    public void cry() {
+    public void cry() { // 울음소리 메서드
         System.out.println("우어우어어ㅓㅓㅓㅓ어ㅓㅓ…어어ㅓ어…ㅓㅓㅓ어");
     }
 
@@ -233,7 +234,7 @@ class Camel extends Mammal {
     // 정보 출력
     @Override
     public String toString() {
-        return "이름 :" + this.getName() + "\n" +
+        return "이름 : " + this.getName() + "\n" +
                 "카테고리 : " + this.getCategory() + "\n" +
                 "나이 : " + this.getAge() + "살\n" +
                 "털 길이 : " + this.getFur() + "\n" +
@@ -256,7 +257,7 @@ class Dog extends Mammal {
 
     // 울음소리 오버라이딩
     @Override
-    public void cry() {
+    public void cry() { // 울음소리 메서드
         System.out.println("멍멍!");
     }
 
@@ -271,7 +272,7 @@ class Dog extends Mammal {
     // 강아지 정보 출력
     @Override
     public String toString() {
-        return "이름 :" + this.getName() + "\n" +
+        return "이름 : " + this.getName() + "\n" +
                 "카테고리 : " + this.getCategory() + "\n" +
                 "나이 : " + this.getAge() + "살\n" +
                 "털 길이 : " + this.getFur() + "\n" +
@@ -293,7 +294,7 @@ class Turtle extends Reptiles {
 
     // 울음소리 오버라이딩
     @Override
-    public void cry() {
+    public void cry() { // 울음소리 메서드
         System.out.println("끡끡");
     }
 
@@ -308,7 +309,7 @@ class Turtle extends Reptiles {
     // 정보출력 오버라이딩
     @Override
     public String toString() {
-        return "이름 :" + this.getName() + "\n" +
+        return "이름 : " + this.getName() + "\n" +
                 "카테고리 : " + this.getCategory() + "\n" +
                 "나이 : " + this.getAge() + "살\n" +
                 "비늘무늬 : " + this.getScalePattern() + "\n" +
@@ -330,7 +331,7 @@ class Lizard extends Reptiles {
 
     // 울음소리 오버라이딩
     @Override
-    public void cry() {
+    public void cry() { // 울음소리 메서드
         System.out.println("엥옝옝옝옝옝옝예");
     }
 
@@ -345,7 +346,7 @@ class Lizard extends Reptiles {
     // 정보출력 오버라이딩
     @Override
     public String toString() {
-        return "이름 :" + this.getName() + "\n" +
+        return "이름 : " + this.getName() + "\n" +
                 "카테고리 : " + this.getCategory() + "\n" +
                 "나이 : " + this.getAge() + "살\n" +
                 "비늘무늬 : " + this.getScalePattern() + "\n" +

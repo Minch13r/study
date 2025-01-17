@@ -195,7 +195,7 @@ class Camel extends Mammal {
     // 정보 출력
     @Override
     public String toString() {
-        return "이름 : 낙타\n" +
+        return "이름 :" + getName() + "\n" +
                 "카테고리 : " + getCategory() + "\n" +
                 "나이 : " + getAge() + "살\n" +
                 "털 길이 : " + getFur() + "\n" +
@@ -234,7 +234,7 @@ class Dog extends Mammal {
     // 강아지 정보 출력
     @Override
     public String toString() {
-        return "이름 : 강아지\n" +
+        return "이름 :" + getName() + "\n" +
                 "카테고리 : " + getCategory() + "\n" +
                 "나이 : " + getAge() + "살\n" +
                 "털 길이 : " + getFur() + "\n" +
@@ -271,7 +271,7 @@ class Turtle extends Reptiles {
     // 정보출력 오버라이딩
     @Override
     public String toString() {
-        return "이름 : 거북이\n" +
+        return "이름 :" + getName() + "\n" +
                 "카테고리 : " + getCategory() + "\n" +
                 "나이 : " + getAge() + "살\n" +
                 "비늘무늬 : " + getScalePattern() + "\n" +
@@ -308,7 +308,7 @@ class Lizard extends Reptiles {
     // 정보출력 오버라이딩
     @Override
     public String toString() {
-        return "이름 : 도마뱀\n" +
+        return "이름 :" + getName() + "\n" +
                 "카테고리 : " + getCategory() + "\n" +
                 "나이 : " + getAge() + "살\n" +
                 "비늘무늬 : " + getScalePattern() + "\n" +

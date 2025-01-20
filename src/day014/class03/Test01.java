@@ -18,7 +18,7 @@ public class Test01 {
         Iterator<Integer> itr = al.iterator();
         while(itr.hasNext()){
             System.out.println(itr.next());
-            // 포인터(↑)가 이도ㅗㅇ
+            // 포인터(↑)가 이동
         }
     }
 }

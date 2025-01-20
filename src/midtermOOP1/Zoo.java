@@ -1,4 +1,4 @@
-package day014;
+package midtermOOP1;
 
 import java.util.Random;
 import java.util.Scanner;

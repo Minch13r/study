@@ -153,7 +153,7 @@ public class Test01 {
         Point point = points.get(0);
         int cnt = 0; // 카운트 0으로 초기화
         for (Point p : points) {
-            if (p.equals(point)) { // firstPoint와 같은 점 찾을 때마다
+            if (p.equals(point)) { // point와 같은 점 찾을 때마다
                 cnt++; // 카운트 개수 1개씩 증가
             }
         }

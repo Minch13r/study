@@ -178,7 +178,7 @@ public class Test01 {
                     fos.close();
                     System.out.println("이미지가 성공적으로 저장되었습니다!");
                 } catch (Exception e) {
-                    System.out.println("파일 복사 중 오류 발생: " + e.getMessage());
+                    System.out.println("파일 복사 중 오류 발생");
                 }
                 break;
             } else if (num > msg) { // txt 파일 안 있는 숫자가 입력한 값보다 작으면

@@ -154,6 +154,7 @@ public class Test01 {
         int cnt = 0; // 카운트 0으로 초기화
         for (Point p : points) {
             if (p.equals(point)) { // point와 같은 점 찾을 때마다
+                // equals 오버라이딩 진행
                 cnt++; // 카운트 개수 1개씩 증가
             }
         }

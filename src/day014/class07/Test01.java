@@ -147,7 +147,6 @@ public class Test01 {
         for (int i = 0; i < points.size(); i++) {
             map.put(1001 + i, points.get(i));
         }
-
         // [0]에 저장된 점과 같은 점 개수 찾기
         // 지정 안 됨 issue
         Point point = points.get(0);

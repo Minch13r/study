@@ -115,6 +115,7 @@ public class Test01 {
         int min = 1;
         int max = 100;
 
+        // 언제까지 제대로 된 입력을 받을지 몰라서 while 무한루프로 진행
         while(true){
             System.out.print("숫자 " + min + "~" + max + "사이의 숫자를 입력해주세요!\n>> ");
             // 입력받을 변수

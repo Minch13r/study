@@ -69,22 +69,26 @@ result.txt 파일 생성
 아무 이미지를 resource 폴더에 저장 */
 public class Test01 {
     public static void main(String[] args) {
+        // 경로
         String path = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\resource\\";
 //        String path = "D:\\new\\minch13r\\resource\\"; // 본인 test.txt 파일 경로 입력
+        // 파일 이름
         String fileName = "test.txt"; // test.txt 파일 불러오기
 
         // 파일 읽는 작업
         FileReader fr;
-
         // 파일 쓰는 작업
         FileWriter fw;
+
         // scope 이슈
         // msg는 파일 내에 있는 문자열을 읽을 변수임
         String msgStr;
+
         int msg=0; // txt 파일에 있는 내용을 정수화 할 변수
 
-        // 파일 읽는 중
+        // 파일 읽기
         try {
+            // FileReader는 파일 읽는 것
             fr = new FileReader(path + fileName);
             // scope issue로 같이 넣음
             BufferedReader br = new BufferedReader(fr);
@@ -100,10 +104,10 @@ public class Test01 {
                 // 형변환 진행
                 msg = Integer.parseInt(msgStr);
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) { // 파일이 없을 때 예외처리
             System.out.println("파일을 찾을 수 없습니다: " + path + fileName);
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e) { // 파일 읽기 중 오류가 발생했을 때 예외처리
             //throw new RuntimeException(e); //예외처리 미루기
             // main이기 때문에 예외처리 해줄 친구가 없어서
             System.out.println("파일 읽기 중 오류가 발생했습니다.");
@@ -120,6 +124,7 @@ public class Test01 {
         int max = 100;
         int cnt = 0;
 
+        // 제대로 된 숫자를 얼만큼 입력할지 몰라서 while로 무한루프
         while(true) {
             System.out.print("숫자 " + min + "~" + max + "사이의 숫자를 입력해주세요!\n>> ");
             int num = sc.nextInt();

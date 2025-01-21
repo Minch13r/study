@@ -29,10 +29,10 @@ test.txt 파일에 저장된 정수가 80이라면,
 */
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 
 /*===========================================================================*/
@@ -69,15 +69,19 @@ result.txt 파일 생성
 아무 이미지를 resource 폴더에 저장 */
 public class Test01 {
     public static void main(String[] args) {
-        String path = "D:\\new\\minch13r\\resource\\"; // 본인 test.txt 파일 경로 입력
+        String path = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\resource\\";
+//        String path = "D:\\new\\minch13r\\resource\\"; // 본인 test.txt 파일 경로 입력
         String fileName = "test.txt"; // test.txt 파일 불러오기
 
         // 파일 읽는 작업
         FileReader fr;
+
+        // 파일 쓰는 작업
+        FileWriter fw;
         // scope 이슈
         // msg는 파일 내에 있는 문자열을 읽을 변수임
         String msgStr;
-        int msg; // txt 파일에 있는 내용을 정수화 할 변수
+        int msg=0; // txt 파일에 있는 내용을 정수화 할 변수
 
         // 파일 읽는 중
         try {
@@ -111,15 +115,74 @@ public class Test01 {
 
         System.out.println("업다운 게임을 진행합니다!");
 
-        // 최대값 / 최소값 선언
+        // 최대값 / 최소값 / 카운트 선언
         int min = 1;
         int max = 100;
+        int cnt = 0;
 
-        // 언제까지 제대로 된 입력을 받을지 몰라서 while 무한루프로 진행
-        while(true){
+        while(true) {
             System.out.print("숫자 " + min + "~" + max + "사이의 숫자를 입력해주세요!\n>> ");
-            // 입력받을 변수
             int num = sc.nextInt();
+
+            // 범위 체크
+            // 최소값이 num 보다 크거나 최대값이 num 보다 작으면
+            // OR을 써서 둘 중 하나라도 True면 오류나게 진행
+            if(num < min || num > max) {
+                System.out.println("잘못된 입력입니다! 범위에 맞게 입력해주세요!");
+                continue;
+            }
+
+            // 올바른 범위의 입력일 때만 카운트 증가
+            // 올바른 범위의 입력이 아니면 카운트 증가하지 않음
+            cnt++;
+
+            // 정답일 때
+            if (num == msg) {
+                System.out.println("정답입니다! " + cnt + "번 만에 맞추셨습니다!");
+                // 게임이 끝난 후, 시도 횟수에 따라 이미지 복사
+                try {
+                    // 원본 이미지
+                    String sourceImage;
+                    // 복사본 이미지
+                    String targetImage;
+                    if (cnt <= 5) { // 5번 이하로 정답을 맞추면
+                        sourceImage = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\java\\goldmedal.png";
+                        targetImage = path + "goldmedal.png";
+                        System.out.println("축하합니다! 금메달 획득!");
+                    } else { // 6번 이상으로 정답을 맞추면
+                        sourceImage = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\java\\fire.png";
+                        targetImage = path + "fire.png";
+                        System.out.println("아쉽네요! 다음에 더 잘해봐요!");
+                    }
+
+                    // 파일 읽기와 쓰기 객체 생성
+                    // stream 형식으로 해야 더 복사가 잘 됨. 오류 나서 해결
+                    FileInputStream fis = new FileInputStream(sourceImage);
+                    FileOutputStream fos = new FileOutputStream(targetImage);
+
+                    // 한 글자씩 읽어서 복사
+                    while (true) {
+                        int data = fis.read();
+                        if (data == -1) { // 파일의 끝에 도달하면 종료
+                            break;
+                        }
+                        fos.write(data);
+                    }
+                    // 파일 닫기
+                    fis.close();
+                    fos.close();
+                    System.out.println("이미지가 성공적으로 저장되었습니다!");
+                } catch (Exception e) {
+                    System.out.println("파일 복사 중 오류 발생: " + e.getMessage());
+                }
+                break;
+            } else if (num > msg) { // txt 파일 안 있는 숫자가 입력한 값보다 작으면
+                System.out.println("Down!");
+                max = num - 1; // 최대값은 num - 1이여야 범위가 줄음
+            } else { // txt 파일 안 있는 숫자가 입력한 값보다 크면
+                System.out.println("Up!");
+                min = num + 1; // 최소값은 num + 1이여야 범위가 줄음
+            }
         }
     }
 }

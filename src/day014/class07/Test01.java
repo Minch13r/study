@@ -171,6 +171,7 @@ public class Test01 {
             try {
                 //point 타입으로는 getColor를 쓸 수 없어서
                 // 기존 Point 타입의 p를 ColorPoint로 형변환
+                // 다운캐스팅(강제 형변환)
                 ColorPoint cp = (ColorPoint) p;  // 형변환
                 if (cp.getColor().equals(color)) { // 같은거 찾으면
                     pointCnt++; // 카운트 향상

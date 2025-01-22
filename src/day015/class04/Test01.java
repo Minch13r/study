@@ -102,7 +102,7 @@ public class Test01 {
                 }
 //                System.out.println(msgStr); // 문자열 출력
                 // 형변환 진행
-                msg = Integer.parseInt(msgStr);
+                msg = Integer.parseInt(msgStr); // parseInt는 static이 붙어 있어서 new 안 해도 됨
             }
         } catch (FileNotFoundException e) { // 파일이 없을 때 예외처리
             System.out.println("파일을 찾을 수 없습니다: " + path + fileName);

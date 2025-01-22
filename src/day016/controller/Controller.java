@@ -62,19 +62,31 @@ public class Controller {
 
             // 학생번호로검색
             else if (menuNum==3) {
-                // 입력받은 숫자를 반환한 값을 num에 넣어줌
-                int num = this.view.inputNum();
-                // model에서 selectOne으로 하나만 갖고옴
+                // 현재 등록된 학생 수를 기반으로 최대 번호 계산
+                ArrayList<StudentDTO> datas = this.model.selectAll();
+                int maxNum = datas.size() + 1001;
+                // maxNum을 View에 전달
+                int num = this.view.inputNum(maxNum);
                 StudentDTO data = this.model.selectOne(num);
-                // view로 model에서 갖고온거 출력
                 this.view.printData(data);
             }
 
             // 학생이름변경
             else if (menuNum==4) {
+                // 학생 이름 변경하기 전에 리스트 안에 학생이 있는지 먼저 파악
+                ArrayList<StudentDTO> datas = this.model.selectAll();
+
+                if(datas.isEmpty()) {  // 학생 데이터가 하나도 없는 경우
+                    this.view.printNoStudent();  // "등록된 학생이 없습니다. 학생을 먼저 추가해주세요."
+                    continue;  // while문의 처음으로 돌아감
+                }
+
                 /*사용자에게 번호받아서
                 * 해당번호의 학생 새로운 이름 받고 변경한 후에 변경완료 화면 띄우기*/
-                int num = this.view.inputNum();
+                // 현재 등록된 학생 수를 기반으로 최대 번호 계산
+                int maxNum = datas.size() + 1001;
+                // maxNum을 View에 전달
+                int num = this.view.inputNum(maxNum);
                 String name = this.view.inputName();
                 // 수정 메서드인데 model에서 true/false 중 하나를 입력받아서 저장
                 boolean flag = this.model.update(num, name);
@@ -82,22 +94,79 @@ public class Controller {
                 if(flag){ // true면 성공
                     this.view.printUpdateTrue();
                 } else { // false면 실패
+                    this.view.printErrInfo();
                     this.view.printUpdateFalse();
                 }
             }
 
             // 학생삭제
             else if (menuNum==5) {
-                // view를 통해 숫자를 입력받음
-                int num = this.view.inputNum();
+                // 현재 등록된 학생 수를 기반으로 최대 번호 계산
+                ArrayList<StudentDTO> datas = this.model.selectAll();
+                int maxNum = datas.size() + 1001;
+                // maxNum을 View에 전달
+                int num = this.view.inputNum(maxNum);
                 // model을 통해 true/false 반환
                 boolean flag = this.model.delete(num);
 
                 if(flag){ // true면 삭제 성공
                     this.view.printDeleteTrue();
                 } else { // false 삭제 실패
+                    this.view.printErrInfo();
                     this.view.printDeleteFalse();
                 }
+            }
+
+            // 학생 성적 변경 기능
+            else if (menuNum==6){
+                // 학생 리스트가 비어있는지 먼저 확인
+                ArrayList<StudentDTO> datas = this.model.selectAll();
+
+                // 학생이 아무도 없으면
+                if(datas.isEmpty()) {
+                    // 학생 없다고 출력 후 while문 다시 반복시키기
+                    this.view.printNoStudent();
+                    continue;
+                }
+
+                // model에서 selectAll로 갖고오고 view로 보여줌
+                this.view.printDatas(datas);
+
+                while(true) {
+                    int maxNum = datas.size() + 1001;
+                    // maxNum을 View에 전달
+                    int num = this.view.inputNum(maxNum);
+                    // num 유효성 검사
+                    if (num >= datas.size()+1001 && num < datas.size()) {
+                        this.view.printNoStudentNum();
+                        continue;
+                    }
+                    // 새로운 성적 입력받기
+                    int score = this.view.inputScore();
+                    // 성적 변경 시도
+                    boolean flag = this.model.update(num, score);
+
+                    // true면 성적 변경 성공 메서드 출력
+                    if (flag) {
+                        this.view.printUpdateScoreTrue();
+                        break;
+                    } else {
+                        // false면 성적 변경 실패 메서드 출력
+                        this.view.printErrInfo();
+                        this.view.printUpdateScoreFalse();
+                        break;
+                    }
+                }
+            }
+
+            // 학생 이름 검색 기능
+            else if (menuNum == 7){
+                // View를 통해서 이름 입력받고
+                // Model을 통해 해당하는 이름이 있는지 검색
+                // 다시 View를 통해서 해당 학생 정보 출력
+                String name = this.view.inputName();
+                ArrayList<StudentDTO> datas = this.model.selectAll(name);
+                this.view.printDatas(datas);
             }
         }
     }

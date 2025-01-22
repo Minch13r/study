@@ -35,6 +35,6 @@ public class StudentDTO {
 
     @Override
     public String toString() {
-        return "StudentDTO{" + "num=" + num + ", name='" + name + '\'' + ", score=" + score + '}';
+        return "학생 [" + "학생번호=" + num + ", 이름='" + name + '\'' + ", 점수=" + score + '}';
     }
 }

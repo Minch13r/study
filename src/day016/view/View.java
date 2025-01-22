@@ -4,6 +4,7 @@ import day008.class02.Student;
 import day016.model.StudentDTO;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
@@ -14,11 +15,17 @@ public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
         this.sc = new Scanner(System.in);
     }
 
+    public int inputNum(int maxNum){
+        while(true) {
+            System.out.print("학생번호입력 >> ");
+            int num = this.sc.nextInt();
 
-    public int inputNum(){
-        System.out.print("학생번호입력 >>");
-        int num = this.sc.nextInt();
-        return num;
+            if(num >= maxNum){
+                printNoStudentNum();
+                continue;
+            }
+            return num;
+        }
     }
 
     public void printData(StudentDTO data){
@@ -30,15 +37,28 @@ public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
     }
 
     public String inputName() {
-        System.out.print("학생이름 >>");
+        System.out.print("학생이름 >> ");
         String name = this.sc.next();
         return name;
     }
 
-    public int inputScore(){
-        System.out.print("학생성적 입력 >>");
-        int score = this.sc.nextInt();
-        return score;
+    public int inputScore() {
+        int score;
+        while (true) {
+            try {
+                System.out.print("학생성적 입력 >> ");
+                score = this.sc.nextInt();
+
+                if (score >= 0 && score <= 100) {
+                    return score;  // 올바른 범위의 점수만 반환
+                } else {
+                    System.out.println("0~100점 사이 숫자를 입력해주세요.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("숫자만 입력해주세요.");
+                this.sc.nextLine();
+            }
+        }
     }
 
     public void printInsertTrue(){
@@ -61,6 +81,27 @@ public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
         System.out.println("학생 삭제가 실패했습니다...");
     }
 
+    public void printErrInfo(){
+        System.out.println("해당하는 정보가 없습니다.");
+    }
+
+    public void printNoStudent(){
+        System.out.println("학생부에 학생이 없습니다. 학생을 먼저 추가해주세요.");
+    }
+
+    public void printUpdateScoreTrue(){
+        System.out.println("학생 성적 변경에 성공했습니다.");
+    }
+
+    public void printUpdateScoreFalse(){
+        System.out.println("학생 성적 변경에 실패했습니다...");
+    }
+
+    public void printNoStudentNum(){
+        System.out.println("해당되는 번호의 학생이 없습니다. 다시 입력해주세요");
+    }
+
+
     public void printDatas(ArrayList<StudentDTO> datas){
         if(datas==null || datas.size()<=0) {
             System.out.println("출력할 결과가 없습니다!");
@@ -75,9 +116,11 @@ public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
         System.out.println("=== 학생부 ===");
         System.out.println("1. 학생추가");
         System.out.println("2. 전체출력");
-        System.out.println("3. 학생번호로검색");
-        System.out.println("4. 학생이름변경");
+        System.out.println("3. 학생번호로 검색");
+        System.out.println("4. 학생 이름 변경");
         System.out.println("5. 학생삭제");
+        System.out.println("6. 학생 성적 변경");
+        System.out.println("7. 학생 이름으로 검색");
         System.out.println("0. 프로그램종료");
     }
     public int inputMenuNum(){

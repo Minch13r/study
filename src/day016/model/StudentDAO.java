@@ -39,6 +39,20 @@ public class StudentDAO {
         return datas;
     }
 
+    public ArrayList<StudentDTO> selectAll(String searchKeyword) {
+        ArrayList<StudentDTO> datas = new ArrayList<>();
+        for(int i=0; i<this.datas.size(); i++){
+            if(this.datas.get(i).getName().contains(searchKeyword)) {
+                int num = this.datas.get(i).getNum();
+                String name = this.datas.get(i).getName();
+                int score = this.datas.get(i).getScore();
+                datas.add(new StudentDTO(num, name, score));
+            }
+        }
+        // datas 값 반환(모든 내용 출력해야 하니까)
+        return datas;
+    }
+
     // 한가지만 받아오는 거
     public StudentDTO selectOne(int num) {
         // 검색할게 없으면 안 나와야 하니까 null 맞음
@@ -75,6 +89,17 @@ public class StudentDAO {
         for(int i=0; i<this.datas.size(); i++){
             if(num == this.datas.get(i).getNum()){
                 this.datas.get(i).setName(name);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 학생 성적 변경 메서드(score로 오버로딩)
+    public boolean update(int num, int score) {
+        for(int i=0; i<this.datas.size(); i++) {
+            if(num == this.datas.get(i).getNum()) {
+                this.datas.get(i).setScore(score);
                 return true;
             }
         }

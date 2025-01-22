@@ -39,7 +39,6 @@ public class Controller {
             else if (menuNum==1) {
                 String name = this.view.inputName();
                 int score = this.view.inputScore();
-
                 boolean flag = this.model.insert(name, score, this.NUM++);
 
                 if(flag){
@@ -57,7 +56,6 @@ public class Controller {
             else if (menuNum==3) {
                 int num = this.view.inputNum();
                 StudentDTO data = this.model.selectOne(num);
-
                 this.view.printData(data);
             }
 
@@ -68,6 +66,7 @@ public class Controller {
                 int num = this.view.inputNum();
                 String name = this.view.inputName();
                 boolean flag = this.model.update(num, name);
+
                 if(flag){
                     this.view.printUpdateTrue();
                 } else {
@@ -78,8 +77,8 @@ public class Controller {
             // 학생삭제
             else if (menuNum==5) {
                 int num = this.view.inputNum();
-
                 boolean flag = this.model.delete(num);
+
                 if(flag){
                     this.view.printDeleteTrue();
                 } else {

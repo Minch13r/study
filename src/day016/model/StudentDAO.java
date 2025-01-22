@@ -5,6 +5,8 @@ import java.util.ArrayList;
 // DAO(Data Access Object)
 // CRUD 메서드만 가짐
 // DAO는 이와 같이 5개의 메서드만 가질 수 있음(고정)
+// selectAll(list), selectOne(DTO), insert(boolean), update(boolean), delete(boolean)
+// 자신한테 없는거는 외부에서 받아와야 함
 public class StudentDAO {
     // DB의 역할
     private ArrayList<StudentDTO> datas;

@@ -28,20 +28,20 @@ public class View { // printMenu를 숨길 이유가 없어서 public이 붙음
     }
     public int inputMenuNum(){
         Scanner sc = new Scanner(System.in);
-        System.out.print("메뉴번호입력 >>");
+        System.out.print("메뉴번호입력 >> ");
         int num = sc.nextInt();
         return num;
     }
     public void printShutdown() {
-        for(int i=0; i<5; i++) {
-            System.out.println(".");
+        for(int i=0; i<3; i++) {
+            System.out.print(".");
             try {
                 Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
-            System.out.println("학생부 종료!");
-            System.out.println("이용해주셔서 감사합니다.");
         }
+        System.out.println("학생부 종료!");
+        System.out.println("이용해주셔서 감사합니다.");
     }
 }

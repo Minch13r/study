@@ -35,10 +35,6 @@ public class StudentDTO {
 
     @Override
     public String toString() {
-        return "StudentDTO{" +
-                "num=" + num +
-                ", name='" + name + '\'' +
-                ", score=" + score +
-                '}';
+        return "StudentDTO{" + "num=" + num + ", name='" + name + '\'' + ", score=" + score + '}';
     }
 }

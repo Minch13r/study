@@ -28,12 +28,14 @@ public class StudentDAO {
         ArrayList<StudentDTO> datas = new ArrayList<>();
         // selectAll 하면 리스트 형태를 모두 전달할거고
         // 리스트 안에는 DB 안에 있는 내용이 모두 들어가 있어야 한다.
+        // datas 리스트의 크기만큼 반복해서 모든 내용 출력
         for(int i=0; i<this.datas.size(); i++){
             int num = this.datas.get(i).getNum();
             String name=this.datas.get(i).getName();
             int score=this.datas.get(i).getScore();
             datas.add(new StudentDTO(num, name, score));
         }
+        // datas 값 반환(모든 내용 출력해야 하니까)
         return datas;
     }
 
@@ -50,9 +52,14 @@ public class StudentDAO {
                 data = new StudentDTO(num, name, score);
             }
         }
-        // 반환
+        // 반환(한개만)
         return data;
     }
+    /*
+    selectAll이랑 selectOne 차이점이 뭐냐면 All은 반복문을 다 돌면서
+    모든 내용을 다 출력하는거임. 하지만 One은 반복문을 다 돌면서 들어온 값에
+    해당되는 번호를 선택해서 그 번호 안에 있는 정보'만' 출력하는거임
+    */
 
     // 학생 생성 메서드
     public boolean insert(String name, int score, int num){

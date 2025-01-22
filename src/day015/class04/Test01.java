@@ -58,7 +58,7 @@ txt 파일 내에 있는거는 문자열, 정수형으로 형변환 해야 할 �
 답을 맞췄다고 출력. 그리고 "정답입니다! 총 cnt번만에 정답을 맞추셨습니다." 라는 내용의
 result.txt 파일 생성
 
-근데 입력할 때마다 try ~ catch 문을 써서 예외처리를 할거임
+근데 입력할 때마다 먼저 범위 조절을 해놔서 예외처리를 할거임
 예를 들자면 1~90 사이의 정수를 입력하라고 했는데 0인 91을 넣으면
 잘못된 입력입니다! 범위에 맞게 입력해주세요! 라고 하고
 사과 이런식으로 문자열을 입력하면
@@ -70,8 +70,8 @@ result.txt 파일 생성
 public class Test01 {
     public static void main(String[] args) {
         // 경로
-        String path = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\resource\\";
-//        String path = "D:\\new\\minch13r\\resource\\"; // 본인 test.txt 파일 경로 입력
+//        String path = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\resource\\";
+        String path = "D:\\new\\minch13r\\resource\\"; // 본인 test.txt 파일 경로 입력
         // 파일 이름
         String fileName = "test.txt"; // test.txt 파일 불러오기
 
@@ -151,12 +151,13 @@ public class Test01 {
                     // 복사본 이미지
                     String targetImage;
                     if (cnt <= 5) { // 5번 이하로 정답을 맞추면
-                        sourceImage = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\java\\goldmedal.png";
-                        targetImage = path + "goldmedal.png";
+                        //C:\Users\3333c\Desktop\school\ACADEMY\java\goldmedal.png
+                        sourceImage = "D:\\new\\minch13r\\resource\\goldmedal.jpg";
+                        targetImage = path + "goldmedal_1.jpg";
                         System.out.println("축하합니다! 금메달 획득!");
                     } else { // 6번 이상으로 정답을 맞추면
-                        sourceImage = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\java\\fire.png";
-                        targetImage = path + "fire.png";
+                        sourceImage = "D:\\new\\minch13r\\resource\\fire.png";
+                        targetImage = path + "fire_1.png";
                         System.out.println("아쉽네요! 다음에 더 잘해봐요!");
                     }
 
@@ -176,6 +177,7 @@ public class Test01 {
                     // 파일 닫기
                     fis.close();
                     fos.close();
+
                     System.out.println("이미지가 성공적으로 저장되었습니다!");
                 } catch (Exception e) {
                     System.out.println("파일 복사 중 오류 발생");

@@ -1,4 +1,4 @@
-package day11.class02;
+package day011.class02;
 
 // [ 상속 ]
 class Animal { // 상위 클래스, 부모 클래스

@@ -1,4 +1,4 @@
-package day11.class02;
+package day011.class02;
 
 class Circle{
     private String name;

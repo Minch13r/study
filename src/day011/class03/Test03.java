@@ -1,4 +1,4 @@
-package day11.class03;
+package day011.class03;
 /*
 * Animal 부모 클래스 ( 종, 이름)
 * 만약, 이름을 붙여주지 않으면 이름이 종을 따라가게 해주세요

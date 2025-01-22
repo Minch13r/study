@@ -1,4 +1,4 @@
-package day11.class04;
+package day011.class04;
 
 // [ Object ]
 // : JAVA의 최상위 클래스

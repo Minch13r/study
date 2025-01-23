@@ -23,6 +23,7 @@ public class View {
         System.out.println("2. 전체출력");
         System.out.println("3. 제품 구매");
         System.out.println("4. 제품 삭제");
+        System.out.println("0. 종료");
     }
 
     public void printData(ProductDTO data) {

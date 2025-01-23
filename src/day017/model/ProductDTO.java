@@ -1,24 +1,23 @@
 package day017.model;
 
 public class ProductDTO {
-    private static int NUM=1001;
     private int num; // PK
     private String name;
     private int price;
     private int stock;
     private int count;
-    public ProductDTO(String name,int price,int stock) {
-        this.num=ProductDTO.NUM++;
-        this.name=name;
-        this.price=price;
-        this.stock=stock;
-        this.count=0;
+    private String condition;
+
+    public ProductDTO(){
+
     }
-    public ProductDTO(String name,int price,int stock,boolean flag) {
-        this.name=name;
-        this.price=price;
-        this.stock=stock;
-        this.count=0;
+
+    public ProductDTO(int num, String name, int price, int stock) {
+        this.num = num;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.count = 0;
     }
     public int getNum() {
         return num;
@@ -50,6 +49,13 @@ public class ProductDTO {
     public void setCount(int count) {
         this.count = count;
     }
+    public String getCondition() {
+        return condition;
+    }
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
     @Override
     public String toString() {
         if(this.stock<=0) {

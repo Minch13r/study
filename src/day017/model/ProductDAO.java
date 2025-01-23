@@ -7,68 +7,92 @@ public class ProductDAO {
     public ProductDAO() {
         datas=new ArrayList<>();
 
-        datas.add(new ProductDTO("콜라",1200,5));
-        datas.add(new ProductDTO("사이다",1100,2));
-        datas.add(new ProductDTO("커피",600,1));
+        datas.add(new ProductDTO(1001,"콜라",1200,5));
+        datas.add(new ProductDTO(1002,"사이다",1100,2));
+        datas.add(new ProductDTO(1003,"커피",600,1));
     }
 
-    public ArrayList<ProductDTO> selectAll(){
-        ArrayList<ProductDTO> datas=new ArrayList<>();
-        for(ProductDTO data:this.datas) {
-            String name=data.getName();
-            int price=data.getPrice();
-            int stock=data.getStock();
-            datas.add(new ProductDTO(name,price,stock,false));
+    public ArrayList<ProductDTO> selectAll(ProductDTO dto) {
+        ArrayList<ProductDTO> datas = new ArrayList<>();
+        if(dto.getCondition().equals("전체검색")) {
+            for(int i=0; i<this.datas.size(); i++) {
+                int num = this.datas.get(i).getNum();
+                String name = this.datas.get(i).getName();
+                int price = this.datas.get(i).getPrice();
+                int stock = this.datas.get(i).getStock();
+                datas.add(new ProductDTO(num, name, price, stock));
+            }
+        }
+        else if(dto.getCondition().equals("이름검색")) {
+            for(int i=0; i<this.datas.size(); i++) {
+                if(this.datas.get(i).getName().contains(dto.getName())) {
+                    int num = this.datas.get(i).getNum();
+                    String name = this.datas.get(i).getName();
+                    int price = this.datas.get(i).getPrice();
+                    int stock = this.datas.get(i).getStock();
+                    datas.add(new ProductDTO(num, name, price, stock));
+                }
+            }
         }
         return datas;
     }
-    public ProductDTO selectOne(int num){
-        ProductDTO data=null;
-        for(int i=0;i<datas.size();i++) {
-            if(datas.get(i).getNum() == num) {
-                String name=datas.get(i).getName();
-                int price=datas.get(i).getPrice();
-                int stock=datas.get(i).getStock();
-                data=new ProductDTO(name,price,stock,false);
+
+    public ProductDTO selectOne(ProductDTO dto) {
+        ProductDTO data = null;
+        for(int i=0; i<this.datas.size(); i++) {
+            if(dto.getNum() == this.datas.get(i).getNum()) {
+                int num = this.datas.get(i).getNum();
+                String name = this.datas.get(i).getName();
+                int price = this.datas.get(i).getPrice();
+                int stock = this.datas.get(i).getStock();
+                data = new ProductDTO(num, name, price, stock);
                 break;
             }
         }
         return data;
     }
 
-    public boolean insert(String name,int price,int stock) {
+    public boolean insert(ProductDTO dto) {
         try {
-            datas.add(new ProductDTO(name,price,stock));
+            int num = dto.getNum();
+            String name = dto.getName();
+            int price = dto.getPrice();
+            int stock = dto.getStock();
+            this.datas.add(new ProductDTO(num, name, price, stock));
         }
         catch(Exception e) {
-            System.out.println("로그 : ProductDAO insert()에서 발생한 예외입니다.");
+            System.out.println("[MODEL 로그] : insert() 수행중에 예외발생");
             return false;
         }
         return true;
     }
-    public boolean update(int num,int count) {
-        for(int i=0;i<datas.size();i++) {
-            if(datas.get(i).getNum() == num) {
-                if(datas.get(i).getStock() < count) {
-                    System.out.println("로그 : ProductDAO update()에서 발생한 false입니다. 재고가 부족합니다.");
-                    return false;
+
+    public boolean update(ProductDTO dto) {
+        for(int i=0; i<this.datas.size(); i++) {
+            if(this.datas.get(i).getNum() == dto.getNum()) {
+                if(dto.getCondition().equals("재고변경")) {
+                    int currentStock = this.datas.get(i).getStock();
+                    int updateAmount = dto.getStock();
+                    if(currentStock < updateAmount) {
+                        return false;
+                    }
+                    this.datas.get(i).setStock(currentStock - updateAmount);
+                    int currentCount = this.datas.get(i).getCount();
+                    this.datas.get(i).setCount(currentCount + updateAmount);
+                    return true;
                 }
-                datas.get(i).setStock(datas.get(i).getStock()-count);
-                datas.get(i).setCount(datas.get(i).getCount()+count);
-                return true;
             }
         }
-        System.out.println("로그 : ProductDAO update()에서 발생한 false입니다. 해당 num은 없습니다.");
         return false;
     }
-    public boolean delete(int num) {
-        for(int i=0;i<datas.size();i++) {
-            if(datas.get(i).getNum() == num) {
-                datas.remove(i);
+
+    public boolean delete(ProductDTO dto) {
+        for(int i=0; i<this.datas.size(); i++) {
+            if(dto.getNum() == this.datas.get(i).getNum()) {
+                this.datas.remove(i);
                 return true;
             }
         }
-        System.out.println("로그 : ProductDAO delete()에서 발생한 false입니다. 해당 num은 없습니다.");
         return false;
     }
 }

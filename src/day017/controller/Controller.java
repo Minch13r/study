@@ -1,85 +1,101 @@
 package day017.controller;
 
 import day017.model.ProductDAO;
+import day017.model.ProductDTO;
 import day017.view.View;
+import java.util.ArrayList;
 
 public class Controller {
     private ProductDAO model;
     private View view;
-    public Controller(){
+    private int realNum;
+    ArrayList<ProductDTO> cart; // 장바구니
+
+    public Controller() {
         this.model = new ProductDAO();
         this.view = new View();
+        this.realNum = 1001;
     }
 
-    public void start(){
-        // 어플 구현
-        while(true){
+    public void start() {
+        while(true) {
             view.menuInfo();
             int command = view.inputCommand();
 
-            if(command == 0){
+            if(command == 0) {
                 break;
             }
-
             // 제품 추가
-            else if (command == 1) {
-                String name = view.inputName();
-                int price = view.inputPrice();
-                int stock = view.inputStock();
+            else if(command == 1) {
+                ProductDTO dto = new ProductDTO();
+                dto.setName(view.inputName());
+                dto.setPrice(view.inputPrice());
+                dto.setStock(view.inputStock());
+                dto.setNum(this.realNum++);
 
-                boolean flag = model.insert(name, price, stock);
-                if(flag){
+                boolean flag = model.insert(dto);
+                if(flag) {
                     view.printTrue();
                 }
                 else {
                     view.printFalse();
                 }
             }
-
-            // 전체 데이터 출력
-            else if (command == 2){
-                view.printDatas(model.selectAll());
+            // 전체 제품 목록
+            else if(command == 2) {
+                ProductDTO dto = new ProductDTO();
+                dto.setCondition("전체검색");
+                ArrayList<ProductDTO> datas = model.selectAll(dto);
+                view.printDatas(datas);
             }
-
             // 제품 구매
-            else if (command == 3){
-                // 번호 받아오기
-                int num = view.inputNum();
+            else if(command == 3) {
+                ProductDTO dto = new ProductDTO();
+                dto.setNum(view.inputNum());
 
-                // 받아온 번호 보여주기
-                view.printData(model.selectOne(num));
+                // 제품 정보 확인
+                ProductDTO data = model.selectOne(dto);
+                view.printData(data);
 
-                // 몇개 살지 입력하기
-                int count = view.inputCount();
+                if(data != null) {
+                    dto.setStock(view.inputCount());
+                    dto.setCondition("재고변경");
 
-                // 카운트 만큼 개수 변경하고, 성공인지 아닌지 출력
-                boolean flag = model.update(num, count);
-                if(flag){
-                    view.printTrue();
-                } else {
-                    view.printFalse();
+                    boolean flag = model.update(dto);
+                    if(flag) {
+                        view.printTrue();
+                    }
+                    else {
+                        view.printFalse();
+                    }
                 }
             }
-
             // 제품 삭제
-            else if (command == 4){
-                view.printDatas(model.selectAll());
-                // 번호 받아오기
-                int num = view.inputNum();
+            else if(command == 4) {
+                // 전체 목록 출력
+                ProductDTO dto = new ProductDTO();
+                dto.setCondition("전체검색");
+                ArrayList<ProductDTO> datas = model.selectAll(dto);
+                view.printDatas(datas);
 
-                // 받아온 번호 넘겨주기
-                view.printData(model.selectOne(num));
+                // 삭제할 제품 선택
+                dto = new ProductDTO();
+                dto.setNum(view.inputNum());
 
-                // 성공인지 아닌지 출력
-                boolean flag = model.delete(num);
-                if(flag){
-                    view.printTrue();
-                } else {
-                    view.printFalse();
+                // 선택한 제품 정보 확인
+                ProductDTO data = model.selectOne(dto);
+                view.printData(data);
+
+                if(data != null) {
+                    boolean flag = model.delete(dto);
+                    if(flag) {
+                        view.printTrue();
+                    }
+                    else {
+                        view.printFalse();
+                    }
                 }
             }
         }
     }
-
-
 }

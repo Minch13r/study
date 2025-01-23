@@ -18,6 +18,13 @@ public class View {
             System.out.println(itr.next());
         }
     }
+    public void menuInfo(){
+        System.out.println("1. 제품추가");
+        System.out.println("2. 전체출력");
+        System.out.println("3. 제품 구매");
+        System.out.println("4. 제품 삭제");
+    }
+
     public void printData(ProductDTO data) {
         System.out.println(data);
     }

@@ -9,7 +9,7 @@ public class Controller {
     private ProductDAO model;
     private View view;
     private int realNum;
-    ArrayList<ProductDTO> cart; // 장바구니
+    ArrayList<ProductDTO> cart; // 장바구니m
 
     public Controller() {
         this.model = new ProductDAO();

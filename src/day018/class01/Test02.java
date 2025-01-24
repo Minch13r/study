@@ -1,4 +1,4 @@
-package day018.class02;
+package day018.class01;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class Test01 {
+public class Test02 {
     public static void main(String[] args) {
         // 크롤링 할 URL
         // 추출

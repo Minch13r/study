@@ -77,4 +77,8 @@ public class View {
             System.out.println("================");
         }
     }
+
+    public void inputElse(){
+        System.out.println("잘못 입력했습니다. 0~4번 사이 숫자를 입력해주세요");
+    }
 }

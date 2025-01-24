@@ -89,6 +89,10 @@ public class Controller {
                     view.printTrue();
                 }
             }
+            // 다른거 입력했을 때
+            else {
+                view.inputElse();
+            }
 
         }
     }

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Crawling {
     private KyoChonDAO dao;
-    final String URL = "https://www.kyochon.com/menu/chicken.asp?code=18";
+    final String URL = "https://www.kyochon.com/menu/chicken.asp";
 
     public Crawling(KyoChonDAO dao) {
         this.dao = dao;

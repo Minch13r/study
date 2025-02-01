@@ -49,7 +49,7 @@ public class Selenium {
                         By.cssSelector(".info__title"));
 
                 // 결과 출력 (상위 20개만)
-                System.out.println("\n=== 넷플릭스 TOP 20 ===");
+                System.out.println("\n===== 넷플릭스 TOP 20 =====");
                 int count = 0;
                 for (WebElement element : titleElements) {
                     String title = element.getText().trim(); // 요소의 텍스트를 가져와서 공백 제거

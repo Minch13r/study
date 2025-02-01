@@ -9,13 +9,13 @@ public class Test03 {
     public static void main(String[] args) {
         try {
             // 1. 웹페이지 연결
-            String url = "https://flixpatrol.com/top10/netflix/south-korea/2025-01-31/";
+            String url = "https://m.kinolights.com/ranking/netflix";
             Document doc = Jsoup.connect(url).get();
 
             System.out.println("페이지 연결 성공!");
 
             // 2. 영화 제목이 있는 링크 선택 (table-td 클래스 내의 a 태그)
-            Elements titleElements = doc.select("td.table-td a[href^='/title/']");
+            Elements titleElements = doc.select(".info__title");
 
             // 3. 결과 출력
             int rank = 1;

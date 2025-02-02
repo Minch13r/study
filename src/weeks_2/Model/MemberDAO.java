@@ -3,86 +3,94 @@ package weeks_2.Model;
 import java.util.ArrayList;
 
 public class MemberDAO {
-    ArrayList<MemberDTO> datas;//사용자 데이터 객체
-    ArrayList<MovieDTO> isPremium;//즐겨찾기 목록객체
-    public MemberDAO(){
-        this.datas=new ArrayList<>();
-        this.isPremium=new ArrayList<>();
+    ArrayList<MemberDTO> datas; // 사용자 데이터 객체
+    ArrayList<MovieDTO> isPremium; // 즐겨찾기 목록객체
+
+    public MemberDAO() {
+        this.datas = new ArrayList<>();
+        this.isPremium = new ArrayList<>();
     }
-
-
 
     private ArrayList<MemberDTO> selectAll(MemberDTO dto) {
         return null;
     }
-    //메서드를 미리 만들어놓고 추후에 개발되었을때 사용할수있도록 private으로 가려놓기
-
-
-
 
     public MemberDTO selectOne(MemberDTO dto) {
-        MemberDTO data=null;
-        if(dto.getSearchCondition().equals("LOGIN")) {
-            for(int i=0;i<this.datas.size();i++) {
-                if(dto.getId().equals(this.datas.get(i).getId()) && dto.getPw().equals(this.datas.get(i).getPw())) { // mid,mpw 둘다 같다면
-                    data=new MemberDTO();
-                    data.setId(dto.getId());
-                    data.setPw(dto.getPw());
-                    break;
-                }
+        // 입력값 검증
+        if (dto == null || dto.getId() == null || dto.getPw() == null) {
+            return null;
+        }
+
+        for (MemberDTO member : datas) {
+            // 로그인 검사
+            if (dto.getId().equals(member.getId()) && dto.getPw().equals(member.getPw())) {
+                MemberDTO result = new MemberDTO();
+                result.setId(member.getId());
+                result.setPw(member.getPw());
+                result.setIsPremium(member.getIsPremium()); // 즐겨찾기 목록도 복사
+                return result;
             }
         }
-        else if(dto.getSearchCondition().equals("CHECK")) {
-            for(int i=0;i<this.datas.size();i++) {
-                if(dto.getId().equals(this.datas.get(i).getId())) {
-                    data=new MemberDTO();
-                    break;
-                }
-            }
-        }
-        return data;
+        return null; // 일치하는 회원이 없는 경우
     }
 
     // id, pw 만드는 것
     public boolean insert(MemberDTO dto) {
         try {
-            MemberDTO data=new MemberDTO();//새로운 멤버DTO를 생성한것을 멤버DTO배열에 넣을 준비
-            data.setId(dto.getId());//dto의 멤버 아이디와 비밀번호 받아와서 데이터에 저장
+            // 중복 ID 체크
+            for (MemberDTO member : datas) {
+                if (member.getId().equals(dto.getId())) {
+                    System.out.println("이미 존재하는 아이디입니다.");
+                    return false;
+                }
+            }
+
+            MemberDTO data = new MemberDTO();
+            data.setId(dto.getId());
             data.setPw(dto.getPw());
-            this.datas.add(data);//위에서 받은 데이터를 배열에 추가
+            data.setIsPremium(new ArrayList<>()); // 즐겨찾기 목록 초기화
+            this.datas.add(data);
+
+            System.out.println("MemberDTO insert()에서 true값을 반환.입력한 아이디와 비밀번호를 사용자 리스트에 저장");
+            return true;
         }
         catch(Exception e) {
+            System.out.println("회원가입 중 오류가 발생했습니다: " + e.getMessage());
             return false;
         }
-        System.out.println("MemberDTO insert()에서 true값을 반환.입력한 아이디와 비밀번호를 사용자 리스트에 저장");
-        return true;
     }
 
     // 즐겨찾기 배열에 영화 추가
-    // 각자의 속성으로 갖는 즐겨찾기 배열
-    private boolean update(String id, MovieDTO dto) {
-        for(MemberDTO memberDTO : datas){
-            if(memberDTO.getId().equals(id)){
-                for(int i=0; i<memberDTO.getIsPremium().size();i++) {
-                    // 즐겨찾기에 추가할 내용이 있는지 없는지 확인하고
-                    if(memberDTO.getIsPremium().get(i).getMovieId() == dto.getMovieId()){
-                        memberDTO.getIsPremium().set(i, dto);
-                        // 있으면 false 반환
+    public boolean update(String id, MovieDTO dto) {
+        for (MemberDTO memberDTO : datas) {
+            if (memberDTO.getId().equals(id)) {
+                // 즐겨찾기 목록이 null인 경우 초기화
+                if (memberDTO.getIsPremium() == null) {
+                    memberDTO.setIsPremium(new ArrayList<>());
+                }
+
+                // 이미 즐겨찾기에 있는지 확인
+                for (MovieDTO movie : memberDTO.getIsPremium()) {
+                    if (movie.getMovieId() == dto.getMovieId()) {
+                        System.out.println("이미 즐겨찾기에 존재하는 영화입니다.");
                         return false;
                     }
-                    memberDTO.getIsPremium().add(dto);
-
                 }
+
+                // 즐겨찾기에 추가
+                memberDTO.getIsPremium().add(dto);
+                System.out.println("즐겨찾기에 영화가 추가되었습니다.");
+                return true;
             }
         }
-        // 없으면 true 반환
-        return true;
+        System.out.println("사용자를 찾을 수 없습니다.");
+        return false;
     }
 
-    // 즐겨찾기에 있는배열중 원하는 영화 번호 입력후 삭제
-    private boolean delete(MovieDTO dto) {
-        for(int i=0;i<this.isPremium.size();i++) {
-            if(this.isPremium.get(i).getMovieId()==dto.getMovieId()) {
+    // 즐겨찾기에서 영화 삭제
+    public boolean delete(MovieDTO dto) {
+        for (int i = 0; i < this.isPremium.size(); i++) {
+            if (this.isPremium.get(i).getMovieId() == dto.getMovieId()) {
                 this.isPremium.remove(i);
                 System.out.println("로그 : MemberDAO delete()에서 발생한 true반환.즐겨찾기 리스트에 입력영화 제거");
                 return true;

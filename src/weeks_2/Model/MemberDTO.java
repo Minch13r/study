@@ -11,6 +11,10 @@ public class MemberDTO {
     private String searchCondition;
     private ArrayList<MovieDTO> isPremium; // 각자의 즐겨찾기 목록
 
+    public MemberDTO() {
+        this.isPremium = new ArrayList<>();  // 생성자에서 초기화
+    }
+
 
     public ArrayList<MovieDTO> getIsPremium() {
         return isPremium;

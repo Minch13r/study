@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    private MovieDAO movieDao; // 영화관련 dao
-    private MemberDAO memberDao; // 멤버관련 dao
-    private AdminView adminView; // 관리자뷰
-    private ClientView clientView; // 사용자뷰
-    private View baseView; // 부모뷰
-    private Crawling crawling; // 크롤링
+    private MovieDAO movieDao;
+    private MemberDAO memberDao;
+    private AdminView adminView;
+    private ClientView clientView;
+    private View baseView;
+    private Crawling crawling;
 
-    // 생성자
     public Controller() {
         this.movieDao = new MovieDAO();
         this.memberDao = new MemberDAO();
@@ -29,78 +28,55 @@ public class Controller {
     // controller start
     public void start() {
         while(true) {
-            // 로그인, 회원가입, 종료
             baseView.showMenu();
-            // 숫자 입력받기
             int mainChoice = baseView.inputNum();
 
             if (mainChoice == 1) {  // 로그인
-                String id = baseView.inputString();      // ID 입력
-                String password = baseView.inputString(); // 비밀번호 입력
+                String id = baseView.inputString();
+                String password = baseView.inputString();
                 MemberDTO memberDTO = new MemberDTO();
                 memberDTO.setId(id);
                 memberDTO.setPw(password);
 
-                if (id.equals("admin") && password.equals("admin1234")) {  // 관리자 계정 확인
+                if (id.equals("admin") && password.equals("admin1234")) {  // 관리자 로그인
                     while(true) {
-                        // 관리자 메뉴 출력
                         adminView.showAdminMenu();
-                        // 숫자 입력 받기
                         int adminChoice = adminView.inputNum();
 
-                        // 6. 영상추가
-                        if (adminChoice == 6) {
-                            // 이름 입력받기
+                        if (adminChoice == 6) {  // 영상추가
                             String movieName = adminView.inputNewMovie();
-                            // 평점(?) 사용자 만족도 입력
                             double rating = adminView.inputRating();
                             MovieDTO movieDTO = new MovieDTO();
                             movieDTO.setTitle(movieName);
                             movieDTO.setRating(rating);
-                            // 성공 여부 판단
-                            boolean success = movieDao.insert(movieDTO);
-                            // 성공시
-                            if(success) {
+
+                            if(movieDao.insert(movieDTO)) {
                                 baseView.printSuccess();
-                            }
-                            // 실패시
-                            else {
+                            } else {
                                 baseView.printFail();
                             }
                         }
-                        // 7. 영상삭제
-                        else if (adminChoice == 7) {
-                            // 번호 입력받기
+                        else if (adminChoice == 7) {  // 영상삭제
                             int movieNum = adminView.inputDeleteMovie();
                             MovieDTO movieDTO = new MovieDTO();
                             movieDTO.setMovieId(movieNum);
-                            // 성공 여부 판단
-                            boolean success = movieDao.delete(movieDTO);
-                            // 성공시
-                            if(success) {
+
+                            if(movieDao.delete(movieDTO)) {
                                 baseView.printSuccess();
-                            }
-                            // 실패시
-                            else {
+                            } else {
                                 baseView.printFail();
                             }
                         }
-                        // 8. 광고영상관리
-                        else if (adminChoice == 8) {
-                            adminView.addNewAd(); // 광고 영상 있는지??
-                            // 광고를 넣으시겠습니까?
-                            // 있는경우 -> 삭제하고 넣겠습니까?
-                            // 없는경우 -> 그냥 넣기
+                        else if (adminChoice == 8) {  // 광고영상관리
+                            adminView.addNewAd();
                         }
-                        // 9. 로그아웃
-                        else if (adminChoice == 9) {
+                        else if (adminChoice == 9) {  // 로그아웃
                             baseView.printSuccess();
-                            break;
+                            break;  // 관리자 메뉴 종료
                         }
-                        // 0. 종료
-                        else if (adminChoice == 0) {
+                        else if (adminChoice == 0) {  // 프로그램 종료
                             baseView.printExit();
-                            return;
+                            return;  // 프로그램 완전 종료
                         }
                     }
                 }
@@ -162,32 +138,89 @@ public class Controller {
                                     baseView.printFail();
                                 }
                             }
-                            // 2. 즐겨찾기
-                            else if (userChoice == 2) {
-                                while(true) {
-                                    // 즐겨찾기 목록 출력
-                                    clientView.showMyPage();
-                                    // 숫자 입력받기
+                            else if (userChoice == 2) {  // 즐겨찾기 기능
+                                boolean favoriteMenuActive = true;
+                                while (favoriteMenuActive) {
+                                    // 현재 사용자의 즐겨찾기 목록 조회
+                                    ArrayList<MovieDTO> favorites = loginResult.getIsPremium();
+
+                                    // 즐겨찾기 목록 표시
+                                    if (favorites == null || favorites.isEmpty()) {
+                                        baseView.printEmpty();
+                                    } else {
+                                        clientView.showMovieList(favorites);
+                                    }
+
+                                    // 즐겨찾기 메뉴 표시
+                                    clientView.showFavoriteMenu();
                                     int favoriteChoice = clientView.inputNum();
 
-                                    // 즐겨찾기 추가
-                                    if (favoriteChoice == 1) {
+                                    if (favoriteChoice == 1) {  // 즐겨찾기 추가
+                                        MovieDTO searchCondition = new MovieDTO();
+                                        searchCondition.setCondition("PRINTALL");
+                                        ArrayList<MovieDTO> allMovies = movieDao.selectAll(searchCondition);
+
+                                        if (allMovies.isEmpty()) {
+                                            baseView.printEmpty();
+                                            continue;
+                                        }
+
+                                        clientView.showMovieList(allMovies);
                                         int movieId = clientView.inputNum();
-                                        // 즐겨찾기 추가 로직
-                                        ???
+
+                                        // 선택한 영화 찾기
+                                        MovieDTO selectedMovie = allMovies.stream()
+                                                .filter(movie -> movie.getMovieId() == movieId)
+                                                .findFirst()
+                                                .orElse(null);
+
+                                        if (selectedMovie != null) {
+                                            memberDTO.setId(loginResult.getId());
+                                            ArrayList<MovieDTO> updatedFavorites =
+                                                    (favorites != null) ? new ArrayList<>(favorites) : new ArrayList<>();
+                                            updatedFavorites.add(selectedMovie);
+                                            memberDTO.setIsPremium(updatedFavorites);
+
+                                            if (memberDao.insert(memberDTO)) {
+                                                baseView.printSuccess();
+                                            } else {
+                                                baseView.printFail();
+                                            }
+                                        } else {
+                                            baseView.printFail();
+                                        }
                                     }
-                                    // 즐겨찾기 삭제
-                                    else if (favoriteChoice == 2) {
-                                        int movieId = clientView.inputNum();
-                                        // 즐겨찾기 삭제 로직
-                                        ???
+                                    else if (favoriteChoice == 2) {  // 즐겨찾기 삭제
+                                        if (favorites == null || favorites.isEmpty()) {
+                                            baseView.printEmpty();
+                                            continue;
+                                        }
+
+                                        clientView.showMovieList(favorites);
+                                        int deleteMovieId = clientView.inputNum();
+
+                                        MovieDTO movieToDelete = favorites.stream()
+                                                .filter(movie -> movie.getMovieId() == deleteMovieId)
+                                                .findFirst()
+                                                .orElse(null);
+
+                                        if (movieToDelete != null) {
+                                            if (movieDao.delete(movieToDelete)) {
+                                                baseView.printSuccess();
+                                            } else {
+                                                baseView.printFail();
+                                            }
+                                        } else {
+                                            baseView.printFail();
+                                        }
                                     }
-                                    // 뒤로가기
-                                    else if (favoriteChoice == 0) {
-                                        break;
+                                    else if (favoriteChoice == 0) {  // 이전 메뉴로
+                                        favoriteMenuActive = false;
                                     }
                                 }
                             }
+
+
                             // 3. 영상 전체출력
                             else if (userChoice == 3) {
                                 MovieDTO movieDTO = new MovieDTO();
@@ -203,23 +236,35 @@ public class Controller {
                                     clientView.showMovieList(movies);  // 영화 목록 출력
                                 }
                             }
-                            // 4. 영화 이름 검색
+
+
+                            // 영화 검색 부분 수정 (userChoice == 4 부분)
                             else if (userChoice == 4) {
-                                // 이름으로 입력받기
                                 String searchName = clientView.inputSearchKeyword();
-                                MovieDTO movieDTO = new MovieDTO();
-                                movieDTO.setTitle(searchName);
-                                // 해당되는 이름이 있는지 model 검색
-                                List<MovieDTO> results = movieDao.selectAll(movieDTO);
-                                // 아무것도 없으면
-                                if(results.isEmpty()) {
-                                    // 오류
+                                MovieDTO searchDTO = new MovieDTO();
+                                searchDTO.setTitle(searchName);
+                                searchDTO.setCondition("SEARCH");
+
+                                List<MovieDTO> results = movieDao.selectAll(searchDTO);
+                                if (results.isEmpty()) {
                                     baseView.printFail();
-                                }
-                                // 있으면
-                                else {
-                                    // 성공
-                                    clientView.showMovieDetail(movieDTO);
+                                } else {
+                                    // 검색 결과 목록 출력
+                                    clientView.showMovieList((ArrayList<MovieDTO>) results);
+                                    // 상세 정보를 보고 싶은 영화 선택
+                                    System.out.println("상세 정보를 볼 영화의 번호를 선택하세요:");
+                                    int selectedId = clientView.inputNum();
+
+                                    MovieDTO selectedMovie = results.stream()
+                                            .filter(movie -> movie.getMovieId() == selectedId)
+                                            .findFirst()
+                                            .orElse(null);
+
+                                    if (selectedMovie != null) {
+                                        clientView.showMovieDetail(selectedMovie);
+                                    } else {
+                                        baseView.printFail();
+                                    }
                                 }
                             }
                             // 로그아웃

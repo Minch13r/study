@@ -17,6 +17,7 @@ public class Controller {
     private View baseView;
     private Crawling crawling;
 
+    // 생성자
     public Controller() {
         this.movieDao = new MovieDAO();
         this.memberDao = new MemberDAO();
@@ -33,7 +34,9 @@ public class Controller {
 
         // 가져온 데이터를 DB에 저장
         if (movieList != null && !movieList.isEmpty()) {
+            // movieList에 있는 내용 불러오기
             for (MovieDTO movie : movieList) {
+                // 가져온 내용 DB에 저장
                 movieDao.insert(movie);
             }
             System.out.println("[로그]영화 데이터 초기화 완료");
@@ -42,7 +45,7 @@ public class Controller {
         }
     }
 
-    // controller start
+    // 메인 실행 메소드
     public void start() {
         while(true) {
             baseView.showMenu();
@@ -55,7 +58,9 @@ public class Controller {
                 memberDTO.setId(id);
                 memberDTO.setPw(password);
 
-                if (id.equals("admin") && password.equals("admin1234")) {  // 관리자 로그인
+                Admin admin = new Admin();
+
+                if (admin.isAdminLogin(id, password)) {  // 관리자 로그인
                     while(true) {
                         adminView.showAdminMenu();
                         int adminChoice = adminView.inputNum();
@@ -74,8 +79,22 @@ public class Controller {
                             }
                         }
                         else if (adminChoice == 7) {  // 영상삭제
-                            int movieNum = adminView.inputDeleteMovie();
                             MovieDTO movieDTO = new MovieDTO();
+                            movieDTO.setCondition("PRINTALL");
+                            ArrayList<MovieDTO> movies = movieDao.selectAll(movieDTO);
+
+                            if(movies.isEmpty()) {
+                                baseView.printEmpty();
+                            } else {
+                                clientView.showMovieList(movies);  // 영화 목록 출력
+                            }
+
+                            int movieNum = adminView.inputDeleteMovie();
+
+                            if(movieNum == 0){
+                                continue;
+                            }
+
                             movieDTO.setMovieId(movieNum);
 
                             if(movieDao.delete(movieDTO)) {
@@ -121,8 +140,11 @@ public class Controller {
                                     baseView.printEmpty();
                                 } else {
                                     clientView.showMovieList(movies);  // 영화 목록 출력
-                                    int movieChoice = clientView.inputNum();  // 영화 번호 입력받기
+                                    int movieChoice = clientView.inputMovieChoiceNum();  // 영화 번호 입력받기
 
+                                    if(movieChoice == 0){
+                                        continue;
+                                    }
                                     movieDTO.setMovieId(movieChoice);
                                     MovieDTO selectedMovie = movieDao.selectOne(movieDTO);
 
@@ -241,9 +263,15 @@ public class Controller {
                             }
 
 
-                            // 영화 검색 부분 수정
+                            // 영화 검색
                             else if (userChoice == 4) {
                                 String searchName = clientView.inputSearchKeyword();
+
+                                // 0 입력시 뒤로가기
+                                if (searchName.equals("0")) {
+                                    continue;
+                                }
+
                                 MovieDTO searchDTO = new MovieDTO();
                                 searchDTO.setTitle(searchName);
                                 searchDTO.setCondition("SEARCH");
@@ -251,12 +279,17 @@ public class Controller {
                                 List<MovieDTO> results = movieDao.selectAll(searchDTO);
                                 if (results.isEmpty()) {
                                     baseView.printFail();
+                                    continue;
                                 } else {
                                     // 검색 결과 목록 출력
                                     clientView.showMovieList((ArrayList<MovieDTO>) results);
                                     // 상세 정보를 보고 싶은 영화 선택
-                                    System.out.println("상세 정보를 볼 영화의 번호를 선택하세요:");
-                                    int selectedId = clientView.inputNum();
+                                    clientView.showSelectMovieNum();
+                                    int selectedId = clientView.inputSelectMovieNum();
+
+                                    if(selectedId == 0){
+                                        continue;
+                                    }
 
                                     MovieDTO selectedMovie = results.stream()
                                             .filter(movie -> movie.getMovieId() == selectedId)

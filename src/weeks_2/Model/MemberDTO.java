@@ -3,8 +3,16 @@ package weeks_2.Model;
 import java.util.ArrayList;
 
 public class MemberDTO {
-    private final String isAdminID = "윤지팀";//관리자 아이디,비번
-    private final String isAdminPW = "9999";
+//    public String getIsAdminID() {
+//        return isAdminID;
+//    }
+//
+//    public String getIsAdminPW() {
+//        return isAdminPW;
+//    }
+//
+//    private final String isAdminID = "윤지팀";//관리자 아이디,비번
+//    private final String isAdminPW = "9999";
 
     private String id;
     private String pw;

@@ -8,17 +8,20 @@ public class MovieDAO {
 
     public MovieDAO() {
         this.datas=new ArrayList<>();
-        this.NUM=21;	//영화 20개만 가져오니까 21로 초기화
+        this.NUM=1;
     }
 
     public ArrayList<MovieDTO> selectAll(MovieDTO dto){
-        if(dto.getCondition().equals("CRAWLING")) {	//크롤링 할 때
-            ArrayList<MovieDTO> datas=Crawling.makeDatas();	//크롤링해서 반환한 데이터 저장
+        if(dto.getCondition().equals("CRAWLING")) {   //크롤링 할 때
+            ArrayList<MovieDTO> datas=Crawling.makeDatas();   //크롤링해서 반환한 데이터 저장
+            for(int i=0;i<datas.size();i++) {
+                this.datas.add(datas.get(i));
+            }
             return datas;
         }
-        else if(dto.getCondition().equals("PRINTALL")) {	//전체출력 할 때
+        else if(dto.getCondition().equals("PRINTALL")) {   //전체출력 할 때
             ArrayList<MovieDTO> datas=new ArrayList<>();
-            for(int i=0;i<datas.size();i++) {
+            for(int i=0;i<this.datas.size();i++) {
                 MovieDTO data=new MovieDTO();
                 data.setMovieId(this.datas.get(i).getMovieId());
                 data.setTitle(this.datas.get(i).getTitle());
@@ -26,9 +29,25 @@ public class MovieDAO {
                 data.setViewCount(this.datas.get(i).getViewCount());
                 datas.add(data);
             }
+            return datas;
         }
-        return datas;
+        else if(dto.getCondition().equals("SEARCH")) {   //영화 검색
+            ArrayList<MovieDTO> datas=new ArrayList<>();
+            for(int i=0;i<this.datas.size();i++) {
+                MovieDTO data=new MovieDTO();
+                if(this.datas.get(i).getTitle().contains(dto.getTitle())) {
+                    data.setMovieId(this.datas.get(i).getMovieId());
+                    data.setTitle(this.datas.get(i).getTitle());
+                    data.setViewCount(this.datas.get(i).getViewCount());
+                    data.setRating(this.datas.get(i).getRating());
+                    datas.add(data);
+                }
+            }
+            return datas;
+        }
+        return new ArrayList<>();
     }
+
     public MovieDTO selectOne(MovieDTO dto) {	//영화 하나 출력할 때
         MovieDTO data=null;
         for(int i=0;i<datas.size();i++) {

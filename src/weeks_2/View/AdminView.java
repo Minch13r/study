@@ -68,7 +68,7 @@ public class AdminView extends View {
         System.out.println("\n======== 영상 삭제 ========");
         while (true) {
             try {
-                System.out.print("삭제할 영상 번호를 입력해주세요 >> ");
+                System.out.print("삭제할 영상 번호를 입력해주세요 (0 : 뒤로가기) >> ");
                 return Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("❌ 올바른 숫자를 입력해주세요.");

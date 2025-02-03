@@ -64,21 +64,21 @@ public class Crawling {public static ArrayList<MovieDTO> makeDatas() {
 
             // 결과 출력 (상위 20개만)
             System.out.println("\n===== 넷플릭스 TOP 20 =====");
-            int count = 0;	//영화 번호
-            for (int i=0;i<titleElements.size() && count<20;i++) {	//20개까지
+            int count = 0;   //영화 번호
+            for (int i=0;i<titleElements.size() && count<20;i++) {   //20개까지
                 String title = titleElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
                 String ratingText=scoreElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
-                double rating=0.0;	//초기화
+                double rating=0.0;   //초기화
 
-                if(!ratingText.isEmpty()) {	//평점 텍스트로 받은거 double로 형변환
+                if(!ratingText.isEmpty()) {   //평점 텍스트로 받은거 double로 형변환
                     rating=Double.parseDouble(ratingText);
                 }
                 if (!title.isEmpty()) { //공백이 아니면
                     MovieDTO data=new MovieDTO();
-                    data.setMovieId(count+1);	//영화 번호
-                    data.setTitle(title);	//영화 제목
-                    data.setRating(rating);	//영화 평점
-                    data.setViewCount(0);	//영화 시청수 0으로 초기화
+                    data.setMovieId(count+1);   //영화 번호
+                    data.setTitle(title);   //영화 제목
+                    data.setRating(rating);   //영화 평점
+                    data.setViewCount(0);   //영화 시청수 0으로 초기화
                     datas.add(data);
                     count++;
                 }
@@ -86,14 +86,14 @@ public class Crawling {public static ArrayList<MovieDTO> makeDatas() {
 
         } finally {
             driver.quit();
-            System.out.println("브라우저 종료 완료");
+//            System.out.println("브라우저 종료 완료");
         }
 
     } catch (Exception e) {
         System.out.println("오류 발생: " + e.getMessage());
         e.printStackTrace();
     }
-    return datas;	//리스트 반환
+    return datas;   //리스트 반환
 
 }
 

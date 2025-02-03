@@ -22,6 +22,14 @@ public class ClientView extends View {
         System.out.println("================================");
     }
 
+    /* 컨트롤러에서 함수 하나를 만들어요. 광고가 있는지 없는지 확인하는 (boolean)
+        광고를 있다고 가정했을 때 false 상태면 안 보여요.
+        true인 상태면 바로 광고가 나오는거에요 showCLientMenu 아래에
+     */
+
+
+
+
     // 클라이언트 메뉴 번호 입력받아 반환
     private int inputClientMenuNum() {
         int num;
@@ -83,7 +91,7 @@ public class ClientView extends View {
 
     // 영화 검색 키워드 입력받아 반환
     public String inputSearchKeyword() {
-        System.out.print("검색할 영화 제목을 입력해주세요 >> ");
+        System.out.print("검색할 영화 제목을 입력해주세요 (0 : 뒤로가기)>> ");
         return sc.nextLine();
     }
 
@@ -107,6 +115,23 @@ public class ClientView extends View {
         int num;
         num = sc.nextInt();
         sc.nextLine();  // 버퍼 비우기
+        return num;
+    }
+
+    public int inputMovieChoiceNum(){
+        System.out.print("번호를 선택해주세요 (0 : 뒤로가기) >> ");
+        int num;
+        num = sc.nextInt();
+        sc.nextLine();  // 버퍼 비우기
+        return num;
+    }
+
+    public void showSelectMovieNum(){
+        System.out.println("상세 정보를 볼 영화의 번호를 선택하세요 (0 : 뒤로가기)");
+    }
+
+    public int inputSelectMovieNum(){
+        int num = inputNum();
         return num;
     }
 }

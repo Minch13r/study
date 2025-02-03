@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
+    private ArrayList<MovieDTO> movieList; // 크롤링한 데이터를 저장할 리스트
     private MovieDAO movieDao;
     private MemberDAO memberDao;
     private AdminView adminView;
@@ -22,18 +23,34 @@ public class Controller {
         this.adminView = new AdminView();
         this.clientView = new ClientView();
         this.baseView = new View();
-        this.crawling = new Crawling();
+        initializeMovieData();
+    }
+
+    // 크롤링 데이터 초기화 메소드
+    private void initializeMovieData() {
+        // 크롤링으로 데이터 가져오기
+        this.movieList = Crawling.makeDatas();
+
+        // 가져온 데이터를 DB에 저장
+        if (movieList != null && !movieList.isEmpty()) {
+            for (MovieDTO movie : movieList) {
+                movieDao.insert(movie);
+            }
+            System.out.println("[로그]영화 데이터 초기화 완료");
+        } else {
+            System.out.println("[로그]영화 데이터 초기화 실패");
+        }
     }
 
     // controller start
     public void start() {
         while(true) {
             baseView.showMenu();
-            int mainChoice = baseView.inputNum();
+            int mainChoice = baseView.inputMenuNum();
 
             if (mainChoice == 1) {  // 로그인
-                String id = baseView.inputString();
-                String password = baseView.inputString();
+                String id = baseView.inputId();
+                String password = baseView.inputPw();
                 MemberDTO memberDTO = new MemberDTO();
                 memberDTO.setId(id);
                 memberDTO.setPw(password);
@@ -96,48 +113,33 @@ public class Controller {
 
                             // 1. 시청하기
                             if (userChoice == 1) {
-                                // 영화 목록 보여주기
                                 MovieDTO movieDTO = new MovieDTO();
                                 movieDTO.setCondition("PRINTALL");
-                                // MovieDAO에서 전체 영화 목록 가져오기
                                 ArrayList<MovieDTO> movies = movieDao.selectAll(movieDTO);
-                                // 영화 목록이 비어있는 경우
+
                                 if(movies.isEmpty()) {
-                                    baseView.printEmpty();  // 데이터 없음 메시지 출력
-                                }
-                                // 영화 목록이 있는 경우
-                                else {
+                                    baseView.printEmpty();
+                                } else {
                                     clientView.showMovieList(movies);  // 영화 목록 출력
-                                }
-                                // 영화 번호 입력받기
-                                int movieChoice = clientView.inputNum();
+                                    int movieChoice = clientView.inputNum();  // 영화 번호 입력받기
 
-                                // MovieDTO 객체 생성하여 선택한 영화 정보 설정
-                                movieDTO.setMovieId(movieChoice);
+                                    movieDTO.setMovieId(movieChoice);
+                                    MovieDTO selectedMovie = movieDao.selectOne(movieDTO);
 
-                                // 선택한 영화가 존재하는지 확인
-                                MovieDTO selectedMovie = movieDao.selectOne(movieDTO);
-
-                                if(selectedMovie == null) {
-                                    baseView.printFail(); // 영화를 찾을 수 없음
-                                    continue;
-                                }
-
-                                // 시청 횟수 증가 처리
-                                boolean success = movieDao.update(movieDTO);
-
-                                // 성공시
-                                if(success) {
-                                    // 업데이트된 영화 정보 다시 가져오기
-                                    MovieDTO updatedMovie = movieDao.selectOne(movieDTO);
-                                    clientView.showMovieDetail(updatedMovie);
-                                    baseView.printSuccess();
-                                }
-                                // 실패시
-                                else {
-                                    baseView.printFail();
+                                    if (selectedMovie == null) {
+                                        baseView.printFail();
+                                    } else {
+                                        if (movieDao.update(movieDTO)) {
+                                            MovieDTO updatedMovie = movieDao.selectOne(movieDTO);
+                                            clientView.showMovieDetail(updatedMovie);
+                                            baseView.printSuccess();
+                                        } else {
+                                            baseView.printFail();
+                                        }
+                                    }
                                 }
                             }
+
                             else if (userChoice == 2) {  // 즐겨찾기 기능
                                 boolean favoriteMenuActive = true;
                                 while (favoriteMenuActive) {
@@ -181,16 +183,17 @@ public class Controller {
                                             updatedFavorites.add(selectedMovie);
                                             memberDTO.setIsPremium(updatedFavorites);
 
-                                            if (memberDao.insert(memberDTO)) {
+                                            // insert 대신 update 사용
+                                            if (memberDao.update(loginResult.getId(), selectedMovie)) {  // 수정된 부분
+                                                loginResult.setIsPremium(updatedFavorites);  // 현재 세션의 정보도 업데이트
                                                 baseView.printSuccess();
                                             } else {
                                                 baseView.printFail();
                                             }
-                                        } else {
-                                            baseView.printFail();
                                         }
                                     }
-                                    else if (favoriteChoice == 2) {  // 즐겨찾기 삭제
+
+                                        else if (favoriteChoice == 2) {  // 즐겨찾기 삭제
                                         if (favorites == null || favorites.isEmpty()) {
                                             baseView.printEmpty();
                                             continue;
@@ -238,7 +241,7 @@ public class Controller {
                             }
 
 
-                            // 영화 검색 부분 수정 (userChoice == 4 부분)
+                            // 영화 검색 부분 수정
                             else if (userChoice == 4) {
                                 String searchName = clientView.inputSearchKeyword();
                                 MovieDTO searchDTO = new MovieDTO();
@@ -288,9 +291,9 @@ public class Controller {
             // 회원가입
             else if (mainChoice == 2) {
                 // id 입력 받기
-                String id = baseView.inputString();
+                String id = baseView.inputId();
                 // 비밀번호 입력받기
-                String password = baseView.inputString();
+                String password = baseView.inputPw();
                 MemberDTO memberDto = new MemberDTO();
                 memberDto.setId(id);
                 memberDto.setPw(password);

@@ -11,7 +11,7 @@ public class ClientView extends View {
     }
 
     // 클라이언트 메뉴 출력 및 선택 번호 반환
-    public int showClientMenu() {
+    public void showClientMenu() {
         System.out.println("\n======== NETFLIX 메인 메뉴 ========");
         System.out.println("1. 시청하기");
         System.out.println("2. 즐겨찾기");
@@ -20,8 +20,6 @@ public class ClientView extends View {
         System.out.println("5. 로그아웃");
         System.out.println("0. 프로그램 종료");
         System.out.println("================================");
-
-        return inputClientMenuNum();
     }
 
     // 클라이언트 메뉴 번호 입력받아 반환
@@ -71,10 +69,10 @@ public class ClientView extends View {
         if (movies.isEmpty()) {
             System.out.println("등록된 영화가 없습니다.");
         } else {
-            System.out.println("[번호] 제목          평점    조회수");
+            System.out.println("[번호] 제목          평점    ");
             System.out.println("----------------------------");
             for (MovieDTO movie : movies) {
-                System.out.printf("[%d] %-12s %.1f     %d\n",
+                System.out.printf("[%d] %-12s %.1f     \n",
                         movie.getMovieId(),
                         movie.getTitle(),
                         movie.getRating());
@@ -106,13 +104,9 @@ public class ClientView extends View {
     @Override
     public int inputNum() {
         System.out.print("번호를 선택해주세요 >> ");
-        while (true) {
-            try {
-                return Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("❌ 올바른 숫자를 입력해주세요.");
-                System.out.print("번호를 다시 선택해주세요 >> ");
-            }
-        }
+        int num;
+        num = sc.nextInt();
+        sc.nextLine();  // 버퍼 비우기
+        return num;
     }
 }

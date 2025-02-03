@@ -44,20 +44,30 @@ public class View {
     // 번호 입력 메서드
     public int inputNum() {
         System.out.print("번호를 선택해주세요 >> ");
-        int num = sc.nextInt();
+        int num;
+        num = sc.nextInt();
+        sc.nextLine();  // 버퍼 비우기
+        return num;
+    }
+
+    // 메인 메뉴용 입력 메소드
+    public int inputMenuNum() {
+        System.out.print("번호를 선택해주세요 >> ");
+        int num;
+        num = sc.nextInt();
+        sc.nextLine();  // 버퍼 비우기
         return num;
     }
 
     // ID/PW 입력 메서드
-    public String inputString() {
-        // ID 입력인 경우
-        if (sc.nextLine().isEmpty()) {
-            System.out.print("아이디를 입력해주세요 >> ");
-        }
-        // PW 입력인 경우
-        else {
-            System.out.print("비밀번호를 입력해주세요 >> ");
-        }
+    public String inputId() {
+        System.out.print("아이디를 입력해주세요 >> ");
+
+        return sc.next();
+    }
+
+    public String inputPw(){
+        System.out.print("비밀번호를 입력해주세요 >> ");
         return sc.next();
     }
 

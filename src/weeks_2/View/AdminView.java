@@ -49,9 +49,9 @@ public class AdminView extends View {
     public double inputRating() {
         while (true) {
             try {
-                System.out.print("영상 평점을 입력해주세요(0.0 ~ 5.0) >> ");
+                System.out.print("영상 평점을 입력해주세요(0.0 ~ 100.0) >> ");
                 double rating = Double.parseDouble(sc.nextLine());
-                if (rating >= 0.0 && rating <= 5.0) {
+                if (rating >= 0.0 && rating <= 100.0) {
                     return rating;
                 }
                 System.out.println("❌ 평점은 0.0에서 5.0 사이의 값이어야 합니다.");

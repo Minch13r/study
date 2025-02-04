@@ -1,5 +1,7 @@
 package weeks_2.View;
 
+import weeks_2.Model.MovieDTO;
+
 import java.util.Scanner;
 
 public class View {
@@ -18,6 +20,14 @@ public class View {
         System.out.println("2. 회원가입");
         System.out.println("0. 프로그램 종료");
         System.out.println("=================================");
+    }
+    public void printNull() {
+        System.out.println("");
+    }
+    //광고 출력
+    public void showAd(MovieDTO movies) {
+        System.out.println(movies.getMovieId()+" "+movies.getTitle()+" "+movies.getRating());
+        System.out.println("==========================");
     }
 
     // 메뉴 번호 입력

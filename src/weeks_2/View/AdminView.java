@@ -4,6 +4,16 @@ public class AdminView extends View {
     private static final int adminMenuMAX = 9;
     private static final int adminMenuMIN = 6;
 
+    private boolean hasAD;
+    private int adMovieId;
+
+    public int getAdMovieId() {
+        return adMovieId;
+    }
+
+    public void setAdMovieId(int adMovieId) {
+        this.adMovieId = adMovieId;
+    }
     public AdminView() {
         super();
     }
@@ -90,6 +100,21 @@ public class AdminView extends View {
     // ========== 광고 파트 ==========
 
     // 새 광고 영상 등록
+    public boolean hasAD() {
+        return this.hasAD;
+    }
+
+    // hasAD값 받기
+    public void setAdStatus() {
+        System.out.print("광고가 이미 등록되어 있습니까? (Y/N) >> ");
+        String answerAD = sc.nextLine().toUpperCase();
+        if (answerAD.equals("Y")) {
+            this.hasAD = true;
+        }
+        if (answerAD.equals("N")) {
+            this.hasAD = false;
+        }
+    }
     public int addNewAd() {
         System.out.println("\n======== 광고 영상 등록 ========");
         while (true) {
@@ -118,5 +143,14 @@ public class AdminView extends View {
     public void logoutAdmin() {
         System.out.println("\n✅ 관리자 계정에서 로그아웃되었습니다.");
         System.out.println("메인 메뉴로 돌아갑니다.");
+    }
+    // ========== 광고 삭제 파트 ==========
+    public void printDelete() {
+        System.out.println("이미 광고가 있습니다. 삭제하시려면 Y를 입력, 아니면 N을 입력해주세요");
+    }
+    //y, n 입력
+    public String yOrn() {
+        String input=sc.next();
+        return input;
     }
 }

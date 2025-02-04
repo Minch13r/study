@@ -12,7 +12,7 @@ public class MemberDAO {
     }
 
     private ArrayList<MemberDTO> selectAll(MemberDTO dto) {
-        return null;
+        return new ArrayList<>(datas); // 전체 회원 목록 반환
     }
 
     public MemberDTO selectOne(MemberDTO dto) {
@@ -88,15 +88,40 @@ public class MemberDAO {
     }
 
     // 즐겨찾기에서 영화 삭제
-    public boolean delete(MovieDTO dto) {
-        for (int i = 0; i < this.isPremium.size(); i++) {
-            if (this.isPremium.get(i).getMovieId() == dto.getMovieId()) {
-                this.isPremium.remove(i);
-                System.out.println("로그 : MemberDAO delete()에서 발생한 true반환.즐겨찾기 리스트에 입력영화 제거");
-                return true;
+    public boolean delete(MemberDTO memberDto, MovieDTO movieDto) {
+        // 관리자가 영화를 삭제하는 경우 (memberDto가 null일 때)
+        if (memberDto == null) {
+            boolean removed = false;
+            for (MemberDTO member : datas) {
+                ArrayList<MovieDTO> favorites = member.getIsPremium();
+                if (favorites != null) {
+                    for (int i = favorites.size() - 1; i >= 0; i--) {
+                        if (favorites.get(i).getMovieId() == movieDto.getMovieId()) {
+                            favorites.remove(i);
+                            removed = true;
+                        }
+                    }
+                }
             }
+            return removed;
         }
-        System.out.println("로그 : MemberDAO delete()에서 발생한 false반환.해당 영화는 즐겨찾기에 없습니다");
-        return false;
+        // 일반 사용자가 자신의 즐겨찾기에서 삭제하는 경우
+        else {
+            for (MemberDTO member : datas) {
+                if (member.getId().equals(memberDto.getId())) {
+                    ArrayList<MovieDTO> favorites = member.getIsPremium();
+                    if (favorites != null) {
+                        for (int i = 0; i < favorites.size(); i++) {
+                            if (favorites.get(i).getMovieId() == movieDto.getMovieId()) {
+                                favorites.remove(i);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
+
 }

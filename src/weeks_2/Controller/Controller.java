@@ -17,6 +17,9 @@ public class Controller {
     private View baseView;
     private Crawling crawling;
 
+    private MovieDTO adMovie;
+
+    private ArrayList<MovieDTO> datas;
     // 생성자
     public Controller() {
         this.movieDao = new MovieDAO();
@@ -25,6 +28,9 @@ public class Controller {
         this.clientView = new ClientView();
         this.baseView = new View();
         initializeMovieData();
+
+        this.datas=new ArrayList<>();
+        this.adMovie=null;
     }
 
     // 크롤링 데이터 초기화 메소드
@@ -64,13 +70,14 @@ public class Controller {
                 // MemberDTO 인스턴스화
                 MemberDTO memberDTO = new MemberDTO();
                 // 관리자 인스턴스화(보안 위해서)
-                Admin admin = new Admin();
+                Admin admin=new Admin();
 
                 // 관리자 로그인
                 if (admin.isAdminLogin(id, password)) {
                     while(true) {
                         // 관리자 메뉴 호출
                         adminView.showAdminMenu();
+
                         // 숫자 입력받기
                         int adminChoice = adminView.inputNum();
 
@@ -124,18 +131,43 @@ public class Controller {
                             // 삭제한 번호 DB에 저장
                             movieDTO.setMovieId(movieNum);
 
-                            // 성공시
+                            // 먼저 모든 사용자의 즐겨찾기에서 해당 영화를 제거
+                            memberDao.delete(null, movieDTO);
+
+                            // 그 다음 영화 데이터베이스에서 영화 삭제
                             if(movieDao.delete(movieDTO)) {
                                 baseView.printSuccess();
-                            }
-                            // 실패시
-                            else {
+                                System.out.println("[로그] 영화 삭제 및 모든 사용자의 즐겨찾기에서 제거 완료");
+                            } else {
                                 baseView.printFail();
                             }
                         }
                         // 광고영상관리
                         else if (adminChoice == 8) {
-                            adminView.addNewAd();
+
+                            //광고가 null이면 새로 객체 생성(예외에러)
+                            if(adMovie!=null) {
+                                if(adminView.deleteAD()==true) {
+                                    adMovie=null;
+                                }
+                            }
+                            else {
+                                int num=adminView.addNewAd();
+                                MovieDTO data=new MovieDTO();
+                                data.setMovieId(num);	//dto에 영화 번호 넣기
+                                MovieDTO selectedMovie=movieDao.selectOne(data);//영화 번호로 찾기
+
+                                movieDao.selectOne(selectedMovie);
+                                baseView.showAd(selectedMovie);	//영상 가져와서 출력
+
+                                adMovie=new MovieDTO();
+                                //광고 영상에 넣기
+                                adMovie.setMovieId(selectedMovie.getMovieId());
+                                adMovie.setTitle(selectedMovie.getTitle());
+                                adMovie.setRating(selectedMovie.getRating());
+                                adMovie.setViewCount(selectedMovie.getViewCount());
+                            }
+
                         }
                         // 로그아웃
                         else if (adminChoice == 9) {
@@ -164,7 +196,13 @@ public class Controller {
                     if (loginSuccess) {
                         while(true) {
                             // 사용자 메뉴 출력
-                            clientView.showClientMenu();
+                            clientView.showClientMenu(null);
+                            if(adMovie==null) {
+                                baseView.printNull();
+                            }
+                            else {
+                                baseView.showAd(adMovie);
+                            }
                             // 숫자 입력받기
                             int userChoice = clientView.inputNum();
 
@@ -286,7 +324,6 @@ public class Controller {
                                     else if (favoriteChoice == 2) {
                                         // 즐겨찾기 목록이 비어있는지 확인
                                         if (favorites == null || favorites.isEmpty()) {
-                                            // 즐겨찾기 목록이 비어있으면 메시지 출력하고 다시 메뉴로 돌아감
                                             baseView.printEmpty();
                                             continue;
                                         }
@@ -296,27 +333,16 @@ public class Controller {
                                         // 삭제할 영화 번호 입력 받기
                                         int deleteMovieId = clientView.inputNum();
 
-                                        // 삭제할 영화를 저장할 변수 선언
-                                        MovieDTO movieToDelete = null;
+                                        // 삭제할 영화 정보 생성
+                                        MovieDTO movieToDelete = new MovieDTO();
+                                        movieToDelete.setMovieId(deleteMovieId);
 
-                                        // 일반 for문을 사용하여 입력받은 ID와 일치하는 영화 찾기
-                                        for (MovieDTO movie : favorites) {
-                                            if (movie.getMovieId() == deleteMovieId) {
-                                                movieToDelete = movie;
-                                                break;  // 영화를 찾으면 반복문 종료
-                                            }
-                                        }
-
-                                        // 삭제할 영화를 찾은 경우
-                                        if (movieToDelete != null) {
-                                            // DB에서 영화 삭제 시도
-                                            if (movieDao.delete(movieToDelete)) {
-                                                baseView.printSuccess();
-                                            } else {
-                                                baseView.printFail();
-                                            }
+                                        // memberDao의 delete 메소드 호출하여 즐겨찾기에서 삭제
+                                        if (memberDao.delete(loginResult, movieToDelete)) {
+                                            baseView.printSuccess();
+                                            // 로그인 정보의 즐겨찾기 목록도 업데이트
+                                            loginResult.setIsPremium(memberDao.selectOne(loginResult).getIsPremium());
                                         } else {
-                                            // 삭제할 영화를 찾지 못한 경우 실패 메시지 출력
                                             baseView.printFail();
                                         }
                                     }
@@ -328,8 +354,6 @@ public class Controller {
 
                                 }
                             }
-
-
                             // 3. 영상 전체출력
                             else if (userChoice == 3) {
                                 MovieDTO movieDTO = new MovieDTO();
@@ -345,7 +369,6 @@ public class Controller {
                                     clientView.showMovieList(movies);  // 영화 목록 출력
                                 }
                             }
-
 
                             // 영화 검색
                             else if (userChoice == 4) {
@@ -368,7 +391,7 @@ public class Controller {
                                     baseView.printFail();
                                     continue;
                                 }
-                                // 있는 경우
+                                //있는 경우
                                 else {
                                     // 검색 결과 목록 출력
                                     clientView.showMovieList((ArrayList<MovieDTO>) results);
@@ -450,6 +473,12 @@ public class Controller {
 
     // 광고 여부 판단
     private boolean checkAdRequirement() {
+        ArrayList<MovieDTO> datas=new ArrayList<>();
+        for(int i=0;i<datas.size();i++) {
+
+        }
         return true;
     }
 }
+
+

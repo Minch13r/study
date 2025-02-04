@@ -11,7 +11,7 @@ public class ClientView extends View {
     }
 
     // 클라이언트 메뉴 출력 및 선택 번호 반환
-    public void showClientMenu() {
+    public void showClientMenu(MovieDTO dto) {
         System.out.println("\n======== NETFLIX 메인 메뉴 ========");
         System.out.println("1. 시청하기");
         System.out.println("2. 즐겨찾기");
@@ -19,15 +19,16 @@ public class ClientView extends View {
         System.out.println("4. 영화 이름 검색");
         System.out.println("5. 로그아웃");
         System.out.println("0. 프로그램 종료");
+        if(dto!=null) {
+            System.out.println(dto.getMovieId() + " " + dto.getTitle() + " " + dto.getRating());
+        }
         System.out.println("================================");
     }
 
-    /* 컨트롤러에서 함수 하나를 만들어요. 광고가 있는지 없는지 확인하는 (boolean)
+	/* 컨트롤러에서 함수 하나를 만들어요. 광고가 있는지 없는지 확인하는 (boolean)
         광고를 있다고 가정했을 때 false 상태면 안 보여요.
         true인 상태면 바로 광고가 나오는거에요 showCLientMenu 아래에
-     */
-
-
+	 */
 
 
     // 클라이언트 메뉴 번호 입력받아 반환
@@ -105,6 +106,7 @@ public class ClientView extends View {
         System.out.println("번 호: " + movie.getMovieId());
         System.out.println("제 목: " + movie.getTitle());
         System.out.println("평 점: " + movie.getRating());
+        System.out.println("시청횟수: " + movie.getViewCount());
         System.out.println("============================");
     }
 

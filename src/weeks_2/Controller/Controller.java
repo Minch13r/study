@@ -470,15 +470,6 @@ public class Controller {
             }
         }
     }
-
-    // 광고 여부 판단
-    private boolean checkAdRequirement() {
-        ArrayList<MovieDTO> datas=new ArrayList<>();
-        for(int i=0;i<datas.size();i++) {
-
-        }
-        return true;
-    }
 }
 
 

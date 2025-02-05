@@ -129,4 +129,13 @@ public class View {
     public void printLogOut() {
         System.out.println("👋 안전하게 로그아웃되었습니다.");
     }
+
+    public void printSignInIDErr(){
+        System.out.println("[안내] ID를 입력해주세요");
+    }
+
+
+    public void printSignInIdDuplicationErr(){
+        System.out.println("[안내] 이미 사용 중인 ID입니다.");
+    }
 }

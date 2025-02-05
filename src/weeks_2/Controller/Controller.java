@@ -16,8 +16,8 @@ public class Controller {
     private ClientView clientView;
     private View baseView;
     private Crawling crawling;
-
     private MovieDTO adMovie;
+    private Admin admin;
 
     private ArrayList<MovieDTO> datas;
     // 생성자
@@ -27,6 +27,7 @@ public class Controller {
         this.adminView = new AdminView();
         this.clientView = new ClientView();
         this.baseView = new View();
+        this.admin = new Admin();
         initializeMovieData();
 
         this.datas=new ArrayList<>();
@@ -445,22 +446,48 @@ public class Controller {
             }
             // 회원가입
             else if (mainChoice == 2) {
-                // id 입력 받기
-                String id = baseView.inputId();
-                // 비밀번호 입력받기
-                String password = baseView.inputPw();
-                MemberDTO memberDto = new MemberDTO();
-                memberDto.setId(id);
-                memberDto.setPw(password);
-                // 성공여부 판단
-                boolean success = memberDao.insert(memberDto);
-                // 성공시
-                if(success) {
-                    baseView.printSuccess();
-                }
-                // 실패시
-                else {
-                    baseView.printFail();
+                while(true) {
+                    // id 입력 받기
+                    String id = baseView.inputId();
+
+                    // ID 유효성 검사
+                    if (id == null || id.trim().isEmpty()) {
+                        baseView.printSignInIDErr();
+                        continue;
+                    }
+
+                    // 관리자 계정 ID와 동일한지 검사
+                    if (id.equals(admin.getAdmin().getId())) {
+                        baseView.printSignInIdDuplicationErr();
+                        continue;
+                    }
+
+                    // ID 중복 검사
+                    MemberDTO checkDto = new MemberDTO();
+                    checkDto.setId(id);
+
+                    if (memberDao.selectOne(checkDto) != null) {
+                        baseView.printSignInIdDuplicationErr();
+                        continue;
+                    }
+
+                    // 비밀번호 입력받기
+                    String password = baseView.inputPw();
+                    MemberDTO memberDto = new MemberDTO();
+                    memberDto.setId(id);
+                    memberDto.setPw(password);
+                    // 성공여부 판단
+                    boolean success = memberDao.insert(memberDto);
+                    // 성공시
+                    if (success) {
+                        baseView.printSuccess();
+                        break;
+                    }
+                    // 실패시
+                    else {
+                        baseView.printFail();
+                        break;
+                    }
                 }
             }
             // 종료

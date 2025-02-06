@@ -59,7 +59,7 @@ public class Controller {
             baseView.showMenu();
 
             // 사용자 선택 입력받기
-            int mainChoice = baseView.inputMenuNum();
+            int mainChoice = baseView.inputLogInMenuNum();
 
             // 로그인
             if (mainChoice == 1) {
@@ -205,7 +205,7 @@ public class Controller {
                                 baseView.showAd(adMovie);
                             }
                             // 숫자 입력받기
-                            int userChoice = clientView.inputNum();
+                            int userChoice = clientView.inputClientMenuNum();
 
                             // 1. 시청하기
                             if (userChoice == 1) {
@@ -221,7 +221,7 @@ public class Controller {
                                 // 배열이 안 비어있을 때
                                 else {
                                     clientView.showMovieList(movies);  // 영화 목록 출력
-                                    int movieChoice = clientView.inputMovieChoiceNum();  // 영화 번호 입력받기
+                                    int movieChoice = clientView.inputMovieChoiceNum(movies);  // 영화 번호 입력받기
 
                                     // 0. 뒤로가기
                                     if(movieChoice == 0){

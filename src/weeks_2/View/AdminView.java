@@ -14,6 +14,7 @@ public class AdminView extends View {
     public void setAdMovieId(int adMovieId) {
         this.adMovieId = adMovieId;
     }
+
     public AdminView() {
         super();
     }
@@ -51,22 +52,32 @@ public class AdminView extends View {
     // 새로운 영상 이름 입력
     public String inputNewMovie() {
         System.out.println("\n======== 새 영상 추가 ========");
-        System.out.print("영상 제목을 입력해주세요 >> ");
-        return sc.nextLine().trim();
+        String movieName;
+        while (true) {
+            System.out.print("영상 제목을 입력해주세요 >> ");
+            movieName = sc.nextLine().trim();
+            if(movieName.isEmpty()) {
+                System.out.println("❌ 영상 제목이 없다면 등록할 수 없습니다!");
+                continue;
+            }
+            return movieName;
+        }
     }
 
     // 영상 평점 입력
     public double inputRating() {
+        double rating;
         while (true) {
             try {
-                System.out.print("영상 평점을 입력해주세요(0.0 ~ 100.0) >> ");
-                double rating = Double.parseDouble(sc.nextLine());
-                if (rating >= 0.0 && rating <= 100.0) {
+                System.out.print("평점을 입력해주세요 (0.0 ~ 100.0) >> ");
+                rating = Double.parseDouble(sc.nextLine());
+                if (0.0 <= rating && rating <= 100.0) {
                     return rating;
+                } else {
+                    System.out.println("❌ 평점은 0.0 ~ 100.0 사이여야 합니다.");
                 }
-                System.out.println("❌ 평점은 0.0에서 5.0 사이의 값이어야 합니다.");
-            } catch (NumberFormatException e) {
-                System.out.println("❌ 올바른 숫자 형식으로 입력해주세요.");
+            } catch (Exception e) {
+                System.out.println("❌ 숫자로 입력해주세요.");
             }
         }
     }
@@ -91,8 +102,10 @@ public class AdminView extends View {
         while (true) {
             System.out.print("정말 해당 영상을 삭제하시겠습니까? (Y/N) >> ");
             String answer = sc.nextLine().trim().toUpperCase();
-            if (answer.equals("Y")) return true;
-            if (answer.equals("N")) return false;
+            if (answer.equals("Y"))
+                return true;
+            if (answer.equals("N"))
+                return false;
             System.out.println("❌ Y 또는 N으로 입력해주세요.");
         }
     }
@@ -115,6 +128,7 @@ public class AdminView extends View {
             this.hasAD = false;
         }
     }
+
     public int addNewAd() {
         System.out.println("\n======== 광고 영상 등록 ========");
         while (true) {
@@ -133,8 +147,10 @@ public class AdminView extends View {
         while (true) {
             System.out.print("현재 광고를 삭제하시겠습니까? (Y/N) >> ");
             String answer = sc.nextLine().trim().toUpperCase();
-            if (answer.equals("Y")) return true;
-            if (answer.equals("N")) return false;
+            if (answer.equals("Y"))
+                return true;
+            if (answer.equals("N"))
+                return false;
             System.out.println("❌ Y 또는 N으로 입력해주세요.");
         }
     }
@@ -144,13 +160,14 @@ public class AdminView extends View {
         System.out.println("\n✅ 관리자 계정에서 로그아웃되었습니다.");
         System.out.println("메인 메뉴로 돌아갑니다.");
     }
-    // ========== 광고 삭제 파트 ==========
-    public void printDelete() {
-        System.out.println("이미 광고가 있습니다. 삭제하시려면 Y를 입력, 아니면 N을 입력해주세요");
-    }
-    //y, n 입력
-    public String yOrn() {
-        String input=sc.next();
-        return input;
-    }
+
+    // ========== 광고 삭제 파트 ========== 안쓰는 메서드
+    //public void printDelete() {
+    //	System.out.println("이미 광고가 있습니다. 삭제하시려면 Y를 입력, 아니면 N을 입력해주세요");
+//	}
+
+    // y, n 입력
+    //public String yOrn() {
+    //String input = sc.next();
+    //return input;
 }

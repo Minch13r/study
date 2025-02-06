@@ -8,18 +8,25 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Crawling {public static ArrayList<MovieDTO> makeDatas() {
 
+
+
     ArrayList<MovieDTO> datas=new ArrayList<>();
     try {
         // ChromeDriver 경로 지정
         String driverPath = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\study\\src\\day018\\class01\\driver\\chromedriver.exe";
 
-
+        if(!Files.exists(Paths.get(driverPath))) {	//경로 지정 잘 됐는지 확인
+            System.out.println("[로그]크롤링 실패: ChromeDriver 경로를 다시 확인해주세요");
+            return datas;
+        }
         // setProperty()로 ChromeDriver의 위치를 시스템에 넘김
         System.setProperty("webdriver.chrome.driver", driverPath);
 
@@ -59,42 +66,41 @@ public class Crawling {public static ArrayList<MovieDTO> makeDatas() {
             List<WebElement> scoreElements = driver.findElements(
                     By.cssSelector("span.score__number"));
 
-
-
+            if (titleElements.isEmpty() || scoreElements.isEmpty()) {	//제목이나 평점이 없을 경우
+                System.err.println("[로그]크롤링 한 데이터가 없습니다.");
+                return datas;
+            }
 
             // 결과 출력 (상위 20개만)
             System.out.println("\n===== 넷플릭스 TOP 20 =====");
-            int count = 0;   //영화 번호
-            for (int i=0;i<titleElements.size() && count<20;i++) {   //20개까지
+            int count = 0;	//영화 번호
+            for (int i=0;i<titleElements.size() && count<20;i++) {	//20개까지
                 String title = titleElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
                 String ratingText=scoreElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
-                double rating=0.0;   //초기화
+                double rating=0.0;	//초기화
 
-                if(!ratingText.isEmpty()) {   //평점 텍스트로 받은거 double로 형변환
+                if(!ratingText.isEmpty()) {	//평점 텍스트로 받은거 double로 형변환
                     rating=Double.parseDouble(ratingText);
                 }
                 if (!title.isEmpty()) { //공백이 아니면
                     MovieDTO data=new MovieDTO();
-                    data.setMovieId(count+1);   //영화 번호
-                    data.setTitle(title);   //영화 제목
-                    data.setRating(rating);   //영화 평점
-                    data.setViewCount(0);   //영화 시청수 0으로 초기화
+                    data.setMovieId(count+1);	//영화 번호
+                    data.setTitle(title);	//영화 제목
+                    data.setRating(rating);	//영화 평점
+                    data.setViewCount(0);	//영화 시청수 0으로 초기화
                     datas.add(data);
                     count++;
                 }
             }
-
         } finally {
             driver.quit();
-//            System.out.println("브라우저 종료 완료");
+            //				System.out.println("브라우저 종료 완료");
         }
 
     } catch (Exception e) {
-        System.out.println("오류 발생: " + e.getMessage());
-        e.printStackTrace();
+        System.out.println("Crawling 중 오류 발생: " + e.getMessage());
+        e.printStackTrace();	//예외 내용 출력
     }
-    return datas;   //리스트 반환
-
+    return datas;	//크롤링 한거 반환
 }
-
 }

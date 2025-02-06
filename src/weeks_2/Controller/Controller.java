@@ -92,8 +92,13 @@ public class Controller {
                         if (adminChoice == 6) {
                             // 이름 입력받기
                             String movieName = adminView.inputNewMovie();
+                            if(movieName.equals("0")){
+                                continue;
+                            }
                             // 평점 입력받기
                             double rating = adminView.inputRating();
+                            // 평점 뒤로가기는 안 함.
+
                             // scope 이슈(객체 생성)
                             MovieDTO movieDTO = new MovieDTO();
                             // 이름 DB에 저장
@@ -151,6 +156,19 @@ public class Controller {
                         }
                         // 광고영상관리
                         else if (adminChoice == 8) {
+                            MovieDTO movieDTO = new MovieDTO();
+                            movieDTO.setCondition("PRINTALL");
+                            // MovieDAO에서 전체 영화 목록 가져오기
+                            ArrayList<MovieDTO> movies = movieDao.selectAll(movieDTO);
+                            // 영화 목록이 비어있는 경우
+                            if(movies.isEmpty()) {
+                                baseView.printEmpty();  // 데이터 없음 메시지 출력
+                            }
+                            // 영화 목록이 있는 경우
+                            else {
+                                clientView.showMovieList(movies);  // 영화 목록 출력
+                            }
+
 
                             //광고가 null이면 새로 객체 생성(예외에러)
                             if(adMovie!=null) {
@@ -160,6 +178,9 @@ public class Controller {
                             }
                             else {
                                 int num=adminView.addNewAd();
+                                if(num == 0){
+                                    continue;
+                                }
                                 MovieDTO data=new MovieDTO();
                                 data.setMovieId(num);	//dto에 영화 번호 넣기
                                 MovieDTO selectedMovie=movieDao.selectOne(data);//영화 번호로 찾기
@@ -291,6 +312,9 @@ public class Controller {
                                         // 즐겨찾기에 추가할 내용 찾기
                                         clientView.showMovieList(allMovies);
                                         int movieId = clientView.inputNum();
+                                        if(movieId == 0){
+                                            break;
+                                        }
 
                                         // 선택한 영화 찾기
                                         MovieDTO selectedMovie = null;

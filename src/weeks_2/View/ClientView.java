@@ -117,7 +117,7 @@ public class ClientView extends View {
         int num;
         while (true) {
             try {
-                System.out.print("번호를 선택해주세요 >> ");
+                System.out.print("번호를 선택해주세요 (0 : 뒤로가기) >> ");
                 num = sc.nextInt();
                 sc.nextLine(); // 버퍼 비우기
                 if (num >= 0) {

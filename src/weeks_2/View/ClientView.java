@@ -87,9 +87,9 @@ public class ClientView extends View {
             System.out.print("검색할 영화 제목을 입력해주세요 (0 : 뒤로가기)>> ");
             String keyword = sc.nextLine().trim();
 
-            if (keyword.equals("0")) {   //빼기
-                return keyword;
-            }
+            //if (keyword.equals("0")) {   //빼기
+            //	return keyword;
+            //}
             if (!keyword.isEmpty()) {
                 return keyword;
             }
@@ -135,15 +135,16 @@ public class ClientView extends View {
     // 정상 작동하면 Controller > 1. 시청하기 >> 배열이 안비어있을 때 안에 movies 넣어야함
     public int inputMovieChoiceNum(ArrayList<MovieDTO> movies) {
         while (true) {
-            System.out.print("번호를 선택해주세요 (0 : 뒤로가기) >> ");
+            System.out.print("번호를 선택해주세요 ");
             int num;
             try {
                 num = sc.nextInt();
                 sc.nextLine(); // 버퍼 비우기
 
-                if (num == 0) {   //빼기
-                    return num;
-                }
+                //	if (num == 0) {   //빼기
+                //		return num;
+                //	}
+
                 if (num > 0 && num <= movies.size()) {
                     return num;
                 } else {

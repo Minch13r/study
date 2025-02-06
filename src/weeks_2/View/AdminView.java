@@ -54,7 +54,7 @@ public class AdminView extends View {
         System.out.println("\n======== 새 영상 추가 ========");
         String movieName;
         while (true) {
-            System.out.print("영상 제목을 입력해주세요 >> ");
+            System.out.print("영상 제목을 입력해주세요 (0 : 뒤로가기) >> ");
             movieName = sc.nextLine().trim();
             if(movieName.isEmpty()) {
                 System.out.println("❌ 영상 제목이 없다면 등록할 수 없습니다!");
@@ -133,7 +133,7 @@ public class AdminView extends View {
         System.out.println("\n======== 광고 영상 등록 ========");
         while (true) {
             try {
-                System.out.print("광고로 등록할 영상 번호를 입력해주세요 >> ");
+                System.out.print("광고로 등록할 영상 번호를 입력해주세요 (0 : 뒤로가기) >> ");
                 return Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("❌ 올바른 숫자를 입력해주세요.");

@@ -61,10 +61,16 @@ public class Controller {
             // 사용자 선택 입력받기
             int mainChoice = baseView.inputLogInMenuNum();
 
+
             // 로그인
             if (mainChoice == 1) {
                 // id 입력
                 String id = baseView.inputId();
+
+                if (id == null) {
+                    continue;
+                }
+
                 // pw 입력
                 String password = baseView.inputPw();
 
@@ -325,7 +331,7 @@ public class Controller {
                                     else if (favoriteChoice == 2) {
                                         // 즐겨찾기 목록이 비어있는지 확인
                                         if (favorites == null || favorites.isEmpty()) {
-                                            baseView.printEmpty();
+                                            adminView.inputDeleteMovie();
                                             continue;
                                         }
 
@@ -445,15 +451,15 @@ public class Controller {
                 }
             }
             // 회원가입
+            // 회원가입
             else if (mainChoice == 2) {
                 while(true) {
                     // id 입력 받기
                     String id = baseView.inputId();
 
-                    // ID 유효성 검사
-                    if (id == null || id.trim().isEmpty()) {
-                        baseView.printSignInIDErr();
-                        continue;
+                    // 뒤로가기 처리 (id가 null이면 뒤로가기)
+                    if (id == null) {
+                        break;  // View에서 이미 메시지를 출력하므로 여기서는 break만
                     }
 
                     // 관리자 계정 ID와 동일한지 검사
@@ -473,23 +479,27 @@ public class Controller {
 
                     // 비밀번호 입력받기
                     String password = baseView.inputPw();
+
+                    // 비밀번호가 null이면 뒤로가기
+                    if (password == null) {
+                        break;
+                    }
+
                     MemberDTO memberDto = new MemberDTO();
                     memberDto.setId(id);
                     memberDto.setPw(password);
+
                     // 성공여부 판단
-                    boolean success = memberDao.insert(memberDto);
-                    // 성공시
-                    if (success) {
+                    if (memberDao.insert(memberDto)) {
                         baseView.printSuccess();
-                        break;
-                    }
-                    // 실패시
-                    else {
+                    } else {
                         baseView.printFail();
-                        break;
                     }
+                    break;
                 }
+                continue;  // 메인 메뉴로 돌아가기
             }
+
             // 종료
             else if (mainChoice == 0) {
                 baseView.printExit();

@@ -22,10 +22,12 @@ public class MemberDAO {
     public MemberDTO selectOne(MemberDTO dto) {
         // 입력값 검증
         if (dto == null || dto.getId() == null || dto.getPw() == null) {
-            System.out.println("아이디,비밀번호정보가 없음");//유효성 검사
             return null;
         }
-
+        if (datas.isEmpty()) {
+            System.out.println("등록된 회원이 없습니다.");
+            return null;
+        }
         for (MemberDTO member : datas) {
             // 로그인 검사
             if (dto.getId().equals(member.getId()) && dto.getPw().equals(member.getPw())) {
@@ -40,7 +42,7 @@ public class MemberDAO {
                 //복사값 반환
             }
         }
-        System.out.println("일치하는 회원이 없습니다");//유효성 검사
+        System.out.println("로그 : 일치하는 회원이 없습니다");//유효성 검사
         return null;
     }
  /*객체를 새로 생성하여 데이터를 복사하고 복사한 값을 반환한 이유
@@ -57,7 +59,7 @@ public class MemberDAO {
             for (MemberDTO member : datas) {
                 if (member.getId().equals(dto.getId())) {
                     //기존 아이디 배열과 입력한 아이디 비교
-                    System.out.println("이미 존재하는 아이디입니다.");
+                    System.out.println("로그 : 이미 존재하는 아이디입니다.");
                     return false;//유효성 검사
                 }
             }
@@ -70,11 +72,11 @@ public class MemberDAO {
             //입력한 아이디와 비밀번호를 새로 생성한 data에 저장
             //새로운 회원이므로 즐겨찾기 빈 리스트로 초기화
             //새로운 객체(회원) 기존 회원들 데이터스에 추가
-            System.out.println("MemberDTO insert()에서 true값을 반환.입력한 아이디와 비밀번호를 사용자 리스트에 저장");
+            System.out.println("로그 : MemberDTO insert()에서 true값을 반환.입력한 아이디와 비밀번호를 사용자 리스트에 저장");
             return true;
         }
         catch(Exception e) {
-            System.out.println("회원가입 중 오류가 발생했습니다: " + e.getMessage());
+            System.out.println("로그 : 회원가입 중 오류가 발생했습니다: " + e.getMessage());
             return false;//유효성 검사
         }
     }
@@ -93,18 +95,18 @@ public class MemberDAO {
                 for (MovieDTO movie : memberDTO.getIsPremium()) {
                     //즐겨찾기 목록을 돌면서 모든 영화확인
                     if (movie.getMovieId() == dto.getMovieId()) {
-                        System.out.println("이미 즐겨찾기에 존재하는 영화입니다.");
+                        System.out.println("로그 : 이미 즐겨찾기에 존재하는 영화입니다.");
                         return false;//유효성 검사
                     }
                 }
 
                 // 즐겨찾기에 추가
                 memberDTO.getIsPremium().add(dto);//기존 사용자의 즐겨찾기에 추가
-                System.out.println("즐겨찾기에 영화가 추가되었습니다.");
+                System.out.println("로그 : 즐겨찾기에 영화가 추가되었습니다.");
                 return true;
             }
         }
-        System.out.println("사용자를 찾을 수 없습니다.");
+        System.out.println("로그 : 사용자를 찾을 수 없습니다.");
         return false;//유효성 검사
     }
 
@@ -113,7 +115,7 @@ public class MemberDAO {
     // 즐겨찾기에서 영화 삭제
     public boolean delete(MemberDTO memberDto, MovieDTO movieDto) {//사용자정보와 영화 정보인자로 받아오기
         if (datas.isEmpty()) {
-            System.out.println("등록된 회원이 없습니다.");
+            System.out.println("로그 :등록된 회원이 없습니다.");
             return false;
         }
         if (memberDto == null) {
@@ -144,14 +146,14 @@ public class MemberDAO {
                         for (int i = 0; i < favorites.size(); i++) {
                             if (favorites.get(i).getMovieId() == movieDto.getMovieId()) {
                                 favorites.remove(i);
-                                System.out.println("즐겨찾기에서 삭제됨");
+                                System.out.println("로그 : 즐겨찾기에서 삭제됨");
                                 return true;
                             }
                         }
                     }
                 }
             }
-            System.out.println("해당영화가 존재하지않음");
+            System.out.println("로그 : 해당영화가 존재하지않음");
             return false;
         }
     }

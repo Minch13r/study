@@ -33,24 +33,25 @@ public class View {
     }
 
     // 메뉴 번호 입력
+    // View 클래스의 메뉴 번호 입력 메소드
     public int inputLogInMenuNum() {
         int num;
         while (true) {
             try {
                 System.out.print("메뉴를 선택해주세요 >> ");
-                num = sc.nextInt();
+                String input = sc.nextLine(); // nextInt() 대신 nextLine() 사용
+                num = Integer.parseInt(input); // 문자열을 정수로 변환
+
                 if (MenuMIN <= num && num <= MenuMAX) {
-                    break;
+                    return num;
                 }
                 System.out.println("❌ 잘못된 입력입니다. 다시 입력해주세요.");
             } catch (Exception e) {
-                sc.nextLine();
                 System.out.println("❌ 숫자로 입력해주세요.");
-                continue;
             }
         }
-        return num;
     }
+
 
     // ========== 입력 메서드 ==========
     // 번호 입력 메서드 안쓰는 메서드
@@ -73,7 +74,7 @@ public class View {
         }
     }
 
-    // 메인 메뉴용 입력 메소드
+    // 메인 메뉴용 입력 메소드  , 이거 말고
     public int inputMenuNum() {
         int num;
         while (true) {
@@ -94,34 +95,50 @@ public class View {
 
     // ID >> 공백 체크
     public String inputId() {
-        String id;
-        if (sc.hasNextLine()) {
-            sc.nextLine(); // 개행문자 제거
-        }
         while (true) {
-            System.out.print("아이디를 입력해주세요 >> ");
-            id = sc.nextLine().trim(); // 공백 제거
+            System.out.print("아이디를 입력해주세요 (0 : 뒤로가기)>> ");
+            String id = sc.nextLine();
+
+            // 입력값 정리 (앞뒤 공백 제거)
+            id = id.trim();
+
+            // 뒤로가기 선택
+            if (id.equals("0")) {
+                System.out.println("메인 메뉴로 돌아갑니다.");
+                return null;
+            }
+
+            // 유효성 검사
             if (id.isEmpty()) {
                 System.out.println("❌ 아이디는 공백일 수 없습니다!");
-            } else if (id.contains(" ")) {
-                System.out.println("❌ 아이디에 띄어쓰기는 불가능합니다!");
-            } else {
-                return id;
+                continue;  // 다음 줄에서 바로 입력 프롬프트가 나타나도록
             }
+
+            if (id.contains(" ")) {
+                System.out.println("❌ 아이디에 띄어쓰기는 불가능합니다!");
+                continue;  // 다음 줄에서 바로 입력 프롬프트가 나타나도록
+            }
+
+            return id;  // 유효한 아이디인 경우 반환
         }
     }
+
+
 
     // PW >> 공백 체크
     public String inputPw() {
         String pw;
         while (true) {
-            System.out.print("비밀번호를 입력해주세요 >> ");
+            System.out.print("비밀번호를 입력해주세요 (0 : 뒤로가기)>> ");
             pw = sc.nextLine().trim();
             if (pw.isEmpty()) {
                 System.out.println("❌ 비밀번호는 공백일 수 없습니다!");
             } else if (pw.contains(" ")) {
                 System.out.println("❌ 비밀번호에 띄어쓰기는 불가능합니다!");
-            } else {
+            } else if(pw.equals("0")) {
+                System.out.println("❌ 비밀번호를 '0' 으로 만들 수는 없습니다!");
+            }
+            else {
                 return pw;
             }
         }

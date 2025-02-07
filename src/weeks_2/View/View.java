@@ -131,18 +131,23 @@ public class View {
         while (true) {
             System.out.print("비밀번호를 입력해주세요 (0 : 뒤로가기)>> ");
             pw = sc.nextLine().trim();
+
+            // 뒤로가기 처리
+            if (pw.equals("0")) {
+                System.out.println("메인 메뉴로 돌아갑니다.");
+                return null;
+            }
+
             if (pw.isEmpty()) {
                 System.out.println("❌ 비밀번호는 공백일 수 없습니다!");
             } else if (pw.contains(" ")) {
                 System.out.println("❌ 비밀번호에 띄어쓰기는 불가능합니다!");
-            } else if(pw.equals("0")) {
-                System.out.println("❌ 비밀번호를 '0' 으로 만들 수는 없습니다!");
-            }
-            else {
+            } else {
                 return pw;
             }
         }
     }
+
 
     // 평점 입력 메서드
     public double inputRating() {

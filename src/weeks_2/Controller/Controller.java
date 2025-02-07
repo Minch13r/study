@@ -74,6 +74,11 @@ public class Controller {
                 // pw 입력
                 String password = baseView.inputPw();
 
+                // password가 null이면 메인메뉴로
+                if (password == null) {
+                    continue;
+                }
+
                 // MemberDTO 인스턴스화
                 MemberDTO memberDTO = new MemberDTO();
                 // 관리자 인스턴스화(보안 위해서)

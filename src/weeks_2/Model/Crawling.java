@@ -14,9 +14,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Crawling {public static ArrayList<MovieDTO> makeDatas() {
-
-
+public class Crawling {
+    public static ArrayList<MovieDTO> makeDatas() {
 
     ArrayList<MovieDTO> datas=new ArrayList<>();
     try {

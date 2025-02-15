@@ -28,3 +28,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 /src/day012/class03/Test.java
+/lib/
+/resources/

@@ -16,90 +16,95 @@ import java.util.List;
 
 public class Crawling {
     public static ArrayList<MovieDTO> makeDatas() {
-
-    ArrayList<MovieDTO> datas=new ArrayList<>();
-    try {
-        // ChromeDriver 경로 지정
-        String driverPath = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\study\\src\\day018\\class01\\driver\\chromedriver.exe";
-
-        if(!Files.exists(Paths.get(driverPath))) {	//경로 지정 잘 됐는지 확인
-            System.out.println("[로그]크롤링 실패: ChromeDriver 경로를 다시 확인해주세요");
-            return datas;
-        }
-        // setProperty()로 ChromeDriver의 위치를 시스템에 넘김
-        System.setProperty("webdriver.chrome.driver", driverPath);
-
-        // Chrome 옵션 설정
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");           // 브라우저 창을 띄우지 않고 백그라운드에서 실행
-        options.addArguments("--disable-gpu");        // GPU 하드웨어 가속 비활성화
-        options.addArguments("--no-sandbox");         // 샌드박스 모드 비활성화
-        options.addArguments("--disable-dev-shm-usage"); // 공유 메모리 사용 비활성화
-
-        // WebDriver 생성
-        WebDriver driver = new ChromeDriver(options);
+        ArrayList<MovieDTO> datas = new ArrayList<>();
+        WebDriver driver = null;
 
         try {
-            // 웹페이지 로드
-            driver.get("https://m.kinolights.com/ranking/netflix");
+            String driverPath = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\study\\resources\\chromedriver.exe";
 
-            // 페이지가 완전히 로드될 때까지 충분히 기다림
-            Thread.sleep(3000); // 3초 대기
-
-
-            // 명시적 대기 설정
-            // 최대 대기 10초 설정
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-            // .info__title이 나타날 때까지 대기
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                    By.cssSelector(".info__title")));
-            // span.score__number 나타날 때까지 대기
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                    By.cssSelector("span.score__number")));
-
-
-            // .info__title 클래스를 가진 모든 요소를 찾아 리스트로 저장
-            List<WebElement> titleElements = driver.findElements(
-                    By.cssSelector(".info__title"));
-            // span.score__number 클래스를 가진 모든 요소를 찾아 리스트로 저장
-            List<WebElement> scoreElements = driver.findElements(
-                    By.cssSelector("span.score__number"));
-
-            if (titleElements.isEmpty() || scoreElements.isEmpty()) {	//제목이나 평점이 없을 경우
-                System.err.println("[로그]크롤링 한 데이터가 없습니다.");
+            if(!Files.exists(Paths.get(driverPath))) {
+                System.out.println("[로그]크롤링 실패: ChromeDriver 경로를 다시 확인해주세요");
                 return datas;
             }
 
-            // 결과 출력 (상위 20개만)
-            System.out.println("\n===== 넷플릭스 TOP 20 =====");
-            int count = 0;	//영화 번호
-            for (int i=0;i<titleElements.size() && count<20;i++) {	//20개까지
-                String title = titleElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
-                String ratingText=scoreElements.get(i).getText().trim(); // 요소의 텍스트를 가져와서 공백 제거
-                double rating=0.0;	//초기화
+            System.setProperty("webdriver.chrome.driver", driverPath);
 
-                if(!ratingText.isEmpty()) {	//평점 텍스트로 받은거 double로 형변환
-                    rating=Double.parseDouble(ratingText);
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--start-maximized");
+
+            driver = new ChromeDriver(options);
+
+            try {
+                driver.get("https://m.kinolights.com/ranking/netflix");
+
+                Thread.sleep(5000);
+
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+                // 원래의 CSS 선택자 유지
+                List<WebElement> titleElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.cssSelector(".info__title")));
+                List<WebElement> scoreElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                        By.cssSelector("span.score__number")));
+
+                if (titleElements.isEmpty() || scoreElements.isEmpty()) {
+                    System.out.println("[로그]데이터를 찾을 수 없습니다.");
+                    return datas;
                 }
-                if (!title.isEmpty()) { //공백이 아니면
-                    MovieDTO data=new MovieDTO();
-                    data.setMovieId(count+1);	//영화 번호
-                    data.setTitle(title);	//영화 제목
-                    data.setRating(rating);	//영화 평점
-                    data.setViewCount(0);	//영화 시청수 0으로 초기화
-                    datas.add(data);
-                    count++;
+
+                System.out.println("\n===== 넷플릭스 TOP 20 =====");
+                int count = 0;
+
+                for (int i = 0; i < titleElements.size() && count < 20; i++) {
+                    try {
+                        String title = titleElements.get(i).getText().trim();
+                        String ratingText = scoreElements.get(i).getText().trim();
+                        double rating = 0.0;
+
+                        if(!ratingText.isEmpty()) {
+                            try {
+                                rating = Double.parseDouble(ratingText);
+                            } catch (NumberFormatException e) {
+                                System.out.println("[로그]평점 변환 실패: " + ratingText);
+                                continue;
+                            }
+                        }
+
+                        if (!title.isEmpty()) {
+                            MovieDTO data = new MovieDTO();
+                            data.setMovieId(count + 1);
+                            data.setTitle(title);
+                            data.setRating(rating);
+                            data.setViewCount(0);
+                            datas.add(data);
+                            count++;
+
+                            System.out.println("[로그] " + count + ". " + title + " (평점: " + rating + ")");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("[로그]개별 영화 처리 중 오류: " + e.getMessage());
+                    }
+                }
+
+                System.out.println("[로그]총 " + count + "개의 영화 데이터 수집 완료");
+
+            } finally {
+                if (driver != null) {
+                    driver.quit();
+                    System.out.println("[로그]브라우저 종료 완료");
                 }
             }
-        } finally {
-            driver.quit();
-            //				System.out.println("브라우저 종료 완료");
+
+        } catch (Exception e) {
+            System.out.println("[로그]크롤링 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        System.out.println("Crawling 중 오류 발생: " + e.getMessage());
-        e.printStackTrace();	//예외 내용 출력
+        return datas;
     }
-    return datas;	//크롤링 한거 반환
-}
 }

@@ -343,7 +343,7 @@ public class Controller {
                                             }
                                             // 선택한 영화 즐겨찾기에 추가
                                             updatedFavorites.add(selectedMovie);
-                                            // 업데이트 된 즐겨찾기 목록을 db에 저장
+                                            // 업데이트 된 즐겨찾기 목록을 db에 저장t
                                             memberDTO.setIsPremium(updatedFavorites);
 
                                             // DB에 즐겨찾기 정보 업데이트

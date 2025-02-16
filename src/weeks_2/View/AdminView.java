@@ -1,5 +1,9 @@
 package weeks_2.View;
 
+import weeks_2.Model.MovieDTO;
+
+import java.util.ArrayList;
+
 public class AdminView extends View {
     private static final int adminMenuMAX = 9;
     private static final int adminMenuMIN = 6;
@@ -129,14 +133,21 @@ public class AdminView extends View {
         }
     }
 
-    public int addNewAd() {
+    public int addNewAd(ArrayList<MovieDTO> movies) {
         System.out.println("\n======== 광고 영상 등록 ========");
         while (true) {
+            System.out.print("광고로 등록할 영상 번호를 입력해주세요 (0 : 뒤로가기) >> ");
+            int num;
             try {
-                System.out.print("광고로 등록할 영상 번호를 입력해주세요 (0 : 뒤로가기) >> ");
-                return Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("❌ 올바른 숫자를 입력해주세요.");
+                num = sc.nextInt();
+                sc.nextLine();
+                if(num>=0 && num <= movies.size()) {
+                    return num;
+                }else {
+                    System.out.println("❌ 광고로 등록할 수 없는 번호입니다.");
+                }
+            } catch (Exception e) {
+                System.out.println("❌ 숫자로 입력해주세요.");
             }
         }
     }

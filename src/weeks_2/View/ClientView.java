@@ -158,7 +158,7 @@ public class ClientView extends View {
     }
 
     public void showSelectMovieNum() {
-        System.out.println("상세 정보를 볼 영화의 번호를 선택하세요 (0 : 뒤로가기)");
+        System.out.print("[상세정보 보기]");
     }
 
     public int inputSelectMovieNum() {

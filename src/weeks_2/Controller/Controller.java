@@ -182,7 +182,7 @@ public class Controller {
                                 }
                             }
                             else {
-                                int num=adminView.addNewAd();
+                                int num=adminView.addNewAd(movies);
                                 if(num == 0){
                                     continue;
                                 }

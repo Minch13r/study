@@ -7,7 +7,7 @@ public class BoardDTO {
     private String title;
     private String content;
     private String writer; // FK(외래키)
-    // FK는 반드시 상대 Primary Key 값을 넣어야 함
+    // FK는 반드시 상대 Primary Key 값을 넣어야 함 ▶ JOIN으로 데이터 불러오기 가능
     private int cnt;
     private Date regdate;
 

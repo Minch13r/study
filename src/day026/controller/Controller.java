@@ -45,10 +45,29 @@ public class Controller {
 
             }
             else if(action == 7){
-
+                if(user != null){
+                    continue;
+                }
+                MemberDTO memberDTO = view.inputMemberDTO();
+                boolean flag = memberDAO.insert(memberDTO);
+                view.printResult(flag);
             }
             else if(action == 8){
-
+                if(user != null){
+                    continue;
+                }
+                MemberDTO memberDTO = view.login();
+                MemberDTO data = memberDAO.selectOne(memberDTO);
+                if(data == null){
+                    // 로그인 실패
+                    view.printResult(false);
+                }
+                else{
+                    // 로그인 성공
+                    this.user = data;
+                    this.user.setMember_password(null);
+                    view.printResult(true);
+                }
             }
             else if(action == 9){
 

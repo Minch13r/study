@@ -1,5 +1,6 @@
 package day026.view;
 
+import day026.model.MemberDTO;
 import org.openqa.selenium.json.JsonOutput;
 
 import java.util.Scanner;
@@ -27,5 +28,34 @@ public class View {
     }
     public int inputAction(){
         return sc.nextInt();
+    }
+
+    public MemberDTO inputMemberDTO(){
+        System.out.print("아이디 >>");
+        String mid = sc.next();
+        System.out.print("비밀번호 >>");
+        String password = sc.next();
+        System.out.print("이름 >>");
+        String name = sc.next();
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMember_id(mid);
+        memberDTO.setMember_password(password);
+        memberDTO.setMember_name(name);
+        return memberDTO;
+    }
+
+    public void printResult(boolean flag){
+        System.out.println(flag);
+    }
+
+    public MemberDTO login() {
+        System.out.print("아이디 >>");
+        String mid = sc.next();
+        System.out.print("비밀번호 >>");
+        String password = sc.next();
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMember_id(mid);
+        memberDTO.setMember_password(password);
+        return memberDTO;
     }
 }

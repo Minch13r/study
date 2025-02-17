@@ -36,13 +36,17 @@ public class Controller {
                 MemberDTO memberDTO = view.inputNewName();
 
                 memberDTO.setMember_id(user.getMember_id());
-                memberDTO.setMember_password(user.getMember_password());
 
                 boolean flag = memberDAO.update(memberDTO);
                 if(flag){
                     user.setMember_name(memberDTO.getMember_name());
                 }
                 view.printResult(flag);
+
+                // 성공시, 로그아웃 강제
+                if(flag){
+                    user = null;
+                }
             }
             else if(action == 2){
 
@@ -57,7 +61,10 @@ public class Controller {
 
             }
             else if(action == 6){
-
+                if(user == null){
+                    continue;
+                }
+                user = null;
             }
             else if(action == 7){
                 if(user != null){

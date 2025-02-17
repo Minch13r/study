@@ -10,8 +10,13 @@ public class MemberDAO {
         // 로그인
         return null;
     }
+    // 회원가입
     public boolean insert(MemberDTO dto){
-        // 회원가입
+        /*
+        * 내 DB에 dto 값을 저장
+        * 저장 잘되면 T
+        * 저장 안되면 F
+        * */
         return false;
     }
     public boolean update(MemberDTO dto){

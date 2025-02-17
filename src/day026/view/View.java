@@ -25,5 +25,7 @@ public class View {
         System.out.println("10. 검색");
         System.out.println("11. 프로그램 종료");
     }
-
+    public int inputAction(){
+        return sc.nextInt();
+    }
 }

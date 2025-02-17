@@ -1,9 +1,12 @@
 package day026.controller;
 
 import day026.model.BoardDAO;
+import day026.model.BoardDTO;
 import day026.model.MemberDAO;
 import day026.model.MemberDTO;
 import day026.view.View;
+
+import java.util.ArrayList;
 
 public class Controller {
     private BoardDAO boardDAO;
@@ -26,8 +29,20 @@ public class Controller {
                 view.printMenuLogOut();
             }
             int action = view.inputAction();
+
+            // 1. 이름 변경
             if(action == 1){
 
+                MemberDTO memberDTO = view.inputNewName();
+
+                memberDTO.setMember_id(user.getMember_id());
+                memberDTO.setMember_password(user.getMember_password());
+
+                boolean flag = memberDAO.update(memberDTO);
+                if(flag){
+                    user.setMember_name(memberDTO.getMember_name());
+                }
+                view.printResult(flag);
             }
             else if(action == 2){
 

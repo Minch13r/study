@@ -58,4 +58,13 @@ public class View {
         memberDTO.setMember_password(password);
         return memberDTO;
     }
+
+    public MemberDTO inputNewName() {
+        MemberDTO memberDTO = new MemberDTO();
+        System.out.print("변경할 이름을 입력하세요 >> ");
+        String newName = sc.next();
+        memberDTO.setMember_name(newName);
+        return memberDTO;
+    }
+
 }

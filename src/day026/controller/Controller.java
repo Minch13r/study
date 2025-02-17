@@ -48,9 +48,35 @@ public class Controller {
                     user = null;
                 }
             }
+            // 회원탈퇴
+            // 회원탈퇴
             else if(action == 2){
+                // 로그인 상태 확인
+                if(user == null){
+                    view.printResult(false);
+                    continue;
+                }
 
+                // 비밀번호 재확인
+                MemberDTO memberDTO = view.login(); // 기존 로그인 입력 화면 재사용
+
+                // 현재 로그인된 사용자의 아이디와 입력된 아이디가 일치하는지 확인
+                if(!user.getMember_id().equals(memberDTO.getMember_id())){
+                    view.printResult(false);
+                    continue;
+                }
+
+                // 회원 탈퇴 실행
+                boolean flag = memberDAO.delete(memberDTO);
+
+                // 탈퇴 성공시 로그아웃 처리
+                if(flag){
+                    user = null;
+                }
+
+                view.printResult(flag);
             }
+
             else if(action == 3){
 
             }

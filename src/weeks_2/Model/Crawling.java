@@ -20,7 +20,7 @@ public class Crawling {
         WebDriver driver = null;
 
         try {
-            String driverPath = "C:\\Users\\3333c\\Desktop\\school\\ACADEMY\\study\\resources\\chromedriver.exe";
+            String driverPath = "D:\\new\\minch13r\\workspace\\KOREA\\src\\weeks_2\\chromedriver.exe";
 
             if(!Files.exists(Paths.get(driverPath))) {
                 System.out.println("[로그]크롤링 실패: ChromeDriver 경로를 다시 확인해주세요");

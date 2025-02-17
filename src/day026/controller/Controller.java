@@ -58,7 +58,7 @@ public class Controller {
                 }
 
                 // 비밀번호 재확인
-                MemberDTO memberDTO = view.login(); // 기존 로그인 입력 화면 재사용
+                MemberDTO memberDTO = view.login(); // 아이디랑 pw 입력받기
 
                 // 현재 로그인된 사용자의 아이디와 입력된 아이디가 일치하는지 확인
                 if(!user.getMember_id().equals(memberDTO.getMember_id())){

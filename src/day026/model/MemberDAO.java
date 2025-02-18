@@ -34,7 +34,6 @@ public class MemberDAO {
                 data = new MemberDTO();
                 data.setMember_id(rs.getString("MEMBER_ID"));
                 data.setMember_password(rs.getString("MEMBER_PASSWORD"));
-                data.setMember_name(rs.getString("MEMBER_NAME"));
             }
             return data;
         } catch (Exception e) {

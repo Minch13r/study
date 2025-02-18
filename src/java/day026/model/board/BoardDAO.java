@@ -13,11 +13,12 @@ public class BoardDAO {
     final String SELECTALL_SEARCH_TITLE = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE TITLE LIKE CONCAT('%',?,'%')";
     final String SELECTALL_SEARCH_WRITER = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE WRITER=?";
 
-    final String SELECTONE = "SELECT b.NUM,b.TITLE,b.CONTENT,m.member_name as WRITER, b.CNT,b.REGDATE FROM BOARD b inner join member m on m.member_id = b.writer WHERE NUM=?";
+    //final String SELECTONE = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE NUM=?";
+    final String SELECTONE = "SELECT BOARD.NUM,BOARD.TITLE,BOARD.CONTENT,BOARD.WRITER,MEMBER.MEMBER_NAME AS NAME,BOARD.CNT,BOARD.REGDATE FROM BOARD LEFT JOIN MEMBER ON BOARD.WRITER=MEMBER.MEMBER_ID WHERE BOARD.NUM=?";
 
     final String INSERT = "INSERT INTO BOARD (TITLE,CONTENT,WRITER) VALUES(?,?,?)";
     final String UPDATE = "UPDATE BOARD SET CONTENT=? WHERE NUM=?";
-    final String UPDATECANCLE = "UPDATE BOARD SET member_name=? WHERE NUM=?";
+    final String UPDATE_DELETEMEMBER = "UPDATE BOARD SET WRITER='' WHERE WRITER=?";
     final String DELETE = "DELETE FROM BOARD WHERE NUM=?";
 
     public ArrayList<BoardDTO> selectAll(BoardDTO dto){
@@ -31,11 +32,11 @@ public class BoardDAO {
             }
             else if(dto.getCondition().equals("SEARCH_TITLE")) {
                 pstmt = conn.prepareStatement(SELECTALL_SEARCH_TITLE);
-                pstmt.setString(1, dto.getTitle());
+                pstmt.setString(1, dto.getSearchKeyword());
             }
             else if(dto.getCondition().equals("SEARCH_WRITER")) {
                 pstmt = conn.prepareStatement(SELECTALL_SEARCH_WRITER);
-                pstmt.setString(1, dto.getWriter());
+                pstmt.setString(1, dto.getSearchKeyword());
             }
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -71,6 +72,7 @@ public class BoardDAO {
                 data.setTitle(rs.getString("TITLE"));
                 data.setContent(rs.getString("CONTENT"));
                 data.setWriter(rs.getString("WRITER"));
+                data.setName(rs.getString("NAME"));
                 data.setCnt(rs.getInt("CNT"));
                 data.setRegdate(rs.getDate("REGDATE"));
             }
@@ -113,25 +115,21 @@ public class BoardDAO {
                 pstmt.setString(1, dto.getContent());
                 pstmt.setInt(2, dto.getNum());
             }
-            else if(dto.getCondition().equals("UPDATECANCLE")){
-                pstmt = conn.prepareStatement(UPDATECANCLE);
+            else if(dto.getCondition().equals("UPDATE_DELETEMEMBER")) {
+                pstmt = conn.prepareStatement(UPDATE_DELETEMEMBER);
                 pstmt.setString(1, dto.getWriter());
-                pstmt.setInt(2, dto.getNum());
             }
-            ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
-                pstmt.setString(1, dto.getContent());
-                pstmt.setInt(2, dto.getNum());
-                pstmt.setString(3, dto.getWriter());
-
+            int result = pstmt.executeUpdate();
+            if(result <= 0) {
+                return false;
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         } finally {
             JDBCUtil.disconnect(conn, pstmt);
         }
-        return true;
     }
     public boolean delete(BoardDTO dto){
         Connection conn = null;
@@ -154,3 +152,4 @@ public class BoardDAO {
         }
     }
 }
+

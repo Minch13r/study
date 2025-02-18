@@ -10,36 +10,49 @@ import java.util.ArrayList;
 public class BoardDAO {
     final String SELECTALL = "SELECT * FROM board";
     final String SELECTONE = "SELECT * FROM board WHERE num = ?";
+    final String SELECT_TITLE = "SELECT * FROM board WHERE title LIKE ?";
+    final String SELECT_WRITER = "SELECT * FROM board WHERE WRITER = ?";
     final String INSERT = "insert into board (title, content, writer) values (?, ?, ?)";
+    final String UPDATE = "update board set content = ? where num = ?";
+    final String DELETE = "delete from board where num = ?";
+
+    // 공유자원
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
 
 
-    public ArrayList<BoardDTO> selectAll(){
-        ArrayList<BoardDTO> datas = new ArrayList<>();
-        try {
-            // 1. 드라이버 로드
-            // 2. DB 연결
-            conn = JDBCUtil.connect();
-            pstmt = conn.prepareStatement(SELECTALL);
-            rs = pstmt.executeQuery();
+    public ArrayList<BoardDTO> selectAll(BoardDTO dto) {
+        ArrayList<BoardDTO> datas = new ArrayList<BoardDTO>();
 
+        try {
+            conn = JDBCUtil.connect();
+
+            if (dto.getCondition().equals("SELECTALL")) {
+                pstmt = conn.prepareStatement(SELECTALL);
+            }
+            else if (dto.getCondition().equals("SEARCH_TITLE")) {
+                pstmt = conn.prepareStatement(SELECTONE);
+                pstmt.setString(1, dto.getTitle());
+            }
+            else if (dto.getCondition().equals("SEARCH_WRITER")) {
+                pstmt = conn.prepareStatement(SELECTONE);
+                pstmt.setString(1, dto.getWriter());
+            }
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                BoardDTO boardDTO = new BoardDTO();
-                // BoardDTO의 실제 필드에 맞게 데이터 설정
-                boardDTO.setNum(rs.getInt("NUM"));
-                boardDTO.setTitle(rs.getString("TITLE"));
-                boardDTO.setContent(rs.getString("CONTENT"));
-                boardDTO.setWriter(rs.getString("WRITER"));
-                boardDTO.setCnt(rs.getInt("CNT"));
-                boardDTO.setRegdate(rs.getTimestamp("REGDATE"));
-                datas.add(boardDTO);
+                BoardDTO data = new BoardDTO();
+                data.setNum(rs.getInt("num"));
+                data.setTitle(rs.getString("title"));
+                data.setContent(rs.getString("content"));
+                data.setWriter(rs.getString("writer"));
+                data.setCnt(rs.getInt("CNT"));
+                data.setRegdate(rs.getDate("regdate"));
+                datas.add(data);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // 4. DB 연결 해제
             JDBCUtil.disconnect(conn, pstmt);
         }
         return datas;
@@ -94,16 +107,41 @@ public class BoardDAO {
             // 4. DB 연결 해제
             JDBCUtil.disconnect(conn, pstmt);
         }
-
-
         return false;
     }
-    public boolean update(BoardDAO dto){
-        // 내용변경
+    public boolean update(BoardDTO dto){
+        try {
+            conn = JDBCUtil.connect();
+            pstmt = conn.prepareStatement(UPDATE);
+            pstmt.setString(1, dto.getContent());
+            pstmt.setInt(2, dto.getNum());
+            int result = pstmt.executeUpdate();
+            if(result <= 0){
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.disconnect(conn, pstmt);
+        }
         return false;
     }
-    public boolean delete(BoardDAO dto){
-        // 삭제
+    public boolean delete(BoardDTO dto){
+        try {
+            conn = JDBCUtil.connect();
+            pstmt = conn.prepareStatement(DELETE);
+            pstmt.setInt(1, dto.getNum());
+            int result = pstmt.executeUpdate();
+            if(result <= 0){
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.disconnect(conn, pstmt);
+        }
         return false;
     }
 }

@@ -79,7 +79,7 @@ public class View {
         return boardDTO;
     }
 
-    public void printBoardList(ArrayList<BoardDTO> datas) {
+    public void printBoardAllList(ArrayList<BoardDTO> datas) {
         System.out.println("=== 게시글 목록 ===");
         System.out.println("번호\t제목\t작성자\t조회수\t작성일");
         System.out.println("=====================================");
@@ -91,6 +91,10 @@ public class View {
                     data.getRegdate());
         }
         System.out.println("=====================================");
+    }
+
+    public void printBoardTitleList(ArrayList<BoardDTO> datas) {
+        System.out.println("=== 게시글 목록");
     }
 
     public int inputBoardNum() {
@@ -108,5 +112,17 @@ public class View {
         System.out.println("조회수: " + board.getCnt());
         System.out.println("작성일: " + board.getRegdate());
         System.out.println("=====================");
+    }
+
+    public String questionUpdate() {
+        System.out.println("수정하시겠습니까?(Y/N)");
+        String ans = sc.next();
+        return ans;
+    }
+
+    public int printSelectSearch() {
+        System.out.println("숫자를 입력해주세요(1,2)");
+        int searchNum = sc.nextInt();
+        return searchNum;
     }
 }

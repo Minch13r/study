@@ -107,6 +107,8 @@ public class Controller {
                 BoardDTO result = boardDAO.selectOne(dto);
                 if(result != null) {
                     view.printBoard(result);
+                    view.questionUpdate();
+
                 } else {
                     view.printResult(false);
                 }
@@ -157,7 +159,10 @@ public class Controller {
 
             // 9. 목록 출력
             else if(action == 9){
-                ArrayList<BoardDTO> datas = boardDAO.selectAll();
+                BoardDTO dto = new BoardDTO();
+                dto.setCondition("SELECTALL"); // 검색 조건 설정
+                ArrayList<BoardDTO> datas = boardDAO.selectAll(dto);
+
                 // 비어있으면
                 if(datas.isEmpty()) {
                     // 실패
@@ -166,10 +171,9 @@ public class Controller {
                 // 내용이 있으면
                 else {
                     // 출력
-                    view.printBoardList(datas);
+                    view.printBoardAllList(datas);
                 }
             }
-
 
             // 10. 검색
             else if(action == 10){

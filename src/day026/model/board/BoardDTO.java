@@ -10,6 +10,16 @@ public class BoardDTO {
     // FK는 반드시 상대 Primary Key 값을 넣어야 함 ▶ JOIN으로 데이터 불러오기 가능
     private int cnt;
     private Date regdate;
+    private String condition;
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
 
     public int getNum() {
         return num;

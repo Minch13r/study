@@ -1,5 +1,7 @@
 package day026.model.member;
 
+import day026.model.common.JDBCUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -20,9 +22,8 @@ public class MemberDAO {
         PreparedStatement pstmt = null;
         try {
             // 1. 드라이버 로드
-            Class.forName(driverName);
             // 2. DB 연결
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = JDBCUtil.connect();
             // 3. 데이터 read, write
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getMember_id());
@@ -39,12 +40,7 @@ public class MemberDAO {
             return data;
         } finally {
             // 4. DB 연결 해제
-            try {
-                pstmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            JDBCUtil.disconnect(conn, pstmt);
         }
     }
 
@@ -59,10 +55,9 @@ public class MemberDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            // 1. 드라이버 로드(메모리에 데이터 적재)
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            // 1. 드라이버 로드
             // 2. DB 연결
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "12345678");
+            conn = JDBCUtil.connect();
             // 3. 데이터 read, write
             pstmt = conn.prepareStatement("INSERT INTO MEMBER VALUES (?, ?, ?)"); // parsing
             pstmt.setString(1, dto.getMember_id());
@@ -81,26 +76,13 @@ public class MemberDAO {
             return false;
         } finally {
             // 4. DB 연결 해제
-            try {
-                pstmt.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            JDBCUtil.disconnect(conn, pstmt);
         }
 
     }
 
     // 이름변경
     public boolean update(MemberDTO dto) {
-        final String driverName = "com.mysql.cj.jdbc.Driver";
-        final String url = "jdbc:mysql://localhost:3306/test";
-        final String userName = "root";
-        final String password = "12345678";
         final String sql = "UPDATE MEMBER SET MEMBER_NAME = ? WHERE MEMBER_ID = ?";
 
         Connection conn = null;
@@ -108,10 +90,8 @@ public class MemberDAO {
 
         try {
             // 1. 드라이버 로드
-            Class.forName(driverName);
-
             // 2. DB 연결
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = JDBCUtil.connect();
 
             // 3. SQL 준비 및 실행
             pstmt = conn.prepareStatement(sql);
@@ -128,21 +108,12 @@ public class MemberDAO {
             e.printStackTrace();
             return false;
         } finally {
-            // 4. 리소스 해제
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 4. DB 연결 해제
+            JDBCUtil.disconnect(conn, pstmt);
         }
     }
 
     public boolean delete(MemberDTO dto) {
-        final String driverName = "com.mysql.cj.jdbc.Driver";
-        final String url = "jdbc:mysql://localhost:3306/test";
-        final String userName = "root";
-        final String password = "12345678";
         final String sql = "DELETE FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASSWORD = ?";
 
         Connection conn = null;
@@ -150,10 +121,8 @@ public class MemberDAO {
 
         try {
             // 1. 드라이버 로드
-            Class.forName(driverName);
-
             // 2. DB 연결
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = JDBCUtil.connect();
 
             // 3. SQL 준비 및 실행
             pstmt = conn.prepareStatement(sql);
@@ -169,13 +138,8 @@ public class MemberDAO {
             e.printStackTrace();
             return false;
         } finally {
-            // 4. 리소스 해제
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 4. DB 연결 해제
+            JDBCUtil.disconnect(conn, pstmt);
         }
     }
 

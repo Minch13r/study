@@ -1,15 +1,13 @@
 package day026.model.board;
 
+import day026.model.common.JDBCUtil;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 // 목록출력
 // 검색
 public class BoardDAO {
-    final String driverName = "com.mysql.cj.jdbc.Driver";
-    final String url = "jdbc:mysql://localhost:3306/test";
-    final String userName = "root";
-    final String password = "12345678";
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -19,10 +17,8 @@ public class BoardDAO {
         ArrayList<BoardDTO> datas = new ArrayList<>();
         try {
             // 1. 드라이버 로드
-            Class.forName(driverName);
-
             // 2. DB 연결
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = JDBCUtil.connect();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -40,14 +36,8 @@ public class BoardDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // 5. 리소스 해제
-            try {
-                if(rs != null) rs.close();
-                if(pstmt != null) pstmt.close();
-                if(conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 4. DB 연결 해제
+            JDBCUtil.disconnect(conn, pstmt);
         }
         return null;
     }
@@ -59,10 +49,9 @@ public class BoardDAO {
     public boolean insert(BoardDTO dto){
         final String sql = "insert into board (title, content, writer) values (?, ?, ?)";
         try{
-            // 1. 드라이버 연결
-            Class.forName(driverName);
-            // 2. conn 연결
-            conn = DriverManager.getConnection(url, userName, password);
+            // 1. 드라이버 로드
+            // 2. DB 연결
+            conn = JDBCUtil.connect();
             // 3. 데이터 read, write
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getTitle());
@@ -77,13 +66,8 @@ public class BoardDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                // 4. conn 연결 해제
-                pstmt.close();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 4. DB 연결 해제
+            JDBCUtil.disconnect(conn, pstmt);
         }
 
 

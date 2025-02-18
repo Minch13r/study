@@ -1,12 +1,10 @@
 package day026.controller;
 
-import day026.model.BoardDAO;
-import day026.model.BoardDTO;
-import day026.model.MemberDAO;
-import day026.model.MemberDTO;
+import day026.model.board.BoardDAO;
+import day026.model.board.BoardDTO;
+import day026.model.member.MemberDAO;
+import day026.model.member.MemberDTO;
 import day026.view.View;
-
-import java.util.ArrayList;
 
 public class Controller {
     private BoardDAO boardDAO;

@@ -1,8 +1,7 @@
 package day026.view;
 
-import day026.model.BoardDTO;
-import day026.model.MemberDTO;
-import org.openqa.selenium.json.JsonOutput;
+import day026.model.board.BoardDTO;
+import day026.model.member.MemberDTO;
 
 import java.util.Scanner;
 

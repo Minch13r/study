@@ -61,7 +61,9 @@ public class BoardDAO {
         try{
             // 1. 드라이버 연결
             Class.forName(driverName);
+            // 2. conn 연결
             conn = DriverManager.getConnection(url, userName, password);
+            // 3. 데이터 read, write
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getTitle());
             pstmt.setString(2, dto.getContent());
@@ -77,15 +79,13 @@ public class BoardDAO {
         } finally {
             try {
                 // 4. conn 연결 해제
-
                 pstmt.close();
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        // 2. conn 연결
-        // 3. 데이터 read, write
+
 
         return false;
     }

@@ -1,4 +1,4 @@
-package day026.model;
+package day026.model.board;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package day026.model;
+package day026.model.member;
 
 public class MemberDTO {
     private String member_id;

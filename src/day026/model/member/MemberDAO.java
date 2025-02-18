@@ -1,6 +1,4 @@
-package day026.model;
-
-import com.mysql.cj.xdevapi.Result;
+package day026.model.member;
 
 import java.sql.*;
 import java.util.ArrayList;

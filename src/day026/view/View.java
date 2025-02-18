@@ -3,6 +3,7 @@ package day026.view;
 import day026.model.board.BoardDTO;
 import day026.model.member.MemberDTO;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class View {
@@ -78,4 +79,17 @@ public class View {
         return boardDTO;
     }
 
+    public void printBoardList(ArrayList<BoardDTO> datas) {
+        System.out.println("=== 게시글 목록 ===");
+        System.out.println("번호\t제목\t작성자\t조회수\t작성일");
+        System.out.println("=====================================");
+        for(BoardDTO data : datas) {
+            System.out.println(data.getNum() + "\t" +
+                    data.getTitle() + "\t" +
+                    data.getWriter() + "\t" +
+                    data.getCnt() + "\t" +
+                    data.getRegdate());
+        }
+        System.out.println("=====================================");
+    }
 }

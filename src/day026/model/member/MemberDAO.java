@@ -6,9 +6,16 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class MemberDAO {
+    final String SELECTONE = "SELECT * FROM MEMBER WHERE MEMBER_ID=? AND MEMBER_PASSWORD=?";
+    final String INSERT = "INSERT INTO MEMBER VALUES (?, ?, ?)";
+    final String UPDATAE = "UPDATE MEMBER SET MEMBER_NAME = ? WHERE MEMBER_ID = ?";
+    final String DELETE = "DELETE FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASSWORD = ?";
+
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
+
+
     private ArrayList<MemberDTO> selectAll(MemberDTO dto) {
         return null;
     }
@@ -16,14 +23,13 @@ public class MemberDAO {
     // 로그인
     public MemberDTO selectOne(MemberDTO dto) {
         MemberDTO data = null;
-        final String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID=? AND MEMBER_PASSWORD=?";
 
         try {
             // 1. 드라이버 로드
             // 2. DB 연결
             conn = JDBCUtil.connect();
             // 3. 데이터 read, write
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(SELECTONE);
             pstmt.setString(1, dto.getMember_id());
             pstmt.setString(2, dto.getMember_password());
             if (rs.next()) {
@@ -54,7 +60,7 @@ public class MemberDAO {
             // 2. DB 연결
             conn = JDBCUtil.connect();
             // 3. 데이터 read, write
-            pstmt = conn.prepareStatement("INSERT INTO MEMBER VALUES (?, ?, ?)"); // parsing
+            pstmt = conn.prepareStatement(INSERT); // parsing
             pstmt.setString(1, dto.getMember_id());
             pstmt.setString(2, dto.getMember_password());
             pstmt.setString(3, dto.getMember_name());
@@ -77,7 +83,6 @@ public class MemberDAO {
 
     // 이름변경
     public boolean update(MemberDTO dto) {
-        final String sql = "UPDATE MEMBER SET MEMBER_NAME = ? WHERE MEMBER_ID = ?";
 
         try {
             // 1. 드라이버 로드
@@ -85,7 +90,7 @@ public class MemberDAO {
             conn = JDBCUtil.connect();
 
             // 3. SQL 준비 및 실행
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(UPDATAE);
             System.out.println("[로그]" + dto);
             pstmt.setString(1, dto.getMember_name());     // 새로운 이름
             pstmt.setString(2, dto.getMember_id());       // 아이디
@@ -105,7 +110,6 @@ public class MemberDAO {
     }
 
     public boolean delete(MemberDTO dto) {
-        final String sql = "DELETE FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASSWORD = ?";
 
         try {
             // 1. 드라이버 로드
@@ -113,7 +117,7 @@ public class MemberDAO {
             conn = JDBCUtil.connect();
 
             // 3. SQL 준비 및 실행
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(DELETE);
             pstmt.setString(1, dto.getMember_id());
             pstmt.setString(2, dto.getMember_password());
 

@@ -6,6 +6,8 @@ import day026.model.member.MemberDAO;
 import day026.model.member.MemberDTO;
 import day026.view.View;
 
+import java.util.ArrayList;
+
 public class Controller {
     private BoardDAO boardDAO;
     private MemberDAO memberDAO;
@@ -20,12 +22,15 @@ public class Controller {
 
     public void startApp(){
         while(true){
+            // 로그인 확인
             if(user != null){
                 view.printMenuLogin();
             }
             else {
                 view.printMenuLogOut();
             }
+
+            // 숫자 입력
             int action = view.inputAction();
 
             // 1. 이름 변경
@@ -46,7 +51,7 @@ public class Controller {
                     user = null;
                 }
             }
-            // 회원탈퇴
+
             // 회원탈퇴
             else if(action == 2){
                 // 로그인 상태 확인
@@ -92,18 +97,26 @@ public class Controller {
                 view.printResult(flag);
 
             }
+
+            // 4. 글 선택
             else if(action == 4){
 
             }
+
+            // 5. 글 삭제
             else if(action == 5){
 
             }
+
+            // 6. 로그아웃
             else if(action == 6){
                 if(user == null){
                     continue;
                 }
                 user = null;
             }
+
+            // 7. 회원가입
             else if(action == 7){
                 if(user != null){
                     continue;
@@ -112,6 +125,8 @@ public class Controller {
                 boolean flag = memberDAO.insert(memberDTO);
                 view.printResult(flag);
             }
+
+            // 8. 로그인
             else if(action == 8){
                 if(user != null){
                     continue;
@@ -129,11 +144,31 @@ public class Controller {
                     view.printResult(true);
                 }
             }
-            else if(action == 9){
 
+            // 9. 목록 출력
+            else if(action == 9){
+                ArrayList<BoardDTO> datas = boardDAO.selectAll();
+                // 비어있으면
+                if(datas.isEmpty()) {
+                    // 실패
+                    view.printResult(false);
+                }
+                // 내용이 있으면
+                else {
+                    // 출력
+                    view.printBoardList(datas);
+                }
             }
+
+
+            // 10. 검색
             else if(action == 10){
 
+            }
+
+            // 11. 종료
+            else if(action == 11){
+                break;
             }
         }
     }

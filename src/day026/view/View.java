@@ -86,20 +86,6 @@ public class View {
         return boardDTO;
     }
 
-    public void printBoardAllList(ArrayList<BoardDTO> datas) {
-        System.out.println("=== 게시글 목록 ===");
-        System.out.println("번호\t제목\t작성자\t조회수\t작성일");
-        System.out.println("=====================================");
-        for(BoardDTO data : datas) {
-            System.out.println(data.getNum() + "\t" +
-                    data.getTitle() + "\t" +
-                    data.getWriter() + "\t" +
-                    data.getCnt() + "\t" +
-                    data.getRegdate());
-        }
-        System.out.println("=====================================");
-    }
-
 
     public int inputBoardNum() {
         System.out.print("숫자 입력 >>");
@@ -119,7 +105,7 @@ public class View {
     }
 
     public String questionUpdate() {
-        System.out.println("수정하시겠습니까?(Y/N)");
+        System.out.print("수정하시겠습니까?(Y/N)");
         String ans = sc.next();
         return ans;
     }
@@ -137,5 +123,10 @@ public class View {
         for(BoardDTO data : datas) {
             System.out.println(data);
         }
+    }
+
+    public String printContent() {
+        System.out.println("수정 할 내용을 입력하세요.");
+        return sc.next();
     }
 }

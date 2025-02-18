@@ -92,8 +92,19 @@ public class Controller {
                 BoardDTO result = boardDAO.selectOne(dto);
                 if(result != null) {
                     view.printBoard(result);
-                    view.questionUpdate();
-
+                    String ans = view.questionUpdate();
+                    if(ans.equalsIgnoreCase("y")){
+                        String contentAns = view.printContent();
+                        dto.setContent(contentAns);
+                        boolean flag = boardDAO.update(dto);
+                        view.printResult(flag);
+                    }
+                    else if(ans.equalsIgnoreCase("n")){
+                        continue;
+                    }
+                    else {
+                        view.printResult(false);
+                    }
                 } else {
                     view.printResult(false);
                 }
@@ -102,8 +113,17 @@ public class Controller {
 
             // 5. 글 삭제
             else if(action == 5){
-
+                if(user == null){
+                    view.printResult(false);
+                    continue; // 로그인하지 않은 경우 다음 반복으로
+                }
+                int num = view.inputBoardNum();
+                BoardDTO dto = new BoardDTO();
+                dto.setNum(num);
+                boolean result = boardDAO.delete(dto); // BoardDTO가 아닌 boolean으로 받아야 합니다
+                view.printResult(result); // 삭제 결과를 화면에 출력
             }
+
 
             // 6. 로그아웃
             else if(action == 6){

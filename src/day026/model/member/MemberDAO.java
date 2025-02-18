@@ -32,6 +32,8 @@ public class MemberDAO {
             pstmt = conn.prepareStatement(SELECTONE);
             pstmt.setString(1, dto.getMember_id());
             pstmt.setString(2, dto.getMember_password());
+
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 data = new MemberDTO();
                 data.setMember_id(rs.getString("MEMBER_ID"));

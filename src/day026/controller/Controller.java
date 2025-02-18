@@ -99,9 +99,19 @@ public class Controller {
             }
 
             // 4. 글 선택
-            else if(action == 4){
+            else if(action == 4) {
+                int boardNum = view.inputBoardNum();  // 사용자로부터 게시글 번호 입력받기
+                BoardDTO dto = new BoardDTO();
+                dto.setNum(boardNum);
 
+                BoardDTO result = boardDAO.selectOne(dto);
+                if(result != null) {
+                    view.printBoard(result);
+                } else {
+                    view.printResult(false);
+                }
             }
+
 
             // 5. 글 삭제
             else if(action == 5){

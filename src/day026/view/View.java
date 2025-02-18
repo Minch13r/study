@@ -92,4 +92,21 @@ public class View {
         }
         System.out.println("=====================================");
     }
+
+    public int inputBoardNum() {
+        System.out.print("숫자 입력 >>");
+        int boardNum = sc.nextInt();
+        return boardNum;
+    }
+
+    public void printBoard(BoardDTO board) {
+        System.out.println("=== 게시글 상세 보기 ===");
+        System.out.println("번호: " + board.getNum());
+        System.out.println("제목: " + board.getTitle());
+        System.out.println("작성자: " + board.getWriter());
+        System.out.println("내용: " + board.getContent());
+        System.out.println("조회수: " + board.getCnt());
+        System.out.println("작성일: " + board.getRegdate());
+        System.out.println("=====================");
+    }
 }

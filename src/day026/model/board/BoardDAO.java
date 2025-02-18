@@ -8,7 +8,8 @@ import java.util.ArrayList;
 // 목록출력
 // 검색
 public class BoardDAO {
-    final String SELECTALL = "SELECT * FROM board;";
+    final String SELECTALL = "SELECT * FROM board";
+    final String SELECTONE = "SELECT * FROM board WHERE num = ?";
     final String INSERT = "insert into board (title, content, writer) values (?, ?, ?)";
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -45,9 +46,31 @@ public class BoardDAO {
     }
 
     // 선택
-    public BoardDAO selectOne(BoardDTO dto){
-        return null;
+    public BoardDTO selectOne(BoardDTO dto) {  // 반환 타입을 BoardDTO로 변경
+        BoardDTO data = null;  // 단일 게시글 정보를 저장할 변수
+        try {
+            conn = JDBCUtil.connect();
+            pstmt = conn.prepareStatement(SELECTONE);
+            pstmt.setInt(1, dto.getNum());  // 게시글 번호로 검색
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {  // while이 아닌 if 사용 (단일 결과)
+                data = new BoardDTO();
+                data.setNum(rs.getInt("NUM"));
+                data.setTitle(rs.getString("TITLE"));
+                data.setContent(rs.getString("CONTENT"));
+                data.setWriter(rs.getString("WRITER"));
+                data.setCnt(rs.getInt("CNT"));
+                data.setRegdate(rs.getTimestamp("REGDATE"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.disconnect(conn, pstmt);
+        }
+        return data;
     }
+
     // 작성
     public boolean insert(BoardDTO dto){
         try{

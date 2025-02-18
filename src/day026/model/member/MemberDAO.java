@@ -6,6 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class MemberDAO {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
     private ArrayList<MemberDTO> selectAll(MemberDTO dto) {
         return null;
     }
@@ -13,13 +16,8 @@ public class MemberDAO {
     // 로그인
     public MemberDTO selectOne(MemberDTO dto) {
         MemberDTO data = null;
-        final String driverName = "com.mysql.cj.jdbc.Driver";
-        final String url = "jdbc:mysql://localhost:3306/test";
-        final String userName = "root";
-        final String password = "12345678";
         final String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID=? AND MEMBER_PASSWORD=?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
+
         try {
             // 1. 드라이버 로드
             // 2. DB 연결
@@ -28,7 +26,6 @@ public class MemberDAO {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getMember_id());
             pstmt.setString(2, dto.getMember_password());
-            ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 data = new MemberDTO();
                 data.setMember_id(rs.getString("MEMBER_ID"));
@@ -52,8 +49,6 @@ public class MemberDAO {
          * 저장 안되면 F
          * */
         // [ JDBC ], Java DataBase Connection
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         try {
             // 1. 드라이버 로드
             // 2. DB 연결
@@ -64,7 +59,6 @@ public class MemberDAO {
             pstmt.setString(2, dto.getMember_password());
             pstmt.setString(3, dto.getMember_name());
             int result = pstmt.executeUpdate();
-
 
             if (result <= 0) {
                 return false;
@@ -84,9 +78,6 @@ public class MemberDAO {
     // 이름변경
     public boolean update(MemberDTO dto) {
         final String sql = "UPDATE MEMBER SET MEMBER_NAME = ? WHERE MEMBER_ID = ?";
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
 
         try {
             // 1. 드라이버 로드
@@ -115,9 +106,6 @@ public class MemberDAO {
 
     public boolean delete(MemberDTO dto) {
         final String sql = "DELETE FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASSWORD = ?";
-
-        Connection conn = null;
-        PreparedStatement pstmt = null;
 
         try {
             // 1. 드라이버 로드

@@ -1,4 +1,4 @@
-package day026.model;
+package day026.model.common;
 
 import java.sql.*;
 

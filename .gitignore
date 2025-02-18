@@ -27,6 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-/src/java/day012/class03/Test.java
+/src/javastudy/day012/class03/Test.java
 /lib/
 /resources/

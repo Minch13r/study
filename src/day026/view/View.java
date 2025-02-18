@@ -60,6 +60,13 @@ public class View {
         return memberDTO;
     }
 
+    public String inputName() {
+        System.out.print("이름 >> ");
+        String name=sc.next();
+        return name;
+    }
+
+
     public MemberDTO inputNewName() {
         MemberDTO memberDTO = new MemberDTO();
         System.out.print("변경할 이름을 입력하세요 >> ");
@@ -93,9 +100,6 @@ public class View {
         System.out.println("=====================================");
     }
 
-    public void printBoardTitleList(ArrayList<BoardDTO> datas) {
-        System.out.println("=== 게시글 목록");
-    }
 
     public int inputBoardNum() {
         System.out.print("숫자 입력 >>");
@@ -120,9 +124,18 @@ public class View {
         return ans;
     }
 
-    public int printSelectSearch() {
-        System.out.println("숫자를 입력해주세요(1,2)");
-        int searchNum = sc.nextInt();
-        return searchNum;
+    public String inputTitle() {
+        System.out.print("검색할 제목을 입력해주세요 >>");
+        return sc.next();
+    }
+
+    public void printDatas(ArrayList<BoardDTO> datas) {
+        if(datas.size() <= 0) {
+            System.out.println("검색결과가 없습니다!");
+            return;
+        }
+        for(BoardDTO data : datas) {
+            System.out.println(data);
+        }
     }
 }

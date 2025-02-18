@@ -34,49 +34,34 @@ public class Controller {
             int action = view.inputAction();
 
             // 1. 이름 변경
-            if(action == 1){
+            if(action==1) {
+                if(user == null) {
+                    continue;
+                }
 
-                MemberDTO memberDTO = view.inputNewName();
+                String name=view.inputName();
 
-                memberDTO.setMember_id(user.getMember_id());
+                MemberDTO dto=new MemberDTO();
+                dto.setMember_name(name); // 사용자가 입력한 이름 정보
+                dto.setMember_id(user.getMember_id()); // 현재 로그인한 아이디 정보
 
-                boolean flag = memberDAO.update(memberDTO);
-                if(flag){
-                    user.setMember_name(memberDTO.getMember_name());
+                boolean flag=memberDAO.update(dto);
+                if(flag) {
+                    user=null; // 로그아웃 강제
                 }
                 view.printResult(flag);
-
-                // 성공시, 로그아웃 강제
-                if(flag){
-                    user = null;
-                }
             }
 
             // 회원탈퇴
-            else if(action == 2){
-                // 로그인 상태 확인
-                if(user == null){
-                    view.printResult(false);
+            else if(action==2) {
+                if(user == null) {
                     continue;
                 }
 
-                // 비밀번호 재확인
-                MemberDTO memberDTO = view.login(); // 아이디랑 pw 입력받기
-
-                // 현재 로그인된 사용자의 아이디와 입력된 아이디가 일치하는지 확인
-                if(!user.getMember_id().equals(memberDTO.getMember_id())){
-                    view.printResult(false);
-                    continue;
+                boolean flag=memberDAO.delete(user);
+                if(flag) {
+                    user=null; // 로그아웃 강제
                 }
-
-                // 회원 탈퇴 실행
-                boolean flag = memberDAO.delete(memberDTO);
-
-                // 탈퇴 성공시 로그아웃 처리
-                if(flag){
-                    user = null;
-                }
-
                 view.printResult(flag);
             }
 
@@ -139,18 +124,17 @@ public class Controller {
             }
 
             // 8. 로그인
-            else if(action == 8){
-                if(user != null){
+            else if(action==8) {
+                if(user != null) {
                     continue;
                 }
-                MemberDTO memberDTO = view.login();
-                MemberDTO data = memberDAO.selectOne(memberDTO);
-                if(data == null){
-                    // 로그인 실패
+
+                MemberDTO memberDTO=view.login();
+                MemberDTO data=memberDAO.selectOne(memberDTO);
+                if(data==null) {
                     view.printResult(false);
                 }
-                else{
-                    // 로그인 성공
+                else {
                     this.user = data;
                     this.user.setMember_password(null);
                     view.printResult(true);
@@ -158,26 +142,32 @@ public class Controller {
             }
 
             // 9. 목록 출력
-            else if(action == 9){
-                BoardDTO dto = new BoardDTO();
-                dto.setCondition("SELECTALL"); // 검색 조건 설정
-                ArrayList<BoardDTO> datas = boardDAO.selectAll(dto);
-
-                // 비어있으면
-                if(datas.isEmpty()) {
-                    // 실패
-                    view.printResult(false);
-                }
-                // 내용이 있으면
-                else {
-                    // 출력
-                    view.printBoardAllList(datas);
-                }
+            else if(action==9) {
+                BoardDTO dto=new BoardDTO();
+                dto.setCondition("SELECTALL");
+                view.printDatas(boardDAO.selectAll(dto));
             }
 
             // 10. 검색
-            else if(action == 10){
-
+            else if(action==10) {
+                action = view.inputAction();
+                BoardDTO dto=null;
+                if(action == 1) {
+                    // 작성자 검색
+                    String name = view.inputName();
+                    dto=new BoardDTO();
+                    dto.setCondition("SEARCH_WRITER");
+                    dto.setWriter(name);
+                }
+                else {
+                    // 제목 검색
+                    String title = view.inputTitle();
+                    dto=new BoardDTO();
+                    dto.setCondition("SEARCH_TITLE");
+                    dto.setTitle(title);
+                }
+                ArrayList<BoardDTO> datas=boardDAO.selectAll(dto);
+                view.printDatas(datas);
             }
 
             // 11. 종료

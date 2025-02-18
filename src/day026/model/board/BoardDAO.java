@@ -8,46 +8,43 @@ import java.util.ArrayList;
 // 목록출력
 // 검색
 public class BoardDAO {
-    final String SELECTALL = "SELECT * FROM board";
-    final String SELECTONE = "SELECT * FROM board WHERE num = ?";
-    final String SELECT_TITLE = "SELECT * FROM board WHERE title LIKE ?";
-    final String SELECT_WRITER = "SELECT * FROM board WHERE WRITER = ?";
-    final String INSERT = "insert into board (title, content, writer) values (?, ?, ?)";
-    final String UPDATE = "update board set content = ? where num = ?";
-    final String DELETE = "delete from board where num = ?";
+    final String SELECTALL = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD";
 
-    // 공유자원
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
+    final String SELECTALL_SEARCH_TITLE = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE TITLE LIKE CONCAT('%',?,'%')";
+    final String SELECTALL_SEARCH_WRITER = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE WRITER=?";
 
+    final String SELECTONE = "SELECT NUM,TITLE,CONTENT,WRITER,CNT,REGDATE FROM BOARD WHERE NUM=?";
 
-    public ArrayList<BoardDTO> selectAll(BoardDTO dto) {
-        ArrayList<BoardDTO> datas = new ArrayList<BoardDTO>();
+    final String INSERT = "INSERT INTO BOARD (TITLE,CONTENT,WRITER) VALUES(?,?,?)";
+    final String UPDATE = "UPDATE BOARD SET CONTENT=? WHERE NUM=?";
+    final String DELETE = "DELETE FROM BOARD WHERE NUM=?";
 
+    public ArrayList<BoardDTO> selectAll(BoardDTO dto){
+        ArrayList<BoardDTO> datas=new ArrayList<BoardDTO>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         try {
             conn = JDBCUtil.connect();
-
-            if (dto.getCondition().equals("SELECTALL")) {
+            if(dto.getCondition().equals("SELECTALL")) {
                 pstmt = conn.prepareStatement(SELECTALL);
             }
-            else if (dto.getCondition().equals("SEARCH_TITLE")) {
-                pstmt = conn.prepareStatement(SELECTONE);
+            else if(dto.getCondition().equals("SEARCH_TITLE")) {
+                pstmt = conn.prepareStatement(SELECTALL_SEARCH_TITLE);
                 pstmt.setString(1, dto.getTitle());
             }
-            else if (dto.getCondition().equals("SEARCH_WRITER")) {
-                pstmt = conn.prepareStatement(SELECTONE);
+            else if(dto.getCondition().equals("SEARCH_WRITER")) {
+                pstmt = conn.prepareStatement(SELECTALL_SEARCH_WRITER);
                 pstmt.setString(1, dto.getWriter());
             }
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            while(rs.next()) {
                 BoardDTO data = new BoardDTO();
-                data.setNum(rs.getInt("num"));
-                data.setTitle(rs.getString("title"));
-                data.setContent(rs.getString("content"));
-                data.setWriter(rs.getString("writer"));
+                data.setNum(rs.getInt("NUM"));
+                data.setTitle(rs.getString("TITLE"));
+                data.setContent(rs.getString("CONTENT"));
+                data.setWriter(rs.getString("WRITER"));
                 data.setCnt(rs.getInt("CNT"));
-                data.setRegdate(rs.getDate("regdate"));
+                data.setRegdate(rs.getDate("REGDATE"));
                 datas.add(data);
             }
         } catch (Exception e) {
@@ -57,24 +54,24 @@ public class BoardDAO {
         }
         return datas;
     }
-
-    // 선택
-    public BoardDTO selectOne(BoardDTO dto) {  // 반환 타입을 BoardDTO로 변경
-        BoardDTO data = null;  // 단일 게시글 정보를 저장할 변수
+    public BoardDTO selectOne(BoardDTO dto){
+        BoardDTO data = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         try {
             conn = JDBCUtil.connect();
+            // 데이터 read, write
             pstmt = conn.prepareStatement(SELECTONE);
-            pstmt.setInt(1, dto.getNum());  // 게시글 번호로 검색
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {  // while이 아닌 if 사용 (단일 결과)
+            pstmt.setInt(1, dto.getNum());
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
                 data = new BoardDTO();
                 data.setNum(rs.getInt("NUM"));
                 data.setTitle(rs.getString("TITLE"));
                 data.setContent(rs.getString("CONTENT"));
                 data.setWriter(rs.getString("WRITER"));
                 data.setCnt(rs.getInt("CNT"));
-                data.setRegdate(rs.getTimestamp("REGDATE"));
+                data.setRegdate(rs.getDate("REGDATE"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,65 +80,67 @@ public class BoardDAO {
         }
         return data;
     }
-
-    // 작성
     public boolean insert(BoardDTO dto){
-        try{
-            // 1. 드라이버 로드
-            // 2. DB 연결
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
             conn = JDBCUtil.connect();
-            // 3. 데이터 read, write
+            // 데이터 read, write
             pstmt = conn.prepareStatement(INSERT);
             pstmt.setString(1, dto.getTitle());
             pstmt.setString(2, dto.getContent());
             pstmt.setString(3, dto.getWriter());
             int result = pstmt.executeUpdate();
-            if(result <= 0){
+            if(result <= 0) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         } finally {
-            // 4. DB 연결 해제
             JDBCUtil.disconnect(conn, pstmt);
         }
-        return false;
     }
     public boolean update(BoardDTO dto){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         try {
             conn = JDBCUtil.connect();
+            // 데이터 read, write
             pstmt = conn.prepareStatement(UPDATE);
             pstmt.setString(1, dto.getContent());
             pstmt.setInt(2, dto.getNum());
             int result = pstmt.executeUpdate();
-            if(result <= 0){
+            if(result <= 0) {
                 return false;
             }
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         } finally {
             JDBCUtil.disconnect(conn, pstmt);
         }
-        return false;
     }
     public boolean delete(BoardDTO dto){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         try {
             conn = JDBCUtil.connect();
+            // 데이터 read, write
             pstmt = conn.prepareStatement(DELETE);
             pstmt.setInt(1, dto.getNum());
             int result = pstmt.executeUpdate();
-            if(result <= 0){
+            if(result <= 0) {
                 return false;
             }
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         } finally {
             JDBCUtil.disconnect(conn, pstmt);
         }
-        return false;
     }
 }

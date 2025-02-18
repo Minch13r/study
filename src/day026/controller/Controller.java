@@ -77,7 +77,21 @@ public class Controller {
                 view.printResult(flag);
             }
 
+            // 글 작성
             else if(action == 3){
+                // 로그인 한 사람만
+                if(user == null){
+                    view.printResult(false);
+                    continue;
+                }
+                // View로부터 제목, 내용 입력 받기
+                BoardDTO dto = view.inputBoardDTO();
+                // 현재 로그인 한 사람이 제목내용을 썼다고 모델에게 알려줌
+                dto.setWriter(user.getMember_id());
+                // 모델에서 insert를 수행
+                boolean flag = boardDAO.insert(dto);
+                // 뷰로 결과 출력
+                view.printResult(flag);
 
             }
             else if(action == 4){

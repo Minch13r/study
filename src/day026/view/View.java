@@ -1,5 +1,6 @@
 package day026.view;
 
+import day026.model.BoardDTO;
 import day026.model.MemberDTO;
 import org.openqa.selenium.json.JsonOutput;
 
@@ -65,6 +66,17 @@ public class View {
         String newName = sc.next();
         memberDTO.setMember_name(newName);
         return memberDTO;
+    }
+
+    public BoardDTO inputBoardDTO(){
+        System.out.print("글 제목 >>");
+        String title = sc.next();
+        System.out.print("글 내용 >>");
+        String content = sc.next();
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setTitle(title);
+        boardDTO.setContent(content);
+        return boardDTO;
     }
 
 }

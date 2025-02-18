@@ -10,14 +10,13 @@ public class BoardDAO {
     final String url = "jdbc:mysql://localhost:3306/test";
     final String userName = "root";
     final String password = "12345678";
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
 
-    private ArrayList<BoardDAO> selectAll(BoardDAO dto){
+    private ArrayList<BoardDTO> selectAll(BoardDTO dto){
         final String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID = ?";
         ArrayList<BoardDTO> datas = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
         try {
             // 1. 드라이버 로드
             Class.forName(driverName);
@@ -52,13 +51,42 @@ public class BoardDAO {
         }
         return null;
     }
-
-    public BoardDAO selectOne(BoardDAO dto){
-        // 선택
+    // 선택
+    public BoardDAO selectOne(BoardDTO dto){
         return null;
     }
-    public boolean insert(BoardDAO dto){
-        // 작성
+    // 작성
+    public boolean insert(BoardDTO dto){
+        final String sql = "insert into board (title, content, writer) values (?, ?, ?)";
+        try{
+            // 1. 드라이버 연결
+            Class.forName(driverName);
+            conn = DriverManager.getConnection(url, userName, password);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, dto.getTitle());
+            pstmt.setString(2, dto.getContent());
+            pstmt.setString(3, dto.getWriter());
+            int result = pstmt.executeUpdate();
+            if(result <= 0){
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 4. conn 연결 해제
+
+                pstmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        // 2. conn 연결
+        // 3. 데이터 read, write
+
         return false;
     }
     public boolean update(BoardDAO dto){

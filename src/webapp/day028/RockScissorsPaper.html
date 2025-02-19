@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>가위바위보 게임</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .choice-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 10px;
+        }
+        .choice-btn:hover {
+            transform: scale(1.1);
+        }
+        .choice-btn img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .display-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        .player-choice, .computer-choice {
+            text-align: center;
+        }
+        .choice-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <h1>가위바위보 게임</h1>
+    <div class="choices">
+        <button class="choice-btn" onclick="play('가위')">
+            <img src="images/가위.png" alt="가위">
+        </button>
+        <button class="choice-btn" onclick="play('바위')">
+            <img src="images/주먹.png" alt="바위">
+        </button>
+        <button class="choice-btn" onclick="play('보')">
+            <img src="images/보자기.png" alt="보">
+        </button>
+    </div>
+
+    <div class="display-area">
+        <div class="player-choice">
+            <h3>나의 선택</h3>
+            <div id="player-image"></div>
+        </div>
+        <div class="computer-choice">
+            <h3>컴퓨터의 선택</h3>
+            <div id="computer-image"></div>
+        </div>
+    </div>
+
+    <div class="result" id="result">선택해주세요!</div>
+    <div class="score" id="score">
+        승: 0 | 패: 0 | 무: 0
+    </div>
+</div>
+
+<script>
+    let wins = 0;
+    let losses = 0;
+    let draws = 0;
+
+    const images = {
+        '가위': 'images/가위.png',
+        '바위': 'images/주먹.png',
+        '보': 'images/보자기.png'
+    };
+
+    function play(playerChoice) {
+        const choices = ['가위', '바위', '보'];
+        const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+        // 이미지 표시
+        document.getElementById('player-image').innerHTML =
+            `<img src="${images[playerChoice]}" class="choice-image" alt="${playerChoice}">`;
+        document.getElementById('computer-image').innerHTML =
+            `<img src="${images[computerChoice]}" class="choice-image" alt="${computerChoice}">`;
+
+        let result = '';
+
+        if (playerChoice === computerChoice) {
+            result = '무승부!';
+            draws++;
+        }
+        else if (
+            (playerChoice === '가위' && computerChoice === '보') ||
+            (playerChoice === '바위' && computerChoice === '가위') ||
+            (playerChoice === '보' && computerChoice === '바위')
+        ) {
+            result = '승리!';
+            wins++;
+        }
+        else {
+            result = '패배!';
+            losses++;
+        }
+
+        document.getElementById('result').innerHTML = result;
+        document.getElementById('score').innerHTML =
+            `승: ${wins} | 패: ${losses} | 무: ${draws}`;
+    }
+</script>
+</body>
+</html>

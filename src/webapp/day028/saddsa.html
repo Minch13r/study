@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점수 평균 계산기</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            width: 100px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .pass {
+            color: blue;
+        }
+        .fail {
+            color: red;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>점수 평균 계산기</h2>
+    <div class="input-group">
+        <label for="score1">첫 번째 점수:</label>
+        <input type="number" id="score1" min="0" max="100">
+        <div id="error1" class="error"></div>
+    </div>
+    <div class="input-group">
+        <label for="score2">두 번째 점수:</label>
+        <input type="number" id="score2" min="0" max="100">
+        <div id="error2" class="error"></div>
+    </div>
+    <button onclick="calculateAverage()">평균 계산하기</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function validateScore(score, errorId) {
+        const errorElement = document.getElementById(errorId);
+        if (score === "" || isNaN(score)) {
+            errorElement.textContent = "점수를 입력해주세요.";
+            return false;
+        }
+        if (score < 0 || score > 100) {
+            errorElement.textContent = "0에서 100 사이의 점수를 입력해주세요.";
+            return false;
+        }
+        errorElement.textContent = "";
+        return true;
+    }
+
+    function calculateAverage() {
+        const score1 = document.getElementById('score1').value;
+        const score2 = document.getElementById('score2').value;
+
+        // 입력값 검증
+        const isScore1Valid = validateScore(score1, 'error1');
+        const isScore2Valid = validateScore(score2, 'error2');
+
+        if (!isScore1Valid || !isScore2Valid) {
+            return;
+        }
+
+        // 평균 계산
+        const average = (Number(score1) + Number(score2)) / 2;
+        const resultElement = document.getElementById('result');
+
+        // 결과 표시
+        if (average >= 60) {
+            resultElement.innerHTML = `평균: ${average.toFixed(1)}점<br><span class="pass">통과!</span>`;
+        } else {
+            resultElement.innerHTML = `평균: ${average.toFixed(1)}점<br><span class="fail">실패...</span>`;
+        }
+    }
+</script>
+</body>
+</html>

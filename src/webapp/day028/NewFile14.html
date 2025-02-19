@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS 이벤트에서도 선택자가 중요함</title>
+</head>
+<body>
+
+<button onclick="test()">아이디, 클래스 선택자</button>
+
+<ul>
+  <li>리스트01</li>
+  <li id="apple">리스트02</li>
+  <li class="banana">리스트03</li>
+  <li class="banana">리스트04</li>
+  <li>리스트05</li>
+</ul>
+
+<script type="text/javascript">
+  function test(){
+    var elem = document.getElementById('apple');
+    elem.sytle.backgroundColor = 'lightblue';
+
+    var elems = document.getElementsByClassName('banana');
+    elems.sytle.backgroundColor = 'lightpink';
+  }
+</script>
+
+</body>
+</html>

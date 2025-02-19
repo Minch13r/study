@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style type="text/css">
+        div {
+            width : 100px; height : 100px;
+            background : lightpink;
+        }
+
+        #box {
+            cursor : pointer;
+        }
+    </style>
+</head>
+<body>
+<button id="btn" onclick="makeElem()">새로운 요소 생성</button>
+<div id="box" onclick="changeColor(this)"></div>
+<script type="text/javascript">
+    function makeElem() {
+        const colors = ['red', 'green', 'blue', 'aqua'];
+
+        var box = document.createElement('div');
+        var txt = document.createTextNode('자바스크립트');
+        box.appendChild(txt);
+
+        const randomIndex = parseInt(Math.random() * colors.length);
+        box.style.backgroundColor = colors[randomIndex];
+
+        console.log(colors[randomIndex]);
+
+        document.body.appendChild(box);
+    }
+
+    function changeColor(obj) {
+        obj.style.backgroundColor = "lightgreen";
+    }
+</script>
+</body>
+</html>

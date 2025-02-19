@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="js/NewFile11.js"></script>
-  <style>
+  <style type = "text/css">
     body {
       text-align: center;
       margin-top: 50px;
+    }
+    .blue {
+        color : blue;
+    }
+    .red {
+        color : red;
     }
 
   </style>
@@ -45,10 +50,10 @@
 
   if(avg > 60) {
     document.write("숫자1 : " + score1, " 숫자2 : " + score2, " 평균 : " + avg);
-    document.write("통과!");
+    document.write('<h1 class="blue">통과!</h1>');
   } else {
     document.write("숫자1 : " +score1, " 숫자2 : " + score2, " 평균 : " + avg);
-    document.write("실패!")
+    document.write('<h1 class="red">통과!</h1>');
   }
 </script>
 

@@ -18,11 +18,17 @@
 
 <script type="text/javascript">
   function test(){
+    /*id 반환은 하나만 반환이기에 바로 반환시키면 됨*/
     var elem = document.getElementById('apple');
-    elem.sytle.backgroundColor = 'lightblue';
+    elem.style.backgroundColor = 'lightblue';
 
+    /*class 선택자를 쓰면 여러개라 판단돼서 배열 반환이기에 for문을 써야함*/
     var elems = document.getElementsByClassName('banana');
-    elems.sytle.backgroundColor = 'lightpink';
+    /* querySelectorAll 같은 경우, class는 . 쓰고 id는 # */
+    // var elems = document.querySelectorAll('.banana');
+    for(var i=0; i<elems.length; i++) {
+      elems[i].style.backgroundColor = 'lightpink';
+    }
   }
 </script>
 

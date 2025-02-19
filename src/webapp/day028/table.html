@@ -4,31 +4,42 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        /* table 전반적인 내용 관련 CSS*/
         table {
             border-collapse: collapse;
             width: 100%;
             border : 1px solid;
         }
 
+        /* td 태그 관련 CSS*/
         td {
             border: 1px solid black;
             padding: 8px;
         }
 
+        /* 첫번째 열 관련 CSS*/
         td:first-child {
+            /* 색 노랑 */
             background-color: #FFEB3B;
+            /* 너비는 전체 가로에 50%만큼 */
             width: 50%;
+            /* 글자는 가운데 정렬*/
             text-align: center;
+            /* 글자 굵게*/
             font-weight: bold;
         }
 
+        /* 두번째 열 ㄱ관련 CSS*/
         td:nth-child(2) {
+            /* 색 검정*/
             background-color: #B3E5FC;
+            /* 너비는 전체 가로에 50%만큼 */
             width: 50%;
         }
 
         tr:first-child td {
-          text-align: center;
+            /* 첫번째 행의 모든 것 가운데 정렬 */
+            text-align: center;
         }
     </style>
 </head>

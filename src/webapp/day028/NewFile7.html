@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Box N Container</title>
+    <style>
+        .container {
+            /* 박스들 가로로 정렬*/
+            display: flex;
+            flex-direction: row;
+            /* 박스 사이 간격*/
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .box {
+            /*박스 크기 정의*/
+            width: 20%;
+            border: 1px solid;
+            height: 50px;
+            margin: 10px;
+            /* 배경색 */
+            background-color: firebrick;
+            /* 글자 색 */
+            color: white;
+            /* 가로, 중앙, 세로 중앙으로 재배치*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 폰트 크기 */
+            font-size: 25px;
+        }
+
+        /* 마우스 올려놨을 때 */
+        p:hover {
+            background-color: deepskyblue;
+            color: white;
+            /* 밑줄 효과 */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <p class="box">Company</p>
+    <p class="box">Product</p>
+    <p class="box">Service</p>
+    <p class="box">Community</p>
+</div>
+</body>
+</html>
